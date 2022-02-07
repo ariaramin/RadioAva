@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/browseFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_music"
+        android:title="@string/browse"
+        android:checked="true"/>
+    <item
+        android:id="@+id/artistsFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_microphone"
+        android:title="@string/artists" />
+    <item
+        android:id="@+id/homeFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="" />
+    <item
+        android:id="@+id/videosFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_video"
+        android:title="@string/videos" />
+    <item
+        android:id="@+id/myMusicFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_headphone"
+        android:title="@string/my_music" />
+</menu>

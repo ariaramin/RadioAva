@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/itemImageView"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="24dp"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/itemNameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/itemImageView"
+            app:layout_constraintStart_toStartOf="@+id/itemImageView"
+            app:layout_constraintTop_toBottomOf="@+id/itemImageView"
+            tools:text="Name" />
+
+        <TextView
+            android:id="@+id/itemArtistTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/itemNameTextView"
+            app:layout_constraintStart_toStartOf="@+id/itemNameTextView"
+            app:layout_constraintTop_toBottomOf="@+id/itemNameTextView"
+            tools:text="Artist" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

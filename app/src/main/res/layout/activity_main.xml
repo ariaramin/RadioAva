@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/secondaryDarkColor"
+        tools:context=".MainActivity">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/nav_graph" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/secondaryDarkColor"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:elevation="4dp"
+            app:itemIconTint="@color/bottom_nav_item_color"
+            app:itemTextColor="@color/bottom_nav_item_color"
+            app:labelVisibilityMode="selected"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_nav_menu" />
+
+        <ImageView
+            android:id="@+id/homeIcon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bottom_nav_center_icon"
+            android:contentDescription="@string/bottom_sheet_behavior"
+            android:elevation="6dp"
+            android:padding="18dp"
+            android:src="@drawable/ic_home"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

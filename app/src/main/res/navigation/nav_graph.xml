@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/browseFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.BrowseFragment"
+        android:label="fragment_browse"
+        tools:layout="@layout/fragment_browse" />
+    <fragment
+        android:id="@+id/artistsFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.ArtistsFragment"
+        android:label="fragment_artists"
+        tools:layout="@layout/fragment_artists" />
+    <fragment
+        android:id="@+id/myMusicFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.MyMusicFragment"
+        android:label="fragment_my_music"
+        tools:layout="@layout/fragment_my_music" />
+    <fragment
+        android:id="@+id/videosFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.VideosFragment"
+        android:label="fragment_videos"
+        tools:layout="@layout/fragment_videos" />
+</navigation>
