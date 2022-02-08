@@ -11,15 +11,18 @@ import retrofit2.http.GET;
 
 public interface RequestApi {
 
-    @GET("trending/music/list/")
+    @GET("/music/list/")
+    Observable<List<Music>> getAllMusics();
+
+    @GET("/trending/music/list/")
     Observable<List<Music>> getTrendingMusics();
 
-    @GET("latest/music/list/")
+    @GET("/latest/music/list/")
     Observable<List<Music>> getLatestMusics();
 
-    @GET("album/list/")
+    @GET("/album/list/")
     Observable<List<Album>> getLatestAlbums();
 
-    @GET("artist/list/")
+    @GET("/artist/list/")
     Observable<List<Artist>> getPopularArtists();
 }

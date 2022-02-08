@@ -5,23 +5,25 @@ import androidx.room.PrimaryKey;
 
 import com.ariaramin.radioava.Models.Music;
 
+import java.util.List;
+
 @Entity(tableName = "music_tbl")
 public class AllMusicEntity {
 
     @PrimaryKey
-    long id;
+    public long id;
 
-    Music music;
+    public List<Music> musics;
 
-    public AllMusicEntity(Music music) {
-        this.music = music;
+    public AllMusicEntity(List<Music> musics) {
+        this.musics = musics;
     }
 
     public long getId() {
         return id;
     }
 
-    public Music getMusic() {
-        return music;
+    public List<Music> getMusics() {
+        return musics;
     }
 }

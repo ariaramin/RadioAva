@@ -55,9 +55,6 @@ dependencies {
     // Auto Slider
     implementation 'com.github.smarteist:autoimageslider:1.4.0'
 
-    // Rounded Imageview
-    implementation 'com.makeramen:roundedimageview:2.3.0'
-
     // Spin Kit
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 

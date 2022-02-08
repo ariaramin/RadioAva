@@ -20,8 +20,10 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_my_music.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/fragment_videos.xml" value="0.31296296296296294" />
+        <entry key="app/src/main/res/layout/horizontal_artist_item_layout.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/horizontal_item_layout.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/slider_item.xml" value="0.33645833333333336" />
+        <entry key="app/src/main/res/layout/slider_item_layout.xml" value="0.2611111111111111" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.33645833333333336" />
       </map>
     </option>

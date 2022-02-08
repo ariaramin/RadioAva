@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ariaramin.radioava.Models.Album;
 import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.HorizontalItemLayoutBinding;
@@ -15,60 +16,59 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHolder> {
+public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
 
     HorizontalItemLayoutBinding itemLayoutBinding;
-    ArrayList<Music> musicList;
+    ArrayList<Album> albumList;
 
-    public MusicAdapter(ArrayList<Music> musicList) {
-        this.musicList = musicList;
+    public AlbumAdapter(ArrayList<Album> albumList) {
+        this.albumList = albumList;
     }
 
     @NonNull
     @Override
-    public MusicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.horizontal_item_layout, parent, false);
-        return new MusicViewHolder(itemLayoutBinding);
+        return new AlbumViewHolder(itemLayoutBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MusicViewHolder holder, int position) {
-        holder.bindData(musicList.get(position));
+    public void onBindViewHolder(@NonNull AlbumViewHolder holder, int position) {
+        holder.bindData(albumList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return musicList.size();
+        return albumList.size();
     }
 
-    public void updateList(ArrayList<Music> musics) {
-        musicList = musics;
+    public void updateList(ArrayList<Album> albums) {
+        albumList = albums;
         notifyDataSetChanged();
     }
 
-    static class MusicViewHolder extends RecyclerView.ViewHolder {
+    static class AlbumViewHolder extends RecyclerView.ViewHolder {
 
         HorizontalItemLayoutBinding itemLayoutBinding;
 
-        public MusicViewHolder(@NonNull HorizontalItemLayoutBinding itemLayoutBinding) {
+        public AlbumViewHolder(@NonNull HorizontalItemLayoutBinding itemLayoutBinding) {
             super(itemLayoutBinding.getRoot());
             this.itemLayoutBinding = itemLayoutBinding;
         }
 
-        private void bindData(Music music) {
+        private void bindData(Album album) {
             Glide.with(itemLayoutBinding.getRoot().getContext())
-                    .load(music.getCover())
+                    .load(album.getCover())
                     .thumbnail(
                             Glide.with(itemLayoutBinding.getRoot().getContext())
-                            .load(R.drawable.loading)
+                                    .load(R.drawable.loading)
                     )
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(itemLayoutBinding.itemImageView);
-            itemLayoutBinding.itemNameTextView.setText(songNameCutter(music.getName()));
-            itemLayoutBinding.itemArtistTextView.setText(artistNameCutter(music.getArtist()));
+            itemLayoutBinding.itemNameTextView.setText(songNameCutter(album.getName()));
+            itemLayoutBinding.itemArtistTextView.setText(artistNameCutter(album.getArtist()));
         }
 
         private String songNameCutter(String name) {

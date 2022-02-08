@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Music {
 
+    @SerializedName("id")
+    int id;
+
     @SerializedName("cover")
     String cover;
 
@@ -24,6 +27,10 @@ public class Music {
 
     @SerializedName("type")
     String type;
+
+    public int getId() {
+        return id;
+    }
 
     public String getCover() {
         return cover;

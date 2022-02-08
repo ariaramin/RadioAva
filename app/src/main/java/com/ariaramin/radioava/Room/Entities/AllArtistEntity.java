@@ -5,15 +5,17 @@ import androidx.room.PrimaryKey;
 
 import com.ariaramin.radioava.Models.Artist;
 
+import java.util.List;
+
 @Entity(tableName = "artist_tbl")
 public class AllArtistEntity {
 
     @PrimaryKey
-    long id;
+    public long id;
 
-    Artist artist;
+    public List<Artist> artist;
 
-    public AllArtistEntity(Artist artist) {
+    public AllArtistEntity(List<Artist> artist) {
         this.artist = artist;
     }
 
@@ -21,7 +23,7 @@ public class AllArtistEntity {
         return id;
     }
 
-    public Artist getArtist() {
+    public List<Artist> getArtist() {
         return artist;
     }
 }

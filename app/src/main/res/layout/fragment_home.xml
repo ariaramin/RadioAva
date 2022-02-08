@@ -40,11 +40,24 @@
                 app:layout_constraintStart_toStartOf="@+id/textView"
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/sliderSpinKit"
+                style="@style/SpinKitView.Pulse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:SpinKit_Color="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/sliderView"
+                app:layout_constraintEnd_toEndOf="@+id/sliderView"
+                app:layout_constraintStart_toStartOf="@+id/sliderView"
+                app:layout_constraintTop_toTopOf="@+id/sliderView" />
+
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/sliderView"
                 android:layout_width="match_parent"
-                android:layout_height="298dp"
+                android:layout_height="382dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +70,7 @@
                 app:sliderIndicatorMargin="15dp"
                 app:sliderIndicatorOrientation="horizontal"
                 app:sliderIndicatorPadding="3dp"
-                app:sliderIndicatorRadius="2dp"
+                app:sliderIndicatorRadius="1.5dp"
                 app:sliderIndicatorSelectedColor="@color/white"
                 app:sliderIndicatorUnselectedColor="@color/grey"
                 app:sliderScrollTimeInSec="1"
@@ -97,12 +110,25 @@
                     app:layout_constraintStart_toEndOf="@+id/textView2"
                     app:layout_constraintTop_toTopOf="@+id/textView2" />
 
+                <com.github.ybq.android.spinkit.SpinKitView
+                    android:id="@+id/trendingMusicsSpinKit"
+                    style="@style/SpinKitView.ThreeBounce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:SpinKit_Color="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/trendingMusicsRecyclerView" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/trendingMusicsRecyclerView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -111,7 +137,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
                 android:layout_width="0dp"
-                android:layout_height="239dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
                 app:layout_constraintStart_toStartOf="@+id/constraintLayout"
@@ -142,12 +168,25 @@
                     app:layout_constraintStart_toEndOf="@+id/textView4"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <com.github.ybq.android.spinkit.SpinKitView
+                    android:id="@+id/latestAlbumsSpinKit"
+                    style="@style/SpinKitView.ThreeBounce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:SpinKit_Color="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/latestAlbumsRecyclerView" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/latestAlbumsRecyclerView"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -186,11 +225,25 @@
                     app:layout_constraintStart_toEndOf="@+id/textView6"
                     app:layout_constraintTop_toTopOf="@+id/textView6" />
 
+                <com.github.ybq.android.spinkit.SpinKitView
+                    android:id="@+id/popularArtistsSpinKit"
+                    style="@style/SpinKitView.ThreeBounce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:SpinKit_Color="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/popularArtistsRecyclerView" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/popularArtistsRecyclerView"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />

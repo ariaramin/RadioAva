@@ -13,26 +13,27 @@
         android:layout_margin="8dp">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="146dp"
-            android:layout_height="146dp"
+            android:id="@+id/cardView2"
+            android:layout_width="132dp"
+            android:layout_height="132dp"
             android:elevation="6dp"
             app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="48dp"
+            app:cardCornerRadius="62dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/itemImageView"
+                android:id="@+id/horizontalArtistImageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                tools:src="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars" />
+
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/itemNameTextView"
+            android:id="@+id/horizontalArtistNameTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
@@ -41,22 +42,10 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/cardView"
-            app:layout_constraintStart_toStartOf="@+id/cardView"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
-            tools:text="Name" />
+            app:layout_constraintEnd_toEndOf="@+id/cardView2"
+            app:layout_constraintStart_toStartOf="@+id/cardView2"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2"
+            tools:text="artist" />
 
-        <TextView
-            android:id="@+id/itemArtistTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/circular_std_book"
-            android:textAlignment="center"
-            android:textColor="@color/grey"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@+id/itemNameTextView"
-            app:layout_constraintStart_toStartOf="@+id/itemNameTextView"
-            app:layout_constraintTop_toBottomOf="@+id/itemNameTextView"
-            tools:text="Artist" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -5,23 +5,25 @@ import androidx.room.PrimaryKey;
 
 import com.ariaramin.radioava.Models.Album;
 
+import java.util.List;
+
 @Entity(tableName = "album_tbl")
 public class AllAlbumEntity {
 
     @PrimaryKey
-    long id;
+    public long id;
 
-    Album album;
+    public List<Album> albums;
 
-    public AllAlbumEntity(Album album) {
-        this.album = album;
+    public AllAlbumEntity(List<Album> albums) {
+        this.albums = albums;
     }
 
     public long getId() {
         return id;
     }
 
-    public Album getAlbum() {
-        return album;
+    public List<Album> getAlbums() {
+        return albums;
     }
 }
