@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
                 .subscribe(new Consumer<AllArtistEntity>() {
                     @Override
                     public void accept(AllArtistEntity allArtistEntity) throws Throwable {
-                        ArrayList<Artist> artists = (ArrayList<Artist>) allArtistEntity.getArtist();
+                        ArrayList<Artist> artists = new ArrayList<>(allArtistEntity.getArtist().subList(0, 15));
 
                         if (homeBinding.popularArtistsRecyclerView.getAdapter() == null) {
                             ArtistAdapter artistAdapter = new ArtistAdapter(artists);
@@ -93,7 +93,8 @@ public class HomeFragment extends Fragment {
                 .subscribe(new Consumer<AllAlbumEntity>() {
                     @Override
                     public void accept(AllAlbumEntity allAlbumEntity) throws Throwable {
-                        ArrayList<Album> albums = (ArrayList<Album>) allAlbumEntity.getAlbums();
+                        ArrayList<Album> albums = new ArrayList<>(allAlbumEntity.getAlbums().subList(0, 15));
+
 
                         if (homeBinding.latestAlbumsRecyclerView.getAdapter() == null) {
                             AlbumAdapter albumAdapter = new AlbumAdapter(albums);
@@ -129,15 +130,8 @@ public class HomeFragment extends Fragment {
                             }
                         }
 
-                        Collections.sort(trendingMusics, new Comparator<Music>() {
-                            @Override
-                            public int compare(Music o1, Music o2) {
-                                return Integer.compare(o1.getId(), o2.getId());
-                            }
-                        });
-
                         ArrayList<Music> topFiveTrending = new ArrayList<Music>(trendingMusics.subList(0, 5));
-                        ArrayList<Music> topTrending = new ArrayList<Music>(trendingMusics.subList(5, trendingMusics.size() - 1));
+                        ArrayList<Music> topTrending = new ArrayList<Music>(trendingMusics.subList(5, 20));
 
                         SliderAdapter sliderAdapter = new SliderAdapter(topFiveTrending);
                         homeBinding.sliderView.setSliderAdapter(sliderAdapter);
@@ -154,6 +148,7 @@ public class HomeFragment extends Fragment {
                             adapter.updateList(topTrending);
                         }
 
+                        Log.i("s", trendingMusics.size()+"");
                         if (trendingMusics.isEmpty()) {
                             homeBinding.sliderSpinKit.setVisibility(View.VISIBLE);
                             homeBinding.trendingMusicsSpinKit.setVisibility(View.VISIBLE);

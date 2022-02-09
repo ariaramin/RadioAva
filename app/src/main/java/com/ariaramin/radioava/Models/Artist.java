@@ -13,11 +13,11 @@ public class Artist {
     @SerializedName("name")
     String name;
 
-    @SerializedName("plays")
+    @SerializedName("plays_count")
     String plays;
 
-    @SerializedName("followers_count")
-    int followersCount;
+    @SerializedName("followers")
+    String followers;
 
     public String getBackgroundImage() {
         return backgroundImage;
@@ -35,7 +35,7 @@ public class Artist {
         return plays;
     }
 
-    public int getFollowersCount() {
-        return followersCount;
+    public String getFollowers() {
+        return followers;
     }
 }
