@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment {
                         ArrayList<Music> trendingMusics = new ArrayList<>();
 
                         for (int i = 0; i < musics.size(); i++) {
-                            if (musics.get(i).getType().equals("trending") && musics.get(i).getAlbum() == null) {
+                            if (musics.get(i).getType().equals("trending")) {
                                 trendingMusics.add(musics.get(i));
                             }
                         }
@@ -133,8 +133,13 @@ public class HomeFragment extends Fragment {
                         ArrayList<Music> topFiveTrending = new ArrayList<Music>(trendingMusics.subList(0, 5));
                         ArrayList<Music> topTrending = new ArrayList<Music>(trendingMusics.subList(5, 20));
 
-                        SliderAdapter sliderAdapter = new SliderAdapter(topFiveTrending);
-                        homeBinding.sliderView.setSliderAdapter(sliderAdapter);
+                        if (homeBinding.sliderView.getSliderAdapter() == null) {
+                            SliderAdapter sliderAdapter = new SliderAdapter(topFiveTrending);
+                            homeBinding.sliderView.setSliderAdapter(sliderAdapter);
+                        } else {
+                            SliderAdapter sliderAdapter = (SliderAdapter) homeBinding.sliderView.getSliderAdapter();
+                            sliderAdapter.updateList(topFiveTrending);
+                        }
                         homeBinding.sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
                         homeBinding.sliderView.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
                         homeBinding.sliderView.setScrollTimeInSec(5);
@@ -148,7 +153,6 @@ public class HomeFragment extends Fragment {
                             adapter.updateList(topTrending);
                         }
 
-                        Log.i("s", trendingMusics.size()+"");
                         if (trendingMusics.isEmpty()) {
                             homeBinding.sliderSpinKit.setVisibility(View.VISIBLE);
                             homeBinding.trendingMusicsSpinKit.setVisibility(View.VISIBLE);

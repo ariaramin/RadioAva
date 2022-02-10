@@ -84,7 +84,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                     app:layout_constraintStart_toEndOf="@+id/sliderFollowersTextView"
                     app:layout_constraintTop_toTopOf="@+id/imageView2"
-                    app:srcCompat="@drawable/ic_play" />
+                    app:srcCompat="@drawable/ic_polygon" />
 
                 <TextView
                     android:id="@+id/sliderPlayTextView"

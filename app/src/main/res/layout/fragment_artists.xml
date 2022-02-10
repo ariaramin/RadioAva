@@ -19,30 +19,72 @@
             android:layout_height="match_parent">
 
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="32dp"
-                android:fontFamily="@font/circular_std_bold"
-                android:text="@string/artists"
-                android:textColor="@color/white"
-                android:textSize="26sp"
-                android:textStyle="bold"
+                android:layout_marginEnd="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular_std_book"
+                    android:text="@string/trending"
+                    android:textColor="@color/grey"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular_std_bold"
+                    android:text="@string/artists"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/textView12"
+                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+                <ImageButton
+                    android:id="@+id/imageButton2"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/circular_button_bg"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_user" />
+
+                <ImageButton
+                    android:id="@+id/imageButton3"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/circular_button_bg"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
+                    app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+                    app:layout_constraintTop_toTopOf="@+id/imageButton2"
+                    app:srcCompat="@drawable/ic_search" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/artistSliderView"
                 android:layout_width="0dp"
                 android:layout_height="368dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="12dp"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout6"
                 app:sliderAnimationDuration="600"
                 app:sliderAutoCycleDirection="back_and_forth"
                 app:sliderAutoCycleEnabled="true"
@@ -56,6 +98,18 @@
                 app:sliderIndicatorUnselectedColor="@color/grey"
                 app:sliderScrollTimeInSec="1"
                 app:sliderStartAutoCycle="true" />
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/artistSliderSpinKit"
+                style="@style/SpinKitView.ThreeBounce"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:SpinKit_Color="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/artistSliderView"
+                app:layout_constraintEnd_toEndOf="@+id/artistSliderView"
+                app:layout_constraintStart_toStartOf="@+id/artistSliderView"
+                app:layout_constraintTop_toTopOf="@+id/artistSliderView" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -165,7 +219,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/circular_std_bold"
-                    android:text="@string/trending"
+                    android:text="@string/top"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -186,11 +240,11 @@
                     app:layout_constraintTop_toTopOf="@+id/textView10" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/trendingArtistsRecyclerView"
+                    android:id="@+id/topArtistsRecyclerView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -201,12 +255,12 @@
                     style="@style/SpinKitView.ThreeBounce"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:SpinKit_Color="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textView10" />
+                    app:layout_constraintTop_toTopOf="@+id/topArtistsRecyclerView" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

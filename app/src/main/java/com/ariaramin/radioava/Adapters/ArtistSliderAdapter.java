@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArtistSliderAdapter extends SliderViewAdapter<ArtistSliderAdapter.ArtistSliderViewHolder>{
 
@@ -38,6 +39,11 @@ public class ArtistSliderAdapter extends SliderViewAdapter<ArtistSliderAdapter.A
     @Override
     public int getCount() {
         return artistList.size();
+    }
+
+    public void updateList(ArrayList<Artist> artists) {
+        artistList = artists;
+        notifyDataSetChanged();
     }
 
     static class ArtistSliderViewHolder extends SliderViewAdapter.ViewHolder {

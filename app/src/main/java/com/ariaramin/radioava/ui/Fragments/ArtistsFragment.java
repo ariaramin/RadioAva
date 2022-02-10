@@ -10,6 +10,8 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 
 import com.ariaramin.radioava.Adapters.ArtistAdapter;
 import com.ariaramin.radioava.Adapters.ArtistSliderAdapter;
+import com.ariaramin.radioava.Adapters.VerticalArtistAdapter;
 import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.Models.Music;
@@ -123,12 +126,18 @@ public class ArtistsFragment extends Fragment {
                     public void accept(AllArtistEntity allArtistEntity) throws Throwable {
                         List<Artist> artists = allArtistEntity.getArtist();
                         ArrayList<Artist> topFourArtists = new ArrayList<>(artists.subList(0, 4));
-                        ArrayList<Artist> topArtists = new ArrayList<>(artists.subList(4, 24));
+                        ArrayList<Artist> topArtists = new ArrayList<>(artists.subList(4, 34));
 
                         setTopArtistsImage(topFourArtists);
 
-                        ArtistSliderAdapter sliderAdapter = new ArtistSliderAdapter(topFourArtists);
-                        artistsBinding.artistSliderView.setSliderAdapter(sliderAdapter);
+                        if (artistsBinding.artistSliderView.getSliderAdapter() == null) {
+                            ArtistSliderAdapter sliderAdapter = new ArtistSliderAdapter(topFourArtists);
+                            artistsBinding.artistSliderView.setSliderAdapter(sliderAdapter);
+                        } else {
+                            ArtistSliderAdapter sliderAdapter = (ArtistSliderAdapter) artistsBinding.artistSliderView.getSliderAdapter();
+                            sliderAdapter.updateList(topFourArtists);
+                        }
+
                         artistsBinding.artistSliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
                         artistsBinding.artistSliderView.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
                         artistsBinding.artistSliderView.setScrollTimeInSec(5);
@@ -140,17 +149,19 @@ public class ArtistsFragment extends Fragment {
                             }
                         });
 
-                        if (artistsBinding.trendingArtistsRecyclerView.getAdapter() == null) {
-                            ArtistAdapter artistAdapter = new ArtistAdapter(topArtists);
-                            artistsBinding.trendingArtistsRecyclerView.setAdapter(artistAdapter);
+                        if (artistsBinding.topArtistsRecyclerView.getAdapter() == null) {
+                            VerticalArtistAdapter artistAdapter = new VerticalArtistAdapter(topArtists);
+                            artistsBinding.topArtistsRecyclerView.setAdapter(artistAdapter);
                         } else {
-                            ArtistAdapter adapter = (ArtistAdapter) artistsBinding.trendingArtistsRecyclerView.getAdapter();
+                            VerticalArtistAdapter adapter = (VerticalArtistAdapter) artistsBinding.topArtistsRecyclerView.getAdapter();
                             adapter.updateList(topArtists);
                         }
 
                         if (artists.isEmpty()) {
+                            artistsBinding.artistSliderSpinKit.setVisibility(View.VISIBLE);
                             artistsBinding.topArtistSpinKit.setVisibility(View.VISIBLE);
                         } else {
+                            artistsBinding.artistSliderSpinKit.setVisibility(View.GONE);
                             artistsBinding.topArtistSpinKit.setVisibility(View.GONE);
                         }
                     }

@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
 
+import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.SliderItemLayoutBinding;
@@ -38,6 +39,11 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderViewHol
     @Override
     public int getCount() {
         return musicList.size();
+    }
+
+    public void updateList(ArrayList<Music> musics) {
+        musicList = musics;
+        notifyDataSetChanged();
     }
 
     static class SliderViewHolder extends SliderViewAdapter.ViewHolder {
