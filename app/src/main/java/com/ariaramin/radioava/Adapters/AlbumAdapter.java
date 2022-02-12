@@ -16,13 +16,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
 
     HorizontalItemLayoutBinding itemLayoutBinding;
-    ArrayList<Album> albumList;
+    List<Album> albumList;
 
-    public AlbumAdapter(ArrayList<Album> albumList) {
+    public AlbumAdapter(List<Album> albumList) {
         this.albumList = albumList;
     }
 
@@ -44,7 +45,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         return albumList.size();
     }
 
-    public void updateList(ArrayList<Album> albums) {
+    public void updateList(List<Album> albums) {
         albumList = albums;
         notifyDataSetChanged();
     }

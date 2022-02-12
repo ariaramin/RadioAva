@@ -23,6 +23,7 @@ import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.Room.Entities.AllAlbumEntity;
 import com.ariaramin.radioava.Room.Entities.AllArtistEntity;
 import com.ariaramin.radioava.Room.Entities.AllMusicEntity;
+import com.ariaramin.radioava.Room.Entities.TrendingMusicEntity;
 import com.ariaramin.radioava.databinding.FragmentHomeBinding;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -66,7 +67,7 @@ public class HomeFragment extends Fragment {
                 .subscribe(new Consumer<AllArtistEntity>() {
                     @Override
                     public void accept(AllArtistEntity allArtistEntity) throws Throwable {
-                        ArrayList<Artist> artists = new ArrayList<>(allArtistEntity.getArtist().subList(0, 15));
+                        List<Artist> artists = allArtistEntity.getArtist().subList(0, 15);
 
                         if (homeBinding.popularArtistsRecyclerView.getAdapter() == null) {
                             ArtistAdapter artistAdapter = new ArtistAdapter(artists);
@@ -93,7 +94,7 @@ public class HomeFragment extends Fragment {
                 .subscribe(new Consumer<AllAlbumEntity>() {
                     @Override
                     public void accept(AllAlbumEntity allAlbumEntity) throws Throwable {
-                        ArrayList<Album> albums = new ArrayList<>(allAlbumEntity.getAlbums().subList(0, 15));
+                        List<Album> albums = allAlbumEntity.getAlbums().subList(0, 15);
 
 
                         if (homeBinding.latestAlbumsRecyclerView.getAdapter() == null) {
@@ -115,23 +116,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void getTrendingMusics() {
-        Disposable disposable = mainViewModel.getAllMusicsFromDb()
+        Disposable disposable = mainViewModel.getTrendingMusicsFromDb()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<AllMusicEntity>() {
+                .subscribe(new Consumer<TrendingMusicEntity>() {
                     @Override
-                    public void accept(AllMusicEntity allMusicEntity) throws Throwable {
-                        List<Music> musics = allMusicEntity.getMusics();
-                        ArrayList<Music> trendingMusics = new ArrayList<>();
-
-                        for (int i = 0; i < musics.size(); i++) {
-                            if (musics.get(i).getType().equals("trending")) {
-                                trendingMusics.add(musics.get(i));
-                            }
-                        }
-
-                        ArrayList<Music> topFiveTrending = new ArrayList<Music>(trendingMusics.subList(0, 5));
-                        ArrayList<Music> topTrending = new ArrayList<Music>(trendingMusics.subList(5, 20));
+                    public void accept(TrendingMusicEntity trendingMusicEntity) throws Throwable {
+                        List<Music> musics = trendingMusicEntity.getMusics();
+                        List<Music> topFiveTrending = musics.subList(0, 5);
+                        List<Music> topTrending = musics.subList(5, 20);
 
                         if (homeBinding.sliderView.getSliderAdapter() == null) {
                             SliderAdapter sliderAdapter = new SliderAdapter(topFiveTrending);
@@ -153,7 +146,7 @@ public class HomeFragment extends Fragment {
                             adapter.updateList(topTrending);
                         }
 
-                        if (trendingMusics.isEmpty()) {
+                        if (musics.isEmpty()) {
                             homeBinding.sliderSpinKit.setVisibility(View.VISIBLE);
                             homeBinding.trendingMusicsSpinKit.setVisibility(View.VISIBLE);
                         } else {

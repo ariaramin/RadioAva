@@ -8,6 +8,7 @@ import androidx.room.Query;
 import com.ariaramin.radioava.Room.Entities.AllAlbumEntity;
 import com.ariaramin.radioava.Room.Entities.AllArtistEntity;
 import com.ariaramin.radioava.Room.Entities.AllMusicEntity;
+import com.ariaramin.radioava.Room.Entities.TrendingMusicEntity;
 
 
 import io.reactivex.rxjava3.core.Flowable;
@@ -20,6 +21,12 @@ public interface DatabaseDao {
 
     @Query("SELECT * FROM music_tbl")
     Flowable<AllMusicEntity> readAllMusics();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertTrendingMusics(TrendingMusicEntity trendingMusicEntity);
+
+    @Query("SELECT * FROM trending_music_tbl")
+    Flowable<TrendingMusicEntity> readTrendingMusics();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAlbums(AllAlbumEntity allAlbumEntity);

@@ -22,9 +22,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="12dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +53,8 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="156dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="134dp"
+                    android:layout_height="30dp"
                     android:src="@drawable/logo"
                     app:layout_constraintStart_toStartOf="@+id/textView"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -63,10 +63,11 @@
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/sliderView"
                 android:layout_width="0dp"
-                android:layout_height="368dp"
-                android:layout_marginTop="16dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="12dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="12dp"
+                app:layout_constraintDimensionRatio="w,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
@@ -100,7 +101,7 @@
                 android:id="@+id/constraintLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="18dp"
                 app:layout_constraintEnd_toEndOf="@+id/sliderView"
                 app:layout_constraintStart_toStartOf="@+id/sliderView"
                 app:layout_constraintTop_toBottomOf="@+id/sliderView">
@@ -171,7 +172,7 @@
                 android:id="@+id/constraintLayout2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="18dp"
                 app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
                 app:layout_constraintStart_toStartOf="@+id/constraintLayout"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
@@ -242,7 +243,7 @@
                 android:id="@+id/constraintLayout5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="18dp"
                 app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
                 app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
@@ -264,7 +265,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/circular_std_bold"
-                    android:text="@string/popular"
+                    android:text="@string/_new"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -277,7 +278,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/circular_std_light"
-                    android:text="@string/artists"
+                    android:text="@string/videos"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView6"

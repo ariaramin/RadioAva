@@ -11,6 +11,7 @@ import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.Room.Entities.AllAlbumEntity;
 import com.ariaramin.radioava.Room.Entities.AllArtistEntity;
 import com.ariaramin.radioava.Room.Entities.AllMusicEntity;
+import com.ariaramin.radioava.Room.Entities.TrendingMusicEntity;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 @HiltViewModel
 public class MainViewModel extends AndroidViewModel {
@@ -41,6 +43,18 @@ public class MainViewModel extends AndroidViewModel {
 
     public Flowable<AllMusicEntity> getAllMusicsFromDb() {
         return mainRepository.getAllMusicsFromDb();
+    }
+
+    public Observable<List<Music>> getTrendingMusics() {
+        return mainRepository.getTrendingMusics();
+    }
+
+    public void insertTrendingMusics(List<Music> musics) {
+        mainRepository.insertTrendingMusics(musics);
+    }
+
+    public Flowable<TrendingMusicEntity> getTrendingMusicsFromDb() {
+        return mainRepository.getTrendingMusicsFromDb();
     }
 
     public Observable<List<Album>> getLatestAlbums() {

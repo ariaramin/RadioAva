@@ -13,9 +13,10 @@ import com.ariaramin.radioava.Room.Converters.MusicConverter;
 import com.ariaramin.radioava.Room.Entities.AllAlbumEntity;
 import com.ariaramin.radioava.Room.Entities.AllArtistEntity;
 import com.ariaramin.radioava.Room.Entities.AllMusicEntity;
+import com.ariaramin.radioava.Room.Entities.TrendingMusicEntity;
 
 @TypeConverters({MusicConverter.class, AlbumConverter.class, ArtistConverter.class})
-@Database(entities = {AllMusicEntity.class, AllAlbumEntity.class, AllArtistEntity.class}, version = 1)
+@Database(entities = {AllMusicEntity.class, TrendingMusicEntity.class, AllAlbumEntity.class, AllArtistEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">RadioAva</string>
     <string name="home">Home</string>
-    <string name="browse">Browse</string>
+    <string name="browse">Browser</string>
     <string name="artists">Artists</string>
     <string name="videos">Videos</string>
     <string name="my_music">My Music</string>
@@ -12,7 +12,15 @@
     <string name="latest">Latest</string>
     <string name="albums">Albums</string>
     <string name="top">Top</string>
+    <string name="more">More</string>
+    <string name="must">Must</string>
+    <string name="most">Most</string>
+    <string name="viewed">Viewed</string>
+    <string name="follow">Follow</string>
+    <string name="watch">Watch</string>
     <string name="trending">Trending</string>
+    <string name="_new">New</string>
+    <string name="releases">Releases</string>
     <string name="see_more">See more</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

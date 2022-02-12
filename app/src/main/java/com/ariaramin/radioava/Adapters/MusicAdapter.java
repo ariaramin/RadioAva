@@ -20,9 +20,9 @@ import java.util.List;
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHolder> {
 
     HorizontalItemLayoutBinding itemLayoutBinding;
-    ArrayList<Music> musicList;
+    List<Music> musicList;
 
-    public MusicAdapter(ArrayList<Music> musicList) {
+    public MusicAdapter(List<Music> musicList) {
         this.musicList = musicList;
     }
 
@@ -44,7 +44,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
         return musicList.size();
     }
 
-    public void updateList(ArrayList<Music> musics) {
+    public void updateList(List<Music> musics) {
         musicList = musics;
         notifyDataSetChanged();
     }

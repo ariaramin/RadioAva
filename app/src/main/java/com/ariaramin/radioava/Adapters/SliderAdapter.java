@@ -14,13 +14,14 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderViewHolder> {
 
     SliderItemLayoutBinding sliderItemLayoutBinding;
-    ArrayList<Music> musicList;
+    List<Music> musicList;
 
-    public SliderAdapter(ArrayList<Music> musicList) {
+    public SliderAdapter(List<Music> musicList) {
         this.musicList = musicList;
     }
 
@@ -41,7 +42,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderViewHol
         return musicList.size();
     }
 
-    public void updateList(ArrayList<Music> musics) {
+    public void updateList(List<Music> musics) {
         musicList = musics;
         notifyDataSetChanged();
     }

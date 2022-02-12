@@ -1,8 +1,5 @@
 package com.ariaramin.radioava.ui.Fragments;
 
-
-import static java.lang.Double.parseDouble;
-
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
@@ -10,8 +7,9 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +21,6 @@ import com.ariaramin.radioava.Adapters.ArtistSliderAdapter;
 import com.ariaramin.radioava.Adapters.VerticalArtistAdapter;
 import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Artist;
-import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.Room.Entities.AllArtistEntity;
 import com.ariaramin.radioava.databinding.FragmentArtistsBinding;
@@ -34,8 +31,6 @@ import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnima
 import com.smarteist.autoimageslider.SliderAnimations;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -92,7 +87,7 @@ public class ArtistsFragment extends Fragment {
         }
     }
 
-    private void setTopArtistsImage(ArrayList<Artist> artists) {
+    private void setTopArtistsImage(List<Artist> artists) {
         ArrayList<ImageView> imageViews = new ArrayList<>();
         imageViews.add(artistsBinding.firstArtistImageView);
         imageViews.add(artistsBinding.secondArtistImageView);
@@ -125,8 +120,9 @@ public class ArtistsFragment extends Fragment {
                     @Override
                     public void accept(AllArtistEntity allArtistEntity) throws Throwable {
                         List<Artist> artists = allArtistEntity.getArtist();
-                        ArrayList<Artist> topFourArtists = new ArrayList<>(artists.subList(0, 4));
-                        ArrayList<Artist> topArtists = new ArrayList<>(artists.subList(4, 34));
+                        List<Artist> topFourArtists = artists.subList(0, 4);
+                        List<Artist> topArtists = artists.subList(4, 24);
+                        List<Artist> moreArtists = artists.subList(24, 54);
 
                         setTopArtistsImage(topFourArtists);
 
@@ -150,19 +146,29 @@ public class ArtistsFragment extends Fragment {
                         });
 
                         if (artistsBinding.topArtistsRecyclerView.getAdapter() == null) {
-                            VerticalArtistAdapter artistAdapter = new VerticalArtistAdapter(topArtists);
+                            ArtistAdapter artistAdapter = new ArtistAdapter(topArtists);
                             artistsBinding.topArtistsRecyclerView.setAdapter(artistAdapter);
                         } else {
-                            VerticalArtistAdapter adapter = (VerticalArtistAdapter) artistsBinding.topArtistsRecyclerView.getAdapter();
+                            ArtistAdapter adapter = (ArtistAdapter) artistsBinding.topArtistsRecyclerView.getAdapter();
                             adapter.updateList(topArtists);
+                        }
+
+                        if (artistsBinding.moreArtistRecyclerView.getAdapter() == null) {
+                            ArtistAdapter artistAdapter = new ArtistAdapter(moreArtists);
+                            artistsBinding.moreArtistRecyclerView.setAdapter(artistAdapter);
+                        } else {
+                            ArtistAdapter adapter = (ArtistAdapter) artistsBinding.moreArtistRecyclerView.getAdapter();
+                            adapter.updateList(moreArtists);
                         }
 
                         if (artists.isEmpty()) {
                             artistsBinding.artistSliderSpinKit.setVisibility(View.VISIBLE);
                             artistsBinding.topArtistSpinKit.setVisibility(View.VISIBLE);
+                            artistsBinding.moreArtistSpinKit.setVisibility(View.VISIBLE);
                         } else {
                             artistsBinding.artistSliderSpinKit.setVisibility(View.GONE);
                             artistsBinding.topArtistSpinKit.setVisibility(View.GONE);
+                            artistsBinding.moreArtistSpinKit.setVisibility(View.GONE);
                         }
                     }
                 });

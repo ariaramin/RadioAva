@@ -10,7 +10,9 @@ import com.ariaramin.radioava.Room.DatabaseDao;
 import com.ariaramin.radioava.Room.Entities.AllAlbumEntity;
 import com.ariaramin.radioava.Room.Entities.AllArtistEntity;
 import com.ariaramin.radioava.Room.Entities.AllMusicEntity;
+import com.ariaramin.radioava.Room.Entities.TrendingMusicEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -19,7 +21,9 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainRepository {
@@ -60,6 +64,36 @@ public class MainRepository {
 
     public Flowable<AllMusicEntity> getAllMusicsFromDb() {
         return databaseDao.readAllMusics();
+    }
+
+    public Observable<List<Music>> getTrendingMusics() {
+        return requestApi.getTrendingMusics();
+    }
+
+    public void insertTrendingMusics(List<Music> musics) {
+        Completable.fromAction(() -> databaseDao.insertTrendingMusics(new TrendingMusicEntity(musics)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i("insertTrendingMusic", "Completed");
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    public Flowable<TrendingMusicEntity> getTrendingMusicsFromDb() {
+        return databaseDao.readTrendingMusics();
     }
 
     public Observable<List<Album>> getLatestAlbums() {

@@ -14,14 +14,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class VerticalArtistAdapter extends RecyclerView.Adapter<VerticalArtistAdapter.VerticalArtistViewHolder>{
 
     VerticalArtistItemLayoutBinding itemLayoutBinding;
-    ArrayList<Artist> artistList = new ArrayList<>();
+    List<Artist> artistList;
 
-    public VerticalArtistAdapter(ArrayList<Artist> artists) {
-        artistList = artists;
+    public VerticalArtistAdapter(List<Artist> artists) {
+        this.artistList = artists;
     }
 
     @NonNull
@@ -42,7 +43,7 @@ public class VerticalArtistAdapter extends RecyclerView.Adapter<VerticalArtistAd
         return artistList.size();
     }
 
-    public void updateList(ArrayList<Artist> artists) {
+    public void updateList(List<Artist> artists) {
         artistList = artists;
         notifyDataSetChanged();
     }

@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAvailable(@androidx.annotation.NonNull Network network) {
                 super.onAvailable(network);
                 getAllMusics();
+                getTrendingMusics();
                 getLatestAlbums();
                 getPopularArtists();
             }
@@ -91,6 +92,34 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onNext(@NonNull List<Music> music) {
                         mainViewModel.insertMusics(music);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
+    private void getTrendingMusics() {
+        mainViewModel.getTrendingMusics()
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Music>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        compositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull List<Music> music) {
+                        mainViewModel.insertTrendingMusics(music);
                     }
 
                     @Override

@@ -18,9 +18,9 @@ import java.util.List;
 public class ArtistSliderAdapter extends SliderViewAdapter<ArtistSliderAdapter.ArtistSliderViewHolder>{
 
     ArtistSliderItemLayoutBinding itemLayoutBinding;
-    ArrayList<Artist> artistList;
+    List<Artist> artistList;
 
-    public ArtistSliderAdapter(ArrayList<Artist> artistList) {
+    public ArtistSliderAdapter(List<Artist> artistList) {
         this.artistList = artistList;
     }
 
@@ -41,7 +41,7 @@ public class ArtistSliderAdapter extends SliderViewAdapter<ArtistSliderAdapter.A
         return artistList.size();
     }
 
-    public void updateList(ArrayList<Artist> artists) {
+    public void updateList(List<Artist> artists) {
         artistList = artists;
         notifyDataSetChanged();
     }

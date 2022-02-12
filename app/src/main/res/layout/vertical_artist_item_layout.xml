@@ -51,7 +51,7 @@
                 android:id="@+id/verticalFollowersTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="6dp"
                 android:fontFamily="@font/circular_std_light"
                 android:textColor="@color/grey"
                 android:textSize="12sp"
@@ -74,7 +74,7 @@
                 android:id="@+id/verticalPlayTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="6dp"
                 android:fontFamily="@font/circular_std_light"
                 android:textColor="@color/grey"
                 android:textSize="12sp"
@@ -87,8 +87,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView5"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginBottom="8dp"
             android:elevation="6dp"
             app:cardBackgroundColor="@color/white"
@@ -112,6 +112,7 @@
             android:layout_height="1dp"
             android:background="@drawable/divider_bg"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
