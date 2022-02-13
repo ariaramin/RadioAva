@@ -31,6 +31,8 @@ import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnima
 import com.smarteist.autoimageslider.SliderAnimations;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -55,6 +57,77 @@ public class ArtistsFragment extends Fragment {
 
         getAllArtists();
         return artistsBinding.getRoot();
+    }
+
+    private void getAllArtists() {
+        Disposable disposable = mainViewModel.getAllArtistsFromDb()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<AllArtistEntity>() {
+                    @Override
+                    public void accept(AllArtistEntity allArtistEntity) throws Throwable {
+                        List<Artist> artists = allArtistEntity.getArtist();
+                        List<Artist> topFourArtists = artists.subList(0, 4);
+                        List<Artist> topArtists = artists.subList(4, 24);
+                        List<Artist> moreArtists = artists.subList(24, 54);
+
+                        setTopArtistsImage(topFourArtists);
+
+                        if (artistsBinding.artistSliderView.getSliderAdapter() == null) {
+                            ArtistSliderAdapter sliderAdapter = new ArtistSliderAdapter(topFourArtists);
+                            artistsBinding.artistSliderView.setSliderAdapter(sliderAdapter);
+                        } else {
+                            ArtistSliderAdapter sliderAdapter = (ArtistSliderAdapter) artistsBinding.artistSliderView.getSliderAdapter();
+                            sliderAdapter.updateList(topFourArtists);
+                        }
+                        artistsBinding.artistSliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+                        artistsBinding.artistSliderView.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+                        artistsBinding.artistSliderView.setScrollTimeInSec(5);
+                        artistsBinding.artistSliderView.startAutoCycle();
+                        artistsBinding.artistSliderView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                            @Override
+                            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                                setCurrentArtist(artistsBinding.artistSliderView.getCurrentPagePosition());
+                            }
+                        });
+
+                        if (artistsBinding.topArtistsRecyclerView.getAdapter() == null) {
+                            ArtistAdapter artistAdapter = new ArtistAdapter(topArtists);
+                            artistsBinding.topArtistsRecyclerView.setAdapter(artistAdapter);
+                        } else {
+                            ArtistAdapter adapter = (ArtistAdapter) artistsBinding.topArtistsRecyclerView.getAdapter();
+                            adapter.updateList(topArtists);
+                        }
+
+                        Collections.sort(moreArtists, new Comparator<Artist>() {
+                            @Override
+                            public int compare(Artist o1, Artist o2) {
+                                int o2Followers = convertFollowersToInt(o2.getFollowers());
+                                int o1Followers = convertFollowersToInt(o1.getFollowers());
+                                return Integer.compare(o2Followers, o1Followers);
+                            }
+                        });
+
+                        if (artistsBinding.moreArtistRecyclerView.getAdapter() == null) {
+                            ArtistAdapter artistAdapter = new ArtistAdapter(moreArtists);
+                            artistsBinding.moreArtistRecyclerView.setAdapter(artistAdapter);
+                        } else {
+                            ArtistAdapter adapter = (ArtistAdapter) artistsBinding.moreArtistRecyclerView.getAdapter();
+                            adapter.updateList(moreArtists);
+                        }
+
+                        if (artists.isEmpty()) {
+                            artistsBinding.artistSliderSpinKit.setVisibility(View.VISIBLE);
+                            artistsBinding.topArtistSpinKit.setVisibility(View.VISIBLE);
+                            artistsBinding.moreArtistSpinKit.setVisibility(View.VISIBLE);
+                        } else {
+                            artistsBinding.artistSliderSpinKit.setVisibility(View.GONE);
+                            artistsBinding.topArtistSpinKit.setVisibility(View.GONE);
+                            artistsBinding.moreArtistSpinKit.setVisibility(View.GONE);
+                        }
+                    }
+                });
+        compositeDisposable.add(disposable);
     }
 
     private void setCurrentArtist(int position) {
@@ -112,66 +185,14 @@ public class ArtistsFragment extends Fragment {
         }
     }
 
-    private void getAllArtists() {
-        Disposable disposable = mainViewModel.getAllArtistsFromDb()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<AllArtistEntity>() {
-                    @Override
-                    public void accept(AllArtistEntity allArtistEntity) throws Throwable {
-                        List<Artist> artists = allArtistEntity.getArtist();
-                        List<Artist> topFourArtists = artists.subList(0, 4);
-                        List<Artist> topArtists = artists.subList(4, 24);
-                        List<Artist> moreArtists = artists.subList(24, 54);
-
-                        setTopArtistsImage(topFourArtists);
-
-                        if (artistsBinding.artistSliderView.getSliderAdapter() == null) {
-                            ArtistSliderAdapter sliderAdapter = new ArtistSliderAdapter(topFourArtists);
-                            artistsBinding.artistSliderView.setSliderAdapter(sliderAdapter);
-                        } else {
-                            ArtistSliderAdapter sliderAdapter = (ArtistSliderAdapter) artistsBinding.artistSliderView.getSliderAdapter();
-                            sliderAdapter.updateList(topFourArtists);
-                        }
-
-                        artistsBinding.artistSliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
-                        artistsBinding.artistSliderView.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
-                        artistsBinding.artistSliderView.setScrollTimeInSec(5);
-                        artistsBinding.artistSliderView.startAutoCycle();
-                        artistsBinding.artistSliderView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                            @Override
-                            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                                setCurrentArtist(artistsBinding.artistSliderView.getCurrentPagePosition());
-                            }
-                        });
-
-                        if (artistsBinding.topArtistsRecyclerView.getAdapter() == null) {
-                            ArtistAdapter artistAdapter = new ArtistAdapter(topArtists);
-                            artistsBinding.topArtistsRecyclerView.setAdapter(artistAdapter);
-                        } else {
-                            ArtistAdapter adapter = (ArtistAdapter) artistsBinding.topArtistsRecyclerView.getAdapter();
-                            adapter.updateList(topArtists);
-                        }
-
-                        if (artistsBinding.moreArtistRecyclerView.getAdapter() == null) {
-                            ArtistAdapter artistAdapter = new ArtistAdapter(moreArtists);
-                            artistsBinding.moreArtistRecyclerView.setAdapter(artistAdapter);
-                        } else {
-                            ArtistAdapter adapter = (ArtistAdapter) artistsBinding.moreArtistRecyclerView.getAdapter();
-                            adapter.updateList(moreArtists);
-                        }
-
-                        if (artists.isEmpty()) {
-                            artistsBinding.artistSliderSpinKit.setVisibility(View.VISIBLE);
-                            artistsBinding.topArtistSpinKit.setVisibility(View.VISIBLE);
-                            artistsBinding.moreArtistSpinKit.setVisibility(View.VISIBLE);
-                        } else {
-                            artistsBinding.artistSliderSpinKit.setVisibility(View.GONE);
-                            artistsBinding.topArtistSpinKit.setVisibility(View.GONE);
-                            artistsBinding.moreArtistSpinKit.setVisibility(View.GONE);
-                        }
-                    }
-                });
-        compositeDisposable.add(disposable);
+    private int convertFollowersToInt(String followers) {
+        if (followers.contains("K")) {
+            String str = followers.replace("K", "");
+            return (int) Double.parseDouble(str);
+        } else if (followers.contains("M")) {
+            String str = followers.replace("M", "");
+            return (int) Double.parseDouble(str);
+        }
+        return (int) Double.parseDouble(followers);
     }
 }

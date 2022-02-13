@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,15 +17,19 @@ import com.ariaramin.radioava.Adapters.AlbumAdapter;
 import com.ariaramin.radioava.Adapters.ArtistAdapter;
 import com.ariaramin.radioava.Adapters.MusicAdapter;
 import com.ariaramin.radioava.Adapters.SliderAdapter;
+import com.ariaramin.radioava.Adapters.VideoAdapter;
 import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Album;
 import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.Models.Music;
+import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.Room.Entities.AllAlbumEntity;
 import com.ariaramin.radioava.Room.Entities.AllArtistEntity;
 import com.ariaramin.radioava.Room.Entities.AllMusicEntity;
+import com.ariaramin.radioava.Room.Entities.PopularMusicEntity;
 import com.ariaramin.radioava.Room.Entities.TrendingMusicEntity;
+import com.ariaramin.radioava.Room.Entities.TrendingVideoEntity;
 import com.ariaramin.radioava.databinding.FragmentHomeBinding;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -55,8 +61,9 @@ public class HomeFragment extends Fragment {
         compositeDisposable = new CompositeDisposable();
 
         getTrendingMusics();
-        getLatestAlbums();
+        getNewVideos();
         getPopularArtists();
+        getPopularMusics();
         return homeBinding.getRoot();
     }
 
@@ -87,28 +94,56 @@ public class HomeFragment extends Fragment {
         compositeDisposable.add(disposable);
     }
 
-    private void getLatestAlbums() {
-        Disposable disposable = mainViewModel.getAllAlbumsFromDb()
+    private void getPopularMusics() {
+        Disposable disposable = mainViewModel.getPopularMusicsFromDb()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<AllAlbumEntity>() {
+                .subscribe(new Consumer<PopularMusicEntity>() {
                     @Override
-                    public void accept(AllAlbumEntity allAlbumEntity) throws Throwable {
-                        List<Album> albums = allAlbumEntity.getAlbums().subList(0, 15);
+                    public void accept(PopularMusicEntity popularMusicEntity) throws Throwable {
+                        List<Music> musics = popularMusicEntity.getMusics().subList(0, 15);
 
-
-                        if (homeBinding.latestAlbumsRecyclerView.getAdapter() == null) {
-                            AlbumAdapter albumAdapter = new AlbumAdapter(albums);
-                            homeBinding.latestAlbumsRecyclerView.setAdapter(albumAdapter);
+                        if (homeBinding.mustListenRecyclerView.getAdapter() == null) {
+                            MusicAdapter musicAdapter = new MusicAdapter(musics);
+                            homeBinding.mustListenRecyclerView.setAdapter(musicAdapter);
                         } else {
-                            AlbumAdapter adapter = (AlbumAdapter) homeBinding.latestAlbumsRecyclerView.getAdapter();
-                            adapter.updateList(albums);
+                            MusicAdapter adapter = (MusicAdapter) homeBinding.mustListenRecyclerView.getAdapter();
+                            adapter.updateList(musics);
                         }
 
-                        if (albums.isEmpty()) {
-                            homeBinding.latestAlbumsSpinKit.setVisibility(View.VISIBLE);
+                        if (musics.isEmpty()) {
+                            homeBinding.mustListenSpinKit.setVisibility(View.VISIBLE);
                         } else {
-                            homeBinding.latestAlbumsSpinKit.setVisibility(View.GONE);
+                            homeBinding.mustListenSpinKit.setVisibility(View.GONE);
+                        }
+                    }
+                });
+        compositeDisposable.add(disposable);
+    }
+
+    private void getNewVideos() {
+        Disposable disposable = mainViewModel.getTrendingVideosFromDb()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<TrendingVideoEntity>() {
+                    @Override
+                    public void accept(TrendingVideoEntity trendingVideoEntity) throws Throwable {
+                        List<Video> videos = trendingVideoEntity.getVideos().subList(0, 4);
+
+                        if (homeBinding.newVideosRecyclerView.getAdapter() == null) {
+                            VideoAdapter videoAdapter = new VideoAdapter(videos);
+                            GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false);
+                            homeBinding.newVideosRecyclerView.setAdapter(videoAdapter);
+                            homeBinding.newVideosRecyclerView.setLayoutManager(gridLayoutManager);
+                        } else {
+                            VideoAdapter adapter = (VideoAdapter) homeBinding.newVideosRecyclerView.getAdapter();
+                            adapter.updateList(videos);
+                        }
+
+                        if (videos.isEmpty()) {
+                            homeBinding.newVideosSpinKit.setVisibility(View.VISIBLE);
+                        } else {
+                            homeBinding.newVideosSpinKit.setVisibility(View.GONE);
                         }
                     }
                 });

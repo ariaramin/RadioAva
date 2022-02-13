@@ -115,7 +115,7 @@
                     android:id="@+id/firstArtistCardView"
                     android:layout_width="86dp"
                     android:layout_height="86dp"
-                    app:cardBackgroundColor="@android:color/transparent"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="56dp"
                     app:strokeColor="@color/primaryColor">
 
@@ -133,7 +133,7 @@
                     android:layout_width="86dp"
                     android:layout_height="86dp"
                     android:layout_marginTop="8dp"
-                    app:cardBackgroundColor="@android:color/transparent"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="56dp"
                     app:strokeColor="@color/primaryColor">
 
@@ -151,7 +151,7 @@
                     android:layout_width="86dp"
                     android:layout_height="86dp"
                     android:layout_marginTop="8dp"
-                    app:cardBackgroundColor="@android:color/transparent"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="56dp"
                     app:strokeColor="@color/primaryColor">
 
@@ -169,7 +169,7 @@
                     android:layout_width="86dp"
                     android:layout_height="86dp"
                     android:layout_marginTop="8dp"
-                    app:cardBackgroundColor="@android:color/transparent"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="56dp"
                     app:strokeColor="@color/primaryColor">
 
