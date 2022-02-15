@@ -4,60 +4,50 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
-import com.ariaramin.radioava.Room.Entities.AllAlbumEntity;
-import com.ariaramin.radioava.Room.Entities.AllArtistEntity;
-import com.ariaramin.radioava.Room.Entities.AllMusicEntity;
-import com.ariaramin.radioava.Room.Entities.AllVideoEntity;
-import com.ariaramin.radioava.Room.Entities.PopularMusicEntity;
-import com.ariaramin.radioava.Room.Entities.TrendingMusicEntity;
-import com.ariaramin.radioava.Room.Entities.TrendingVideoEntity;
 
+import com.ariaramin.radioava.Models.Album;
+import com.ariaramin.radioava.Models.Artist;
+import com.ariaramin.radioava.Models.Music;
+import com.ariaramin.radioava.Models.Video;
+
+import java.util.List;
 
 import io.reactivex.rxjava3.core.Flowable;
 
 @Dao
 public interface DatabaseDao {
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMusics(AllMusicEntity allMusicEntity);
+    void insertMusics(List<Music> musicList);
 
-    @Query("SELECT * FROM music_tbl")
-    Flowable<AllMusicEntity> readAllMusics();
+    @Transaction
+    @Query("SELECT * FROM music_tbl ORDER BY releaseDate DESC")
+    Flowable<List<Music>> readAllMusics();
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTrendingMusics(TrendingMusicEntity trendingMusicEntity);
+    void insertAlbums(List<Album> albumList);
 
-    @Query("SELECT * FROM trending_music_tbl")
-    Flowable<TrendingMusicEntity> readTrendingMusics();
+    @Transaction
+    @Query("SELECT * FROM album_tbl ORDER BY releaseDate DESC")
+    Flowable<List<Album>> readAllAlbums();
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertPopularMusics(PopularMusicEntity popularMusicEntity);
+    void insertArtists(List<Artist> artistList);
 
-    @Query("SELECT * FROM popular_music_tbl")
-    Flowable<PopularMusicEntity> readPopularMusics();
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAlbums(AllAlbumEntity allAlbumEntity);
-
-    @Query("SELECT * FROM album_tbl")
-    Flowable<AllAlbumEntity> readAllAlbums();
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertArtists(AllArtistEntity allArtistEntity);
-
+    @Transaction
     @Query("SELECT * FROM artist_tbl")
-    Flowable<AllArtistEntity> readAllArtists();
+    Flowable<List<Artist>> readAllArtists();
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertVideos(AllVideoEntity allVideoEntity);
+    void insertVideos(List<Video> videoList);
 
-    @Query("SELECT * FROM video_tbl")
-    Flowable<AllVideoEntity> readAllVideos();
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTrendingVideo(TrendingVideoEntity trendingVideoEntity);
-
-    @Query("SELECT * FROM trending_video_tbl")
-    Flowable<TrendingVideoEntity> readTrendingVideos();
+    @Transaction
+    @Query("SELECT * FROM video_tbl ORDER BY releaseDate DESC")
+    Flowable<List<Video>> readAllVideos();
 }

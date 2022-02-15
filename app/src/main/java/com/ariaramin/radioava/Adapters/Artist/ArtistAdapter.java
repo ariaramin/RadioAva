@@ -1,4 +1,4 @@
-package com.ariaramin.radioava.Adapters;
+package com.ariaramin.radioava.Adapters.Artist;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -11,9 +11,9 @@ import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.HorizontalArtistItemLayoutBinding;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder> {
@@ -65,6 +65,8 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
                                     .load(R.drawable.loading)
                     )
                     .transition(DrawableTransitionOptions.withCrossFade())
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .override(300, 300)
                     .into(artistItemLayoutBinding.horizontalArtistImageView);
             artistItemLayoutBinding.horizontalArtistNameTextView.setText(artist.getName());
         }

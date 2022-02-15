@@ -15,24 +15,12 @@ public interface RequestApi {
     @GET("music/list/")
     Observable<List<Music>> getAllMusics();
 
-    @GET("trending/music/list/")
-    Observable<List<Music>> getTrendingMusics();
-
-    @GET("latest/music/list/")
-    Observable<List<Music>> getLatestMusics();
-
-    @GET("popular/music/list/")
-    Observable<List<Music>> getPopularMusics();
-
     @GET("album/list/")
-    Observable<List<Album>> getLatestAlbums();
+    Observable<List<Album>> getAllAlbums();
 
     @GET("artist/list/")
     Observable<List<Artist>> getAllArtists();
 
-    @GET("trending/video/list/")
-    Observable<List<Video>> getTrendingVideos();
-
-    @GET("latest/video/list/")
-    Observable<List<Video>> getLatestVideos();
+    @GET("video/list/")
+    Observable<List<Video>> getAllVideos();
 }

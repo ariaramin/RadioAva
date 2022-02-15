@@ -4,36 +4,31 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.ariaramin.radioava.Adapters.AlbumAdapter;
-import com.ariaramin.radioava.Adapters.ArtistAdapter;
-import com.ariaramin.radioava.Adapters.ArtistSliderAdapter;
-import com.ariaramin.radioava.Adapters.MusicAdapter;
-import com.ariaramin.radioava.Adapters.SliderAdapter;
-import com.ariaramin.radioava.Adapters.VideoAdapter;
+import com.ariaramin.radioava.Adapters.Album.AlbumAdapter;
+import com.ariaramin.radioava.Adapters.Artist.ArtistAdapter;
+import com.ariaramin.radioava.Adapters.Music.MusicAdapter;
+import com.ariaramin.radioava.Adapters.Music.SliderAdapter;
+import com.ariaramin.radioava.Adapters.Video.VideoAdapter;
 import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Album;
 import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.R;
-import com.ariaramin.radioava.Room.Entities.AllAlbumEntity;
-import com.ariaramin.radioava.Room.Entities.AllArtistEntity;
-import com.ariaramin.radioava.Room.Entities.AllMusicEntity;
-import com.ariaramin.radioava.Room.Entities.AllVideoEntity;
-import com.ariaramin.radioava.Room.Entities.TrendingVideoEntity;
 import com.ariaramin.radioava.databinding.FragmentBrowseBinding;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.google.android.material.card.MaterialCardView;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
@@ -65,37 +60,37 @@ public class BrowseFragment extends Fragment {
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         compositeDisposable = new CompositeDisposable();
 
+        return browseBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         getLatestMusics();
         getPopularVideos();
         getLatestAlbums();
         getTopArtist();
-        return browseBinding.getRoot();
     }
 
     private void getTopArtist() {
         Disposable disposable = mainViewModel.getAllArtistsFromDb()
+                .map(this::sortByFollowers)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<AllArtistEntity>() {
+                .subscribe(new Consumer<List<Artist>>() {
                     @Override
-                    public void accept(AllArtistEntity allArtistEntity) throws Throwable {
-                        List<Artist> artists = allArtistEntity.getArtist().subList(0, 15);
+                    public void accept(List<Artist> artists) throws Throwable {
 
-                        Collections.sort(artists, new Comparator<Artist>() {
-                            @Override
-                            public int compare(Artist o1, Artist o2) {
-                                int o2Followers = convertStringToInt(o2.getFollowers());
-                                int o1Followers = convertStringToInt(o1.getFollowers());
-                                return Integer.compare(o2Followers, o1Followers);
+                        if (!artists.isEmpty()) {
+                            List<Artist> topArtists = artists.subList(0, 15);
+
+                            if (browseBinding.mustFollowRecyclerView.getAdapter() == null) {
+                                ArtistAdapter artistAdapter = new ArtistAdapter(topArtists);
+                                browseBinding.mustFollowRecyclerView.setAdapter(artistAdapter);
+                            } else {
+                                ArtistAdapter adapter = (ArtistAdapter) browseBinding.mustFollowRecyclerView.getAdapter();
+                                adapter.updateList(topArtists);
                             }
-                        });
-
-                        if (browseBinding.mustFollowRecyclerView.getAdapter() == null) {
-                            ArtistAdapter artistAdapter = new ArtistAdapter(artists);
-                            browseBinding.mustFollowRecyclerView.setAdapter(artistAdapter);
-                        } else {
-                            ArtistAdapter adapter = (ArtistAdapter) browseBinding.mustFollowRecyclerView.getAdapter();
-                            adapter.updateList(artists);
                         }
 
                         if (artists.isEmpty()) {
@@ -108,21 +103,36 @@ public class BrowseFragment extends Fragment {
         compositeDisposable.add(disposable);
     }
 
+    private List<Artist> sortByFollowers(List<Artist> artists) {
+        Collections.sort(artists, new Comparator<Artist>() {
+            @Override
+            public int compare(Artist o1, Artist o2) {
+                int o2Followers = convertStringToInt(o2.getFollowers());
+                int o1Followers = convertStringToInt(o1.getFollowers());
+                return Integer.compare(o2Followers, o1Followers);
+            }
+        });
+        return artists;
+    }
+
     private void getLatestAlbums() {
         Disposable disposable = mainViewModel.getAllAlbumsFromDb()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<AllAlbumEntity>() {
+                .subscribe(new Consumer<List<Album>>() {
                     @Override
-                    public void accept(AllAlbumEntity allAlbumEntity) throws Throwable {
-                        List<Album> albums = allAlbumEntity.getAlbums().subList(0, 15);
+                    public void accept(List<Album> albums) throws Throwable {
 
-                        if (browseBinding.latestAlbumsRecyclerView.getAdapter() == null) {
-                            AlbumAdapter albumAdapter = new AlbumAdapter(albums);
-                            browseBinding.latestAlbumsRecyclerView.setAdapter(albumAdapter);
-                        } else {
-                            AlbumAdapter adapter = (AlbumAdapter) browseBinding.latestAlbumsRecyclerView.getAdapter();
-                            adapter.updateList(albums);
+                        if (!albums.isEmpty()) {
+                            List<Album> latestAlbums = albums.subList(0, 15);
+
+                            if (browseBinding.latestAlbumsRecyclerView.getAdapter() == null) {
+                                AlbumAdapter albumAdapter = new AlbumAdapter(latestAlbums);
+                                browseBinding.latestAlbumsRecyclerView.setAdapter(albumAdapter);
+                            } else {
+                                AlbumAdapter adapter = (AlbumAdapter) browseBinding.latestAlbumsRecyclerView.getAdapter();
+                                adapter.updateList(latestAlbums);
+                            }
                         }
 
                         if (albums.isEmpty()) {
@@ -137,30 +147,24 @@ public class BrowseFragment extends Fragment {
 
     private void getPopularVideos() {
         Disposable disposable = mainViewModel.getAllVideosFromDb()
+                .map(this::sortByLikes)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<AllVideoEntity>() {
+                .subscribe(new Consumer<List<Video>>() {
                     @Override
-                    public void accept(AllVideoEntity allVideoEntity) throws Throwable {
-                        List<Video> videos = allVideoEntity.getVideos().subList(0, 4);
+                    public void accept(List<Video> videos) throws Throwable {
 
-                        Collections.sort(videos, new Comparator<Video>() {
-                            @Override
-                            public int compare(Video o1, Video o2) {
-                                int o1Likes = convertStringToInt(o1.getLikes());
-                                int o2Likes = convertStringToInt(o2.getLikes());
-                                return Integer.compare(o2Likes, o1Likes);
+                        if (!videos.isEmpty()) {
+                            List<Video> popularVideos = videos.subList(0, 10);
+
+                            if (browseBinding.popularVideosRecyclerView.getAdapter() == null) {
+                                VideoAdapter videoAdapter = new VideoAdapter(popularVideos);
+                                browseBinding.popularVideosRecyclerView.setAdapter(videoAdapter);
+                            } else {
+                                VideoAdapter adapter = (VideoAdapter) browseBinding.popularVideosRecyclerView.getAdapter();
+                                adapter.updateList(popularVideos);
                             }
-                        });
 
-                        if (browseBinding.popularVideosRecyclerView.getAdapter() == null) {
-                            VideoAdapter videoAdapter = new VideoAdapter(videos);
-                            GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false);
-                            browseBinding.popularVideosRecyclerView.setAdapter(videoAdapter);
-                            browseBinding.popularVideosRecyclerView.setLayoutManager(gridLayoutManager);
-                        } else {
-                            VideoAdapter adapter = (VideoAdapter) browseBinding.popularVideosRecyclerView.getAdapter();
-                            adapter.updateList(videos);
                         }
 
                         if (videos.isEmpty()) {
@@ -173,54 +177,72 @@ public class BrowseFragment extends Fragment {
         compositeDisposable.add(disposable);
     }
 
-    private int convertStringToInt(String likes) {
-        if (likes.contains("K")) {
-            String str = likes.replace("K", "");
+    private List<Video> sortByLikes(List<Video> videos) {
+        Collections.sort(videos, new Comparator<Video>() {
+            @Override
+            public int compare(Video o1, Video o2) {
+                int o1Likes = convertStringToInt(o1.getLikes());
+                int o2Likes = convertStringToInt(o2.getLikes());
+                return Integer.compare(o2Likes, o1Likes);
+            }
+        });
+        return videos;
+    }
+
+    private int convertStringToInt(String string) {
+        if (string.contains("B")) {
+            String str = string.replace("B", "");
             return (int) Double.parseDouble(str);
-        } else if (likes.contains("M")) {
-            String str = likes.replace("M", "");
+        } else if (string.contains("M")) {
+            String str = string.replace("M", "");
+            return (int) Double.parseDouble(str);
+        } else if (string.contains("K")) {
+            String str = string.replace("K", "");
             return (int) Double.parseDouble(str);
         }
-        return (int) Double.parseDouble(likes);
+        return (int) Double.parseDouble(string);
     }
 
     private void getLatestMusics() {
         Disposable disposable = mainViewModel.getAllMusicsFromDb()
+                .map(this::getLatestMusics)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<AllMusicEntity>() {
+                .subscribe(new Consumer<List<Music>>() {
                     @Override
-                    public void accept(AllMusicEntity allMusicEntity) throws Throwable {
-                        List<Music> musics = allMusicEntity.getMusics();
-                        List<Music> topThreeMusics = allMusicEntity.getMusics().subList(0, 3);
-                        List<Music> latestMusics = allMusicEntity.getMusics().subList(3, 18);
+                    public void accept(List<Music> musics) throws Throwable {
 
-                        setTopMusicsImage(topThreeMusics);
+                        if (!musics.isEmpty()) {
+                            List<Music> topThreeMusics = musics.subList(0, 3);
+                            List<Music> latestMusics = musics.subList(3, 18);
 
-                        if (browseBinding.latestMusicsSliderView.getSliderAdapter() == null) {
-                            SliderAdapter sliderAdapter = new SliderAdapter(topThreeMusics);
-                            browseBinding.latestMusicsSliderView.setSliderAdapter(sliderAdapter);
-                        } else {
-                            SliderAdapter sliderAdapter = (SliderAdapter) browseBinding.latestMusicsSliderView.getSliderAdapter();
-                            sliderAdapter.updateList(topThreeMusics);
-                        }
-                        browseBinding.latestMusicsSliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
-                        browseBinding.latestMusicsSliderView.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
-                        browseBinding.latestMusicsSliderView.setScrollTimeInSec(5);
-                        browseBinding.latestMusicsSliderView.startAutoCycle();
-                        browseBinding.latestMusicsSliderView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                            @Override
-                            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                                setCurrentMusic(browseBinding.latestMusicsSliderView.getCurrentPagePosition());
+                            setTopMusicsImage(topThreeMusics);
+
+                            if (browseBinding.latestMusicsSliderView.getSliderAdapter() == null) {
+                                SliderAdapter sliderAdapter = new SliderAdapter(topThreeMusics);
+                                browseBinding.latestMusicsSliderView.setSliderAdapter(sliderAdapter);
+                            } else {
+                                SliderAdapter sliderAdapter = (SliderAdapter) browseBinding.latestMusicsSliderView.getSliderAdapter();
+                                sliderAdapter.updateList(topThreeMusics);
                             }
-                        });
+                            browseBinding.latestMusicsSliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+                            browseBinding.latestMusicsSliderView.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+                            browseBinding.latestMusicsSliderView.setScrollTimeInSec(5);
+                            browseBinding.latestMusicsSliderView.startAutoCycle();
+                            browseBinding.latestMusicsSliderView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                                @Override
+                                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                                    setCurrentMusic(browseBinding.latestMusicsSliderView.getCurrentPagePosition());
+                                }
+                            });
 
-                        if (browseBinding.latestMusicsRecyclerView.getAdapter() == null) {
-                            MusicAdapter musicAdapter = new MusicAdapter(latestMusics);
-                            browseBinding.latestMusicsRecyclerView.setAdapter(musicAdapter);
-                        } else {
-                            MusicAdapter adapter = (MusicAdapter) browseBinding.latestMusicsRecyclerView.getAdapter();
-                            adapter.updateList(latestMusics);
+                            if (browseBinding.latestMusicsRecyclerView.getAdapter() == null) {
+                                MusicAdapter musicAdapter = new MusicAdapter(latestMusics);
+                                browseBinding.latestMusicsRecyclerView.setAdapter(musicAdapter);
+                            } else {
+                                MusicAdapter adapter = (MusicAdapter) browseBinding.latestMusicsRecyclerView.getAdapter();
+                                adapter.updateList(latestMusics);
+                            }
                         }
 
                         if (musics.isEmpty()) {
@@ -233,6 +255,16 @@ public class BrowseFragment extends Fragment {
                     }
                 });
         compositeDisposable.add(disposable);
+    }
+
+    private ArrayList<Music> getLatestMusics(List<Music> musicList) {
+        ArrayList<Music> latest = new ArrayList<>();
+        for (int i = 0; i < musicList.size(); i++) {
+            if (musicList.get(i).getAlbum() == null) {
+                latest.add(musicList.get(i));
+            }
+        }
+        return latest;
     }
 
     private void setCurrentMusic(int position) {
@@ -281,6 +313,8 @@ public class BrowseFragment extends Fragment {
                                     .load(R.drawable.loading)
                     )
                     .transition(DrawableTransitionOptions.withCrossFade())
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .override(300, 300)
                     .into(imageViews.get(i));
 
             imageViews.get(i).setColorFilter(filter);

@@ -1,7 +1,6 @@
-package com.ariaramin.radioava.Adapters;
+package com.ariaramin.radioava.Adapters.Music;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -12,9 +11,9 @@ import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.HorizontalItemLayoutBinding;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHolder> {
@@ -66,6 +65,8 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
                             .load(R.drawable.loading)
                     )
                     .transition(DrawableTransitionOptions.withCrossFade())
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .override(300, 300)
                     .into(itemLayoutBinding.itemImageView);
             itemLayoutBinding.itemNameTextView.setText(songNameCutter(music.getName()));
             itemLayoutBinding.itemArtistTextView.setText(artistNameCutter(music.getArtist()));

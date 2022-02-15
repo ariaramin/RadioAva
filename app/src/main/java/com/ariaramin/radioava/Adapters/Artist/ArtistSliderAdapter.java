@@ -1,4 +1,4 @@
-package com.ariaramin.radioava.Adapters;
+package com.ariaramin.radioava.Adapters.Artist;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -9,10 +9,10 @@ import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.ArtistSliderItemLayoutBinding;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ArtistSliderAdapter extends SliderViewAdapter<ArtistSliderAdapter.ArtistSliderViewHolder>{
@@ -63,6 +63,7 @@ public class ArtistSliderAdapter extends SliderViewAdapter<ArtistSliderAdapter.A
                                     .load(R.drawable.loading)
                     )
                     .transition(DrawableTransitionOptions.withCrossFade())
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .into(itemLayoutBinding.sliderArtistImageView);
 
             itemLayoutBinding.sliderArtistTextView.setText(artist.getName());

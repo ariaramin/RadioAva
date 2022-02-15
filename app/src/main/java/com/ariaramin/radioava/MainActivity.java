@@ -61,12 +61,9 @@ public class MainActivity extends AppCompatActivity {
             public void onAvailable(@androidx.annotation.NonNull Network network) {
                 super.onAvailable(network);
                 getAllMusics();
-                getTrendingMusics();
-                getPopularMusics();
-                getLatestAlbums();
-                getPopularArtists();
+                getAllAlbums();
+                getAllArtists();
                 getAllVideos();
-                getTrendingVideos();
             }
 
             @Override
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getAllMusics() {
         mainViewModel.getAllMusics()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.newThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Music>>() {
                     @Override
@@ -110,63 +107,9 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void getTrendingMusics() {
-        mainViewModel.getTrendingMusics()
-                .subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Music>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<Music> music) {
-                        mainViewModel.insertTrendingMusics(music);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    private void getPopularMusics() {
-        mainViewModel.getPopularMusics()
-                .subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Music>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<Music> music) {
-                        mainViewModel.insertPopularMusics(music);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    private void getLatestAlbums() {
-        mainViewModel.getLatestAlbums()
-                .subscribeOn(Schedulers.io())
+    private void getAllAlbums() {
+        mainViewModel.getAllAlbums()
+                .subscribeOn(Schedulers.newThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Album>>() {
                     @Override
@@ -191,9 +134,9 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void getPopularArtists() {
+    private void getAllArtists() {
         mainViewModel.getAllArtists()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.newThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Artist>>() {
                     @Override
@@ -220,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getAllVideos() {
         mainViewModel.getAllVideos()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Video>>() {
                     @Override
@@ -245,33 +188,6 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void getTrendingVideos() {
-        mainViewModel.getTrendingVideos()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Video>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<Video> videos) {
-                        mainViewModel.insertTrendingVideos(videos);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
     private void setupBottomNavigationView() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         NavController navController = navHostFragment.getNavController();
@@ -281,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mainViewModel.clearCompositeDisposable();
         compositeDisposable.clear();
     }
 }

@@ -1,23 +1,31 @@
 package com.ariaramin.radioava.Models;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "artist_tbl")
 public class Artist {
 
+    @PrimaryKey
+    @SerializedName("id")
+    public int id;
+
     @SerializedName("background_image")
-    String backgroundImage;
+    public String backgroundImage;
 
     @SerializedName("image")
-    String image;
+    public String image;
 
     @SerializedName("name")
-    String name;
+    public String name;
 
     @SerializedName("plays_count")
-    String plays;
+    public String plays;
 
     @SerializedName("followers")
-    String followers;
+    public String followers;
 
     public String getBackgroundImage() {
         return backgroundImage;

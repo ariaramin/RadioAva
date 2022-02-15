@@ -9,16 +9,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp">
+        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView9"
             android:layout_width="0dp"
-            android:layout_height="136dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:elevation="6dp"
             app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="48dp"
+            app:cardCornerRadius="42dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -26,7 +26,7 @@
             <ImageView
                 android:id="@+id/videoImageView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="238dp"
                 android:scaleType="centerCrop"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
         </androidx.cardview.widget.CardView>
@@ -41,8 +41,8 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cardView9"
+            app:layout_constraintStart_toStartOf="@+id/cardView9"
             app:layout_constraintTop_toBottomOf="@+id/cardView9"
             tools:text="Name" />
 
@@ -58,5 +58,6 @@
             app:layout_constraintStart_toStartOf="@+id/videoNameTextView"
             app:layout_constraintTop_toBottomOf="@+id/videoNameTextView"
             tools:text="Artist" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

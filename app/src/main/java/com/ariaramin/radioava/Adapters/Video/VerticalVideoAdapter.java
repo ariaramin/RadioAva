@@ -1,7 +1,6 @@
-package com.ariaramin.radioava.Adapters;
+package com.ariaramin.radioava.Adapters.Video;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -10,31 +9,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.R;
-import com.ariaramin.radioava.databinding.HorizontalVideoItemLayoutBinding;
+import com.ariaramin.radioava.databinding.VerticalItemLayoutBinding;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import java.util.List;
 
-public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
+public class VerticalVideoAdapter extends RecyclerView.Adapter<VerticalVideoAdapter.VerticalVideoViewHolder> {
 
-    HorizontalVideoItemLayoutBinding itemLayoutBinding;
+    VerticalItemLayoutBinding itemLayoutBinding;
     List<Video> videoList;
 
-    public VideoAdapter(List<Video> videoList) {
+    public VerticalVideoAdapter(List<Video> videoList) {
         this.videoList = videoList;
     }
 
     @NonNull
     @Override
-    public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public VerticalVideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.horizontal_video_item_layout, parent, false);
-        return new VideoViewHolder(itemLayoutBinding);
+        itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.vertical_item_layout, parent, false);
+        return new VerticalVideoViewHolder(itemLayoutBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull VerticalVideoViewHolder holder, int position) {
         holder.bindData(videoList.get(position));
     }
 
@@ -48,11 +48,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         notifyDataSetChanged();
     }
 
-    static class VideoViewHolder extends RecyclerView.ViewHolder {
+    static class VerticalVideoViewHolder extends RecyclerView.ViewHolder {
 
-        HorizontalVideoItemLayoutBinding itemLayoutBinding;
+        VerticalItemLayoutBinding itemLayoutBinding;
 
-        public VideoViewHolder(HorizontalVideoItemLayoutBinding itemLayoutBinding) {
+        public VerticalVideoViewHolder(VerticalItemLayoutBinding itemLayoutBinding) {
             super(itemLayoutBinding.getRoot());
             this.itemLayoutBinding = itemLayoutBinding;
         }
@@ -65,9 +65,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                                     .load(R.drawable.loading)
                     )
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(itemLayoutBinding.videoImageView);
-            itemLayoutBinding.videoNameTextView.setText(video.getName());
-            itemLayoutBinding.videoArtistTextView.setText(video.getArtist());
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .override(150, 150)
+                    .into(itemLayoutBinding.verticalItemImageView);
+            itemLayoutBinding.verticalItemNameTextView.setText(video.getName());
+            itemLayoutBinding.verticalItemArtistTextView.setText(video.getArtist());
         }
     }
 }

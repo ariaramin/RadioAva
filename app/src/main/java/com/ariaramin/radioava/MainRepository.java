@@ -8,15 +8,7 @@ import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.Retrofit.RequestApi;
 import com.ariaramin.radioava.Room.DatabaseDao;
-import com.ariaramin.radioava.Room.Entities.AllAlbumEntity;
-import com.ariaramin.radioava.Room.Entities.AllArtistEntity;
-import com.ariaramin.radioava.Room.Entities.AllMusicEntity;
-import com.ariaramin.radioava.Room.Entities.AllVideoEntity;
-import com.ariaramin.radioava.Room.Entities.PopularMusicEntity;
-import com.ariaramin.radioava.Room.Entities.TrendingMusicEntity;
-import com.ariaramin.radioava.Room.Entities.TrendingVideoEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -25,33 +17,40 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainRepository {
 
     RequestApi requestApi;
     DatabaseDao databaseDao;
+    CompositeDisposable compositeDisposable;
 
     public MainRepository(RequestApi requestApi, DatabaseDao databaseDao) {
         this.requestApi = requestApi;
         this.databaseDao = databaseDao;
+        compositeDisposable = new CompositeDisposable();
     }
+
+    public void clearCompositeDisposable() {
+        compositeDisposable.clear();
+    }
+
+    ///////////////////////////////////// Music
 
     public Observable<List<Music>> getAllMusics() {
         return requestApi.getAllMusics();
     }
 
     public void insertMusics(List<Music> musics) {
-        Completable.fromAction(() -> databaseDao.insertMusics(new AllMusicEntity(musics)))
+        Completable.fromAction(() -> databaseDao.insertMusics(musics))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-
+                        compositeDisposable.add(d);
                     }
 
                     @Override
@@ -66,82 +65,25 @@ public class MainRepository {
                 });
     }
 
-    public Flowable<AllMusicEntity> getAllMusicsFromDb() {
+    public Flowable<List<Music>> getAllMusicsFromDb() {
         return databaseDao.readAllMusics();
     }
 
-    public Observable<List<Music>> getTrendingMusics() {
-        return requestApi.getTrendingMusics();
-    }
 
-    public void insertTrendingMusics(List<Music> musics) {
-        Completable.fromAction(() -> databaseDao.insertTrendingMusics(new TrendingMusicEntity(musics)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
+    ///////////////////////////////////// Album
 
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i("insertTrendingMusic", "Completed");
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-    public Flowable<TrendingMusicEntity> getTrendingMusicsFromDb() {
-        return databaseDao.readTrendingMusics();
-    }
-
-    public Observable<List<Music>> getPopularMusics() {
-        return requestApi.getPopularMusics();
-    }
-
-    public void insertPopularMusics(List<Music> musics) {
-        Completable.fromAction(() -> databaseDao.insertPopularMusics(new PopularMusicEntity(musics)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i("insertPopularMusic", "Completed");
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-    public Flowable<PopularMusicEntity> getPopularMusicsFromDb() {
-        return databaseDao.readPopularMusics();
-    }
-
-    public Observable<List<Album>> getLatestAlbums() {
-        return requestApi.getLatestAlbums();
+    public Observable<List<Album>> getAllAlbums() {
+        return requestApi.getAllAlbums();
     }
 
     public void insertAlbums(List<Album> albums) {
-        Completable.fromAction(() -> databaseDao.insertAlbums(new AllAlbumEntity(albums)))
+        Completable.fromAction(() -> databaseDao.insertAlbums(albums))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-
+                        compositeDisposable.add(d);
                     }
 
                     @Override
@@ -156,22 +98,25 @@ public class MainRepository {
                 });
     }
 
-    public Flowable<AllAlbumEntity> getAllAlbumsFromDb() {
+    public Flowable<List<Album>> getAllAlbumsFromDb() {
         return databaseDao.readAllAlbums();
     }
+
+
+    ////////////////////////////////////// Artist
 
     public Observable<List<Artist>> getAllArtists() {
         return requestApi.getAllArtists();
     }
 
     public void insertArtists(List<Artist> artists) {
-        Completable.fromAction(() -> databaseDao.insertArtists(new AllArtistEntity(artists)))
+        Completable.fromAction(() -> databaseDao.insertArtists(artists))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-
+                        compositeDisposable.add(d);
                     }
 
                     @Override
@@ -186,22 +131,24 @@ public class MainRepository {
                 });
     }
 
-    public Flowable<AllArtistEntity> getAllArtistsFromDb() {
+    public Flowable<List<Artist>> getAllArtistsFromDb() {
         return databaseDao.readAllArtists();
     }
 
+
+    /////////////////////////////////////// Video
     public Observable<List<Video>> getAllVideos() {
-        return requestApi.getLatestVideos();
+        return requestApi.getAllVideos();
     }
 
     public void insertVideos(List<Video> videos) {
-        Completable.fromAction(() -> databaseDao.insertVideos(new AllVideoEntity(videos)))
+        Completable.fromAction(() -> databaseDao.insertVideos(videos))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-
+                        compositeDisposable.add(d);
                     }
 
                     @Override
@@ -216,37 +163,8 @@ public class MainRepository {
                 });
     }
 
-    public Flowable<AllVideoEntity> getAllVideosFromDb() {
+    public Flowable<List<Video>> getAllVideosFromDb() {
         return databaseDao.readAllVideos();
     }
 
-    public Observable<List<Video>> getTrendingVideos() {
-        return requestApi.getLatestVideos();
-    }
-
-    public void insertTrendingVideos(List<Video> videos) {
-        Completable.fromAction(() -> databaseDao.insertTrendingVideo(new TrendingVideoEntity(videos)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i("insertTrendingVideo", "Completed");
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-    public Flowable<TrendingVideoEntity> getTrendingVideosFromDb() {
-        return databaseDao.readTrendingVideos();
-    }
 }

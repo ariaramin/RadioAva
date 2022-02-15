@@ -14,8 +14,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="146dp"
-            android:layout_height="146dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:elevation="6dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="48dp"
@@ -25,8 +25,8 @@
 
             <ImageView
                 android:id="@+id/itemImageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="146dp"
+                android:layout_height="146dp"
                 android:scaleType="centerCrop"
                 tools:src="@tools:sample/avatars" />
         </androidx.cardview.widget.CardView>

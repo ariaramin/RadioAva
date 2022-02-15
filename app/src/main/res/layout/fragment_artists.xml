@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="26dp"
                 android:layout_marginEnd="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -32,13 +32,10 @@
 
                 <TextView
                     android:id="@+id/textView8"
+                    style="@style/pageTitleTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_bold"
                     android:text="@string/artists"
-                    android:textColor="@color/white"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -113,16 +110,16 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/firstArtistCardView"
-                    android:layout_width="86dp"
-                    android:layout_height="86dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="56dp"
                     app:strokeColor="@color/primaryColor">
 
                     <ImageView
                         android:id="@+id/firstArtistImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="86dp"
+                        android:layout_height="86dp"
                         android:scaleType="centerCrop"
                         tools:src="@tools:sample/avatars" />
 
@@ -130,8 +127,8 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/secondArtistCardView"
-                    android:layout_width="86dp"
-                    android:layout_height="86dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="56dp"
@@ -139,8 +136,8 @@
 
                     <ImageView
                         android:id="@+id/secondArtistImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="86dp"
+                        android:layout_height="86dp"
                         android:scaleType="centerCrop"
                         tools:src="@tools:sample/avatars" />
 
@@ -148,8 +145,8 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/thirdArtistCardView"
-                    android:layout_width="86dp"
-                    android:layout_height="86dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="56dp"
@@ -157,8 +154,8 @@
 
                     <ImageView
                         android:id="@+id/thirdArtistImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="86dp"
+                        android:layout_height="86dp"
                         android:scaleType="centerCrop"
                         tools:src="@tools:sample/avatars" />
 
@@ -166,8 +163,8 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/fourthArtistCardView"
-                    android:layout_width="86dp"
-                    android:layout_height="86dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="56dp"
@@ -175,8 +172,8 @@
 
                     <ImageView
                         android:id="@+id/fourthArtistImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="86dp"
+                        android:layout_height="86dp"
                         android:scaleType="centerCrop"
                         tools:src="@tools:sample/avatars" />
 
@@ -194,25 +191,19 @@
 
                 <TextView
                     android:id="@+id/textView10"
+                    style="@style/boldTitleTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_bold"
                     android:text="@string/top"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView11"
+                    style="@style/lightTitleTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/circular_std_light"
                     android:text="@string/artists"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="@id/textView10"
                     app:layout_constraintStart_toEndOf="@+id/textView10"
                     app:layout_constraintTop_toTopOf="@+id/textView10" />
@@ -222,7 +213,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -242,77 +233,62 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout12"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"
-                app:layout_constraintStart_toStartOf="@+id/constraintLayout3"
-                app:layout_constraintTop_toBottomOf="@id/constraintLayout3">
+            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                android:id="@+id/constraintLayout12"-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="18dp"-->
+            <!--                app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"-->
+            <!--                app:layout_constraintStart_toStartOf="@+id/constraintLayout3"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/constraintLayout3">-->
 
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_bold"
-                    android:text="@string/must"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <!--                <TextView-->
+            <!--                    android:id="@+id/textView9"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:fontFamily="@font/circular_std_bold"-->
+            <!--                    android:text="@string/must"-->
+            <!--                    android:textColor="@color/white"-->
+            <!--                    android:textSize="20sp"-->
+            <!--                    android:textStyle="bold"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/circular_std_light"
-                    android:text="@string/follow"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView9"
-                    app:layout_constraintStart_toEndOf="@+id/textView9"
-                    app:layout_constraintTop_toTopOf="@+id/textView9" />
+            <!--                <TextView-->
+            <!--                    android:id="@+id/textView13"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginStart="8dp"-->
+            <!--                    android:fontFamily="@font/circular_std_light"-->
+            <!--                    android:text="@string/follow"-->
+            <!--                    android:textColor="@color/white"-->
+            <!--                    android:textSize="20sp"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="@+id/textView9"-->
+            <!--                    app:layout_constraintStart_toEndOf="@+id/textView9"-->
+            <!--                    app:layout_constraintTop_toTopOf="@+id/textView9" />-->
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/moreArtistRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            <!--                <androidx.recyclerview.widget.RecyclerView-->
+            <!--                    android:id="@+id/moreArtistRecyclerView"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginTop="12dp"-->
+            <!--                    android:orientation="horizontal"-->
+            <!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toBottomOf="@+id/textView9" />-->
 
-                <com.github.ybq.android.spinkit.SpinKitView
-                    android:id="@+id/moreArtistSpinKit"
-                    style="@style/SpinKitView.ThreeBounce"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    app:SpinKit_Color="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/moreArtistRecyclerView" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="18dp"
-                app:layout_constraintEnd_toEndOf="@+id/constraintLayout12"
-                app:layout_constraintStart_toStartOf="@+id/constraintLayout12"
-                app:layout_constraintTop_toBottomOf="parent">
-
-                <TextView
-                    android:id="@+id/textView28"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--                <com.github.ybq.android.spinkit.SpinKitView-->
+            <!--                    android:id="@+id/moreArtistSpinKit"-->
+            <!--                    style="@style/SpinKitView.ThreeBounce"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:visibility="visible"-->
+            <!--                    app:SpinKit_Color="@color/white"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toTopOf="@+id/moreArtistRecyclerView" />-->
+            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

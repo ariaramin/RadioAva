@@ -14,8 +14,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
-            android:layout_width="146dp"
-            android:layout_height="146dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:elevation="6dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="74dp"
@@ -25,8 +25,8 @@
 
             <ImageView
                 android:id="@+id/horizontalArtistImageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="146dp"
+                android:layout_height="146dp"
                 android:scaleType="centerCrop"
                 tools:srcCompat="@tools:sample/avatars" />
 

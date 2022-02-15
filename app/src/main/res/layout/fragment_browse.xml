@@ -23,7 +23,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="26dp"
                 android:layout_marginEnd="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -31,13 +31,10 @@
 
                 <TextView
                     android:id="@+id/textView12"
+                    style="@style/pageTitleTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_bold"
                     android:text="@string/browse"
-                    android:textColor="@color/white"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -114,8 +111,8 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/firstMusicCardView"
-                    android:layout_width="86dp"
-                    android:layout_height="86dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="32dp"
@@ -123,8 +120,8 @@
 
                     <ImageView
                         android:id="@+id/firstMusicImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="86dp"
+                        android:layout_height="86dp"
                         android:scaleType="centerCrop"
                         tools:src="@tools:sample/avatars" />
 
@@ -132,8 +129,8 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/secondMusicCardView"
-                    android:layout_width="86dp"
-                    android:layout_height="86dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/white"
@@ -142,8 +139,8 @@
 
                     <ImageView
                         android:id="@+id/secondMusicImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="86dp"
+                        android:layout_height="86dp"
                         android:scaleType="centerCrop"
                         tools:src="@tools:sample/avatars" />
 
@@ -151,8 +148,8 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/thirdMusicCardView"
-                    android:layout_width="86dp"
-                    android:layout_height="86dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/white"
@@ -161,8 +158,8 @@
 
                     <ImageView
                         android:id="@+id/thirdMusicImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="86dp"
+                        android:layout_height="86dp"
                         android:scaleType="centerCrop"
                         tools:src="@tools:sample/avatars" />
 
@@ -181,37 +178,28 @@
 
                 <TextView
                     android:id="@+id/textView19"
+                    style="@style/boldTitleTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_bold"
                     android:text="@string/latest"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView20"
+                    style="@style/lightTitleTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/circular_std_light"
                     android:text="@string/musics"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="@id/textView19"
                     app:layout_constraintStart_toEndOf="@+id/textView19"
                     app:layout_constraintTop_toTopOf="@+id/textView19" />
 
                 <TextView
                     android:id="@+id/textView21"
+                    style="@style/seeMoreTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_book"
-                    android:text="@string/see_more"
-                    android:textColor="@color/primaryColor"
-                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView20"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView20" />
@@ -251,37 +239,28 @@
 
                 <TextView
                     android:id="@+id/textView22"
+                    style="@style/boldTitleTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_bold"
                     android:text="@string/popular"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView23"
+                    style="@style/lightTitleTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/circular_std_light"
                     android:text="@string/videos"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView22"
                     app:layout_constraintStart_toEndOf="@+id/textView22"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView24"
+                    style="@style/seeMoreTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_book"
-                    android:text="@string/see_more"
-                    android:textColor="@color/primaryColor"
-                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView23"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView23" />
@@ -291,6 +270,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView22" />
@@ -318,37 +299,28 @@
 
                 <TextView
                     android:id="@+id/textView29"
+                    style="@style/boldTitleTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_bold"
                     android:text="@string/_new"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView30"
+                    style="@style/lightTitleTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/circular_std_light"
                     android:text="@string/albums"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView29"
                     app:layout_constraintStart_toEndOf="@+id/textView29"
                     app:layout_constraintTop_toTopOf="@+id/textView29" />
 
                 <TextView
                     android:id="@+id/textView31"
+                    style="@style/seeMoreTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_book"
-                    android:text="@string/see_more"
-                    android:textColor="@color/primaryColor"
-                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView30"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView30" />
@@ -386,37 +358,28 @@
 
                 <TextView
                     android:id="@+id/textView32"
+                    style="@style/boldTitleTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_bold"
                     android:text="@string/must"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView33"
+                    style="@style/lightTitleTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/circular_std_light"
                     android:text="@string/follow"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="@id/textView32"
                     app:layout_constraintStart_toEndOf="@+id/textView32"
                     app:layout_constraintTop_toTopOf="@id/textView32" />
 
                 <TextView
                     android:id="@+id/textView34"
+                    style="@style/seeMoreTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/circular_std_book"
-                    android:text="@string/see_more"
-                    android:textColor="@color/primaryColor"
-                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@id/textView33"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/textView33" />

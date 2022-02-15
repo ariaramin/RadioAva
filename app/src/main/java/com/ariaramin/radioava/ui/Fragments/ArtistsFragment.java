@@ -4,27 +4,25 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.ariaramin.radioava.Adapters.ArtistAdapter;
-import com.ariaramin.radioava.Adapters.ArtistSliderAdapter;
-import com.ariaramin.radioava.Adapters.VerticalArtistAdapter;
+import com.ariaramin.radioava.Adapters.Artist.ArtistSliderAdapter;
+import com.ariaramin.radioava.Adapters.Artist.VerticalArtistAdapter;
 import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.R;
-import com.ariaramin.radioava.Room.Entities.AllArtistEntity;
 import com.ariaramin.radioava.databinding.FragmentArtistsBinding;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.google.android.material.card.MaterialCardView;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
@@ -61,73 +59,82 @@ public class ArtistsFragment extends Fragment {
 
     private void getAllArtists() {
         Disposable disposable = mainViewModel.getAllArtistsFromDb()
+                .map(this::sortByPlays)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<AllArtistEntity>() {
+                .subscribe(new Consumer<List<Artist>>() {
                     @Override
-                    public void accept(AllArtistEntity allArtistEntity) throws Throwable {
-                        List<Artist> artists = allArtistEntity.getArtist();
-                        List<Artist> topFourArtists = artists.subList(0, 4);
-                        List<Artist> topArtists = artists.subList(4, 24);
-                        List<Artist> moreArtists = artists.subList(24, 54);
+                    public void accept(List<Artist> artists) throws Throwable {
 
-                        setTopArtistsImage(topFourArtists);
+                        if (!artists.isEmpty()) {
+                            List<Artist> topFourArtists = artists.subList(0, 4);
+                            List<Artist> topArtists = artists.subList(4, 34);
 
-                        if (artistsBinding.artistSliderView.getSliderAdapter() == null) {
-                            ArtistSliderAdapter sliderAdapter = new ArtistSliderAdapter(topFourArtists);
-                            artistsBinding.artistSliderView.setSliderAdapter(sliderAdapter);
-                        } else {
-                            ArtistSliderAdapter sliderAdapter = (ArtistSliderAdapter) artistsBinding.artistSliderView.getSliderAdapter();
-                            sliderAdapter.updateList(topFourArtists);
-                        }
-                        artistsBinding.artistSliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
-                        artistsBinding.artistSliderView.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
-                        artistsBinding.artistSliderView.setScrollTimeInSec(5);
-                        artistsBinding.artistSliderView.startAutoCycle();
-                        artistsBinding.artistSliderView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                            @Override
-                            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                                setCurrentArtist(artistsBinding.artistSliderView.getCurrentPagePosition());
+                            setTopArtistsImage(topFourArtists);
+
+                            if (artistsBinding.artistSliderView.getSliderAdapter() == null) {
+                                ArtistSliderAdapter sliderAdapter = new ArtistSliderAdapter(topFourArtists);
+                                artistsBinding.artistSliderView.setSliderAdapter(sliderAdapter);
+                            } else {
+                                ArtistSliderAdapter sliderAdapter = (ArtistSliderAdapter) artistsBinding.artistSliderView.getSliderAdapter();
+                                sliderAdapter.updateList(topFourArtists);
                             }
-                        });
+                            artistsBinding.artistSliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
+                            artistsBinding.artistSliderView.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
+                            artistsBinding.artistSliderView.setScrollTimeInSec(5);
+                            artistsBinding.artistSliderView.startAutoCycle();
+                            artistsBinding.artistSliderView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                                @Override
+                                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                                    setCurrentArtist(artistsBinding.artistSliderView.getCurrentPagePosition());
+                                }
+                            });
 
-                        if (artistsBinding.topArtistsRecyclerView.getAdapter() == null) {
-                            ArtistAdapter artistAdapter = new ArtistAdapter(topArtists);
-                            artistsBinding.topArtistsRecyclerView.setAdapter(artistAdapter);
-                        } else {
-                            ArtistAdapter adapter = (ArtistAdapter) artistsBinding.topArtistsRecyclerView.getAdapter();
-                            adapter.updateList(topArtists);
-                        }
-
-                        Collections.sort(moreArtists, new Comparator<Artist>() {
-                            @Override
-                            public int compare(Artist o1, Artist o2) {
-                                int o2Followers = convertFollowersToInt(o2.getFollowers());
-                                int o1Followers = convertFollowersToInt(o1.getFollowers());
-                                return Integer.compare(o2Followers, o1Followers);
+                            if (artistsBinding.topArtistsRecyclerView.getAdapter() == null) {
+                                VerticalArtistAdapter artistAdapter = new VerticalArtistAdapter(topArtists);
+                                artistsBinding.topArtistsRecyclerView.setAdapter(artistAdapter);
+                            } else {
+                                VerticalArtistAdapter adapter = (VerticalArtistAdapter) artistsBinding.topArtistsRecyclerView.getAdapter();
+                                adapter.updateList(topArtists);
                             }
-                        });
-
-                        if (artistsBinding.moreArtistRecyclerView.getAdapter() == null) {
-                            ArtistAdapter artistAdapter = new ArtistAdapter(moreArtists);
-                            artistsBinding.moreArtistRecyclerView.setAdapter(artistAdapter);
-                        } else {
-                            ArtistAdapter adapter = (ArtistAdapter) artistsBinding.moreArtistRecyclerView.getAdapter();
-                            adapter.updateList(moreArtists);
                         }
 
                         if (artists.isEmpty()) {
                             artistsBinding.artistSliderSpinKit.setVisibility(View.VISIBLE);
                             artistsBinding.topArtistSpinKit.setVisibility(View.VISIBLE);
-                            artistsBinding.moreArtistSpinKit.setVisibility(View.VISIBLE);
                         } else {
                             artistsBinding.artistSliderSpinKit.setVisibility(View.GONE);
                             artistsBinding.topArtistSpinKit.setVisibility(View.GONE);
-                            artistsBinding.moreArtistSpinKit.setVisibility(View.GONE);
                         }
                     }
                 });
         compositeDisposable.add(disposable);
+    }
+
+    private List<Artist> sortByPlays(List<Artist> artists) {
+        Collections.sort(artists, new Comparator<Artist>() {
+            @Override
+            public int compare(Artist o1, Artist o2) {
+                int o2Plays = convertStringToInt(o2.getPlays());
+                int o1Plays = convertStringToInt(o1.getPlays());
+                return Integer.compare(o2Plays, o1Plays);
+            }
+        });
+        return artists;
+    }
+
+    private int convertStringToInt(String string) {
+        if (string.contains("B")) {
+            String str = string.replace("B", "");
+            return (int) Double.parseDouble(str);
+        } else if (string.contains("M")) {
+            String str = string.replace("M", "");
+            return (int) Double.parseDouble(str);
+        } else if (string.contains("K")) {
+            String str = string.replace("K", "");
+            return (int) Double.parseDouble(str);
+        }
+        return (int) Double.parseDouble(string);
     }
 
     private void setCurrentArtist(int position) {
@@ -179,20 +186,12 @@ public class ArtistsFragment extends Fragment {
                                     .load(R.drawable.loading)
                     )
                     .transition(DrawableTransitionOptions.withCrossFade())
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .override(300, 300)
                     .into(imageViews.get(i));
 
             imageViews.get(i).setColorFilter(filter);
         }
     }
 
-    private int convertFollowersToInt(String followers) {
-        if (followers.contains("K")) {
-            String str = followers.replace("K", "");
-            return (int) Double.parseDouble(str);
-        } else if (followers.contains("M")) {
-            String str = followers.replace("M", "");
-            return (int) Double.parseDouble(str);
-        }
-        return (int) Double.parseDouble(followers);
-    }
 }

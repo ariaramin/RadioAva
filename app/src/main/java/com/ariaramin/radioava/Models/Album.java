@@ -1,28 +1,36 @@
 package com.ariaramin.radioava.Models;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Entity(tableName = "album_tbl")
 public class Album {
 
+    @PrimaryKey
+    @SerializedName("id")
+    public int id;
+
     @SerializedName("cover")
-    String cover;
+    public String cover;
 
     @SerializedName("name")
-    String name;
+    public String name;
 
     @SerializedName("artist")
-    String artist;
+    public String artist;
 
     @SerializedName("musics")
-    List<Music> musics;
+    public List<Music> musics;
 
     @SerializedName("release_year")
-    String releaseDate;
+    public String releaseDate;
 
     @SerializedName("total_music")
-    int totalMusic;
+    public int totalMusic;
 
     public String getCover() {
         return cover;

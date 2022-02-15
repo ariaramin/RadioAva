@@ -22,6 +22,12 @@
     <string name="_new">New</string>
     <string name="listen">Listen</string>
     <string name="see_more">See more</string>
+    <string name="your_activities">Your Activities</string>
+    <string name="your_downloads">Your Downloads</string>
+    <string name="recently_played">Recently Played</string>
+    <string name="likes">Liked</string>
+    <string name="followed_artist">Followed Artist</string>
+    <string name="your_playlist">Your Playlist</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
