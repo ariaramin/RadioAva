@@ -2,6 +2,8 @@ package com.ariaramin.radioava.ui.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -44,8 +46,13 @@ public class VideosFragment extends Fragment {
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         compositeDisposable = new CompositeDisposable();
 
-        getMostViewedVideos();
         return videosBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getMostViewedVideos();
     }
 
     private void getMostViewedVideos() {
@@ -59,7 +66,7 @@ public class VideosFragment extends Fragment {
 
                         if (!videos.isEmpty()) {
                             List<Video> topThreeVideos = videos.subList(0, 5);
-                            List<Video> mostViewedVideos = videos.subList(5, 35);
+                            List<Video> mostViewedVideos = videos.subList(5, 20);
 
                             if (videosBinding.videoSliderView.getSliderAdapter() == null) {
                                 VideoSliderAdapter sliderAdapter = new VideoSliderAdapter(topThreeVideos);
@@ -80,6 +87,7 @@ public class VideosFragment extends Fragment {
                                 VerticalVideoAdapter adapter = (VerticalVideoAdapter) videosBinding.mostViewedRecyclerView.getAdapter();
                                 adapter.updateList(mostViewedVideos);
                             }
+                            videosBinding.mostViewedRecyclerView.setHasFixedSize(false);
                         }
 
                         if (videos.isEmpty()) {
@@ -115,5 +123,11 @@ public class VideosFragment extends Fragment {
             return (int) Double.parseDouble(str);
         }
         return (int) Double.parseDouble(likes);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 }

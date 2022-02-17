@@ -40,6 +40,7 @@ public class HomeFragment extends Fragment {
     FragmentHomeBinding homeBinding;
     MainViewModel mainViewModel;
     CompositeDisposable compositeDisposable;
+    private static final String TAG = "home";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,11 +50,16 @@ public class HomeFragment extends Fragment {
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         compositeDisposable = new CompositeDisposable();
 
+        return homeBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         getTrendingMusics();
         getNewVideos();
         getPopularArtists();
         getPopularMusics();
-        return homeBinding.getRoot();
     }
 
     private void getPopularArtists() {
@@ -68,7 +74,7 @@ public class HomeFragment extends Fragment {
                             List<Artist> popularArtists = artists.subList(0, 15);
 
                             if (homeBinding.popularArtistsRecyclerView.getAdapter() == null) {
-                                ArtistAdapter artistAdapter = new ArtistAdapter(popularArtists);
+                                ArtistAdapter artistAdapter = new ArtistAdapter(popularArtists, TAG);
                                 homeBinding.popularArtistsRecyclerView.setAdapter(artistAdapter);
                             } else {
                                 ArtistAdapter adapter = (ArtistAdapter) homeBinding.popularArtistsRecyclerView.getAdapter();
@@ -163,9 +169,9 @@ public class HomeFragment extends Fragment {
                 .map(this::getTrendingMusics)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ArrayList<Music>>() {
+                .subscribe(new Consumer<List<Music>>() {
                     @Override
-                    public void accept(ArrayList<Music> musics) throws Throwable {
+                    public void accept(List<Music> musics) throws Throwable {
 
                         if (!musics.isEmpty()) {
                             List<Music> topFiveTrending = musics.subList(0, 5);
@@ -212,5 +218,11 @@ public class HomeFragment extends Fragment {
             }
         }
         return trending;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 }

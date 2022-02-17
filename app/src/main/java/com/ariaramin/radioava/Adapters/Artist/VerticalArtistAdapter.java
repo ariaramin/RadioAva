@@ -1,10 +1,14 @@
 package com.ariaramin.radioava.Adapters.Artist;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ariaramin.radioava.Models.Artist;
@@ -16,26 +20,27 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import java.util.List;
 
-public class VerticalArtistAdapter extends RecyclerView.Adapter<VerticalArtistAdapter.VerticalArtistViewHolder>{
+public class VerticalArtistAdapter extends RecyclerView.Adapter<VerticalArtistAdapter.VerticalArtistViewHolder> {
 
-    VerticalArtistItemLayoutBinding itemLayoutBinding;
     List<Artist> artistList;
+    String TAG;
 
-    public VerticalArtistAdapter(List<Artist> artists) {
-        this.artistList = artists;
+    public VerticalArtistAdapter(List<Artist> artistList, String TAG) {
+        this.artistList = artistList;
+        this.TAG = TAG;
     }
 
     @NonNull
     @Override
     public VerticalArtistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.vertical_artist_item_layout, parent, false);
+        VerticalArtistItemLayoutBinding itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.vertical_artist_item_layout, parent, false);
         return new VerticalArtistViewHolder(itemLayoutBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull VerticalArtistViewHolder holder, int position) {
-        holder.bindData(artistList.get(position));
+        holder.bindData(artistList.get(position), TAG);
     }
 
     @Override
@@ -57,8 +62,8 @@ public class VerticalArtistAdapter extends RecyclerView.Adapter<VerticalArtistAd
             this.itemLayoutBinding = itemLayoutBinding;
         }
 
-        private void bindData(Artist artist) {
-            Glide.with(itemLayoutBinding.verticalArtistImageView)
+        private void bindData(Artist artist, String TAG) {
+            Glide.with(itemLayoutBinding.getRoot().getContext())
                     .load(artist.getImage())
                     .thumbnail(
                             Glide.with(itemLayoutBinding.getRoot().getContext())
@@ -71,6 +76,19 @@ public class VerticalArtistAdapter extends RecyclerView.Adapter<VerticalArtistAd
             itemLayoutBinding.verticalArtistNameTextView.setText(artist.getName());
             itemLayoutBinding.verticalFollowersTextView.setText(artist.getFollowers());
             itemLayoutBinding.verticalPlayTextView.setText(artist.getPlays());
+            itemLayoutBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("Artist", artist);
+                    switch (TAG) {
+                        case "artists":
+                            Navigation.findNavController(v).navigate(R.id.action_artistsFragment_to_detailArtistFragment, bundle);
+                            break;
+                    }
+                }
+            });
+            itemLayoutBinding.executePendingBindings();
         }
     }
 }

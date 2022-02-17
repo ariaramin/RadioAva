@@ -64,11 +64,12 @@
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/latestMusicsSliderView"
                 android:layout_width="0dp"
-                android:layout_height="278dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
+                android:layout_marginEnd="12dp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
@@ -98,81 +99,12 @@
                 app:layout_constraintStart_toStartOf="@+id/latestMusicsSliderView"
                 app:layout_constraintTop_toTopOf="@+id/latestMusicsSliderView" />
 
-            <LinearLayout
-                android:id="@+id/linearLayout3"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginEnd="12dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@+id/latestMusicsSliderView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/latestMusicsSliderView">
-
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/firstMusicCardView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="32dp"
-                    app:strokeColor="@color/primaryColor">
-
-                    <ImageView
-                        android:id="@+id/firstMusicImageView"
-                        android:layout_width="86dp"
-                        android:layout_height="86dp"
-                        android:scaleType="centerCrop"
-                        tools:src="@tools:sample/avatars" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/secondMusicCardView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="32dp"
-                    app:strokeColor="@color/primaryColor">
-
-                    <ImageView
-                        android:id="@+id/secondMusicImageView"
-                        android:layout_width="86dp"
-                        android:layout_height="86dp"
-                        android:scaleType="centerCrop"
-                        tools:src="@tools:sample/avatars" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/thirdMusicCardView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="32dp"
-                    app:strokeColor="@color/primaryColor">
-
-                    <ImageView
-                        android:id="@+id/thirdMusicImageView"
-                        android:layout_width="86dp"
-                        android:layout_height="86dp"
-                        android:scaleType="centerCrop"
-                        tools:src="@tools:sample/avatars" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout10"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
+                app:layout_constraintEnd_toEndOf="@+id/latestMusicsSliderView"
                 app:layout_constraintStart_toStartOf="@+id/latestMusicsSliderView"
                 app:layout_constraintTop_toBottomOf="@+id/latestMusicsSliderView">
 

@@ -1,14 +1,14 @@
-package com.ariaramin.radioava.Adapters.Video;
+package com.ariaramin.radioava.Adapters.Music;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ariaramin.radioava.Models.Video;
+import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.VerticalItemLayoutBinding;
 import com.bumptech.glide.Glide;
@@ -17,49 +17,49 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import java.util.List;
 
-public class VerticalVideoAdapter extends RecyclerView.Adapter<VerticalVideoAdapter.VerticalVideoViewHolder> {
+public class VerticalMusicAdapter extends RecyclerView.Adapter<VerticalMusicAdapter.VerticalMusicViewHolder> {
 
-    List<Video> videoList;
+    List<Music> musicList;
 
-    public VerticalVideoAdapter(List<Video> videoList) {
-        this.videoList = videoList;
+    public VerticalMusicAdapter(List<Music> musicList) {
+        this.musicList = musicList;
     }
 
     @NonNull
     @Override
-    public VerticalVideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public VerticalMusicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         VerticalItemLayoutBinding itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.vertical_item_layout, parent, false);
-        return new VerticalVideoViewHolder(itemLayoutBinding);
+        return new VerticalMusicViewHolder(itemLayoutBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VerticalVideoViewHolder holder, int position) {
-        holder.bindData(videoList.get(position));
+    public void onBindViewHolder(@NonNull VerticalMusicViewHolder holder, int position) {
+        holder.bindData(musicList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return videoList.size();
+        return musicList.size();
     }
 
-    public void updateList(List<Video> videos) {
-        videoList = videos;
+    public void updateList(List<Music> musics) {
+        musicList = musics;
         notifyDataSetChanged();
     }
 
-    static class VerticalVideoViewHolder extends RecyclerView.ViewHolder {
+    static class VerticalMusicViewHolder extends RecyclerView.ViewHolder {
 
         VerticalItemLayoutBinding itemLayoutBinding;
 
-        public VerticalVideoViewHolder(VerticalItemLayoutBinding itemLayoutBinding) {
+        public VerticalMusicViewHolder(VerticalItemLayoutBinding itemLayoutBinding) {
             super(itemLayoutBinding.getRoot());
             this.itemLayoutBinding = itemLayoutBinding;
         }
 
-        private void bindData(Video video) {
+        private void bindData(Music music) {
             Glide.with(itemLayoutBinding.getRoot().getContext())
-                    .load(video.getCover())
+                    .load(music.getCover())
                     .thumbnail(
                             Glide.with(itemLayoutBinding.getRoot().getContext())
                                     .load(R.drawable.loading)
@@ -68,9 +68,18 @@ public class VerticalVideoAdapter extends RecyclerView.Adapter<VerticalVideoAdap
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .override(150, 150)
                     .into(itemLayoutBinding.verticalItemImageView);
-            itemLayoutBinding.verticalItemNameTextView.setText(video.getName());
-            itemLayoutBinding.verticalItemArtistTextView.setText(video.getArtist());
+            itemLayoutBinding.verticalItemNameTextView.setText(stringCutter(music.getName(), 32));
+            itemLayoutBinding.verticalItemArtistTextView.setText(stringCutter(music.getArtist(), 46));
             itemLayoutBinding.executePendingBindings();
+        }
+
+        private String stringCutter(String name, int length) {
+            int nameLength = name.length();
+            if (nameLength > length) {
+                String subString = name.substring(0, length);
+                return subString + "...";
+            }
+            return name;
         }
     }
 }

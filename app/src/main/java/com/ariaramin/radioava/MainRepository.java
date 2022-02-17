@@ -69,6 +69,9 @@ public class MainRepository {
         return databaseDao.readAllMusics();
     }
 
+    public Flowable<List<Music>> getArtistMusicsFromDb(String artist) {
+        return databaseDao.readArtistMusics(artist);
+    }
 
     ///////////////////////////////////// Album
 
@@ -100,6 +103,10 @@ public class MainRepository {
 
     public Flowable<List<Album>> getAllAlbumsFromDb() {
         return databaseDao.readAllAlbums();
+    }
+
+    public Flowable<List<Album>> getArtistAlbumsFromDb(String artist) {
+        return databaseDao.readArtistAlbums(artist);
     }
 
 
@@ -165,6 +172,10 @@ public class MainRepository {
 
     public Flowable<List<Video>> getAllVideosFromDb() {
         return databaseDao.readAllVideos();
+    }
+
+    public Flowable<List<Video>> getArtistVideosFromDb(String artist) {
+        return databaseDao.readArtistVideos(artist);
     }
 
 }

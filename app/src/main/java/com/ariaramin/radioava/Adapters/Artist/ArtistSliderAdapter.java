@@ -1,9 +1,13 @@
 package com.ariaramin.radioava.Adapters.Artist;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.navigation.Navigation;
 
 import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.R;
@@ -15,9 +19,8 @@ import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.List;
 
-public class ArtistSliderAdapter extends SliderViewAdapter<ArtistSliderAdapter.ArtistSliderViewHolder>{
+public class ArtistSliderAdapter extends SliderViewAdapter<ArtistSliderAdapter.ArtistSliderViewHolder> {
 
-    ArtistSliderItemLayoutBinding itemLayoutBinding;
     List<Artist> artistList;
 
     public ArtistSliderAdapter(List<Artist> artistList) {
@@ -27,7 +30,7 @@ public class ArtistSliderAdapter extends SliderViewAdapter<ArtistSliderAdapter.A
     @Override
     public ArtistSliderViewHolder onCreateViewHolder(ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.artist_slider_item_layout, parent, false);
+        ArtistSliderItemLayoutBinding itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.artist_slider_item_layout, parent, false);
         return new ArtistSliderViewHolder(itemLayoutBinding);
     }
 
@@ -69,6 +72,15 @@ public class ArtistSliderAdapter extends SliderViewAdapter<ArtistSliderAdapter.A
             itemLayoutBinding.sliderArtistTextView.setText(artist.getName());
             itemLayoutBinding.sliderFollowersTextView.setText(artist.getFollowers());
             itemLayoutBinding.sliderPlayTextView.setText(artist.getPlays());
+            itemLayoutBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("Artist", artist);
+                    Navigation.findNavController(v).navigate(R.id.action_artistsFragment_to_detailArtistFragment, bundle);
+                }
+            });
+            itemLayoutBinding.executePendingBindings();
         }
     }
 }

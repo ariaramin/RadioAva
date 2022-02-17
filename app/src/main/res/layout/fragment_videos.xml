@@ -65,10 +65,11 @@
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/videoSliderView"
                 android:layout_width="0dp"
-                android:layout_height="286dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="12dp"
+                app:layout_constraintDimensionRatio="w,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout9"
@@ -132,11 +133,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:nestedScrollingEnabled="false"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView18" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView18"
+                    tools:listitem="@layout/vertical_item_layout" />
 
                 <com.github.ybq.android.spinkit.SpinKitView
                     android:id="@+id/mostViewedSpinKit"

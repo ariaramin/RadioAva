@@ -68,23 +68,14 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .override(300, 300)
                     .into(itemLayoutBinding.itemImageView);
-            itemLayoutBinding.itemNameTextView.setText(songNameCutter(music.getName()));
-            itemLayoutBinding.itemArtistTextView.setText(artistNameCutter(music.getArtist()));
+            itemLayoutBinding.itemNameTextView.setText(stringCutter(music.getName(), 16));
+            itemLayoutBinding.itemArtistTextView.setText(stringCutter(music.getArtist(), 22));
         }
 
-        private String songNameCutter(String name) {
-            int length = name.length();
-            if (length > 16) {
-                String subString = name.substring(0, 16);
-                return subString + "...";
-            }
-            return name;
-        }
-
-        private String artistNameCutter(String name) {
-            int length = name.length();
-            if (length > 22) {
-                String subString = name.substring(0, 22);
+        private String stringCutter(String name, int length) {
+            int nameLength = name.length();
+            if (nameLength > length) {
+                String subString = name.substring(0, length);
                 return subString + "...";
             }
             return name;

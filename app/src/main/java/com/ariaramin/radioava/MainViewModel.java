@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 
 import com.ariaramin.radioava.Models.Album;
 import com.ariaramin.radioava.Models.Artist;
@@ -24,6 +25,8 @@ public class MainViewModel extends AndroidViewModel {
     @Inject
     MainRepository mainRepository;
 
+    MutableLiveData<Integer> artistTotalMusics = new MutableLiveData<>(0);
+
     @Inject
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -31,6 +34,14 @@ public class MainViewModel extends AndroidViewModel {
 
     public void clearCompositeDisposable() {
         mainRepository.clearCompositeDisposable();
+    }
+
+    public MutableLiveData<Integer> getArtistTotalMusics() {
+        return artistTotalMusics;
+    }
+
+    public void setArtistTotalMusics(int totalMusics) {
+        artistTotalMusics.postValue(totalMusics);
     }
 
     ///////////////////////////////// Music
@@ -47,6 +58,10 @@ public class MainViewModel extends AndroidViewModel {
         return mainRepository.getAllMusicsFromDb();
     }
 
+    public Flowable<List<Music>> getArtistMusicsFromDb(String artist) {
+        return mainRepository.getArtistMusicsFromDb(artist);
+    }
+
     ////////////////////////////// Album
 
     public Observable<List<Album>> getAllAlbums() {
@@ -59,6 +74,10 @@ public class MainViewModel extends AndroidViewModel {
 
     public Flowable<List<Album>> getAllAlbumsFromDb() {
         return mainRepository.getAllAlbumsFromDb();
+    }
+
+    public Flowable<List<Album>> getArtistAlbumsFromDb(String artist) {
+        return mainRepository.getArtistAlbumsFromDb(artist);
     }
 
     //////////////////////////// Artist
@@ -88,4 +107,9 @@ public class MainViewModel extends AndroidViewModel {
     public Flowable<List<Video>> getAllVideosFromDb() {
         return mainRepository.getAllVideosFromDb();
     }
+
+    public Flowable<List<Video>> getArtistVideosFromDb(String artist) {
+        return mainRepository.getArtistVideosFromDb(artist);
+    }
+
 }

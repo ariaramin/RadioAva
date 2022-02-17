@@ -1,14 +1,14 @@
-package com.ariaramin.radioava.Adapters.Video;
+package com.ariaramin.radioava.Adapters.Album;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ariaramin.radioava.Models.Video;
+import com.ariaramin.radioava.Models.Album;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.VerticalItemLayoutBinding;
 import com.bumptech.glide.Glide;
@@ -17,49 +17,49 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import java.util.List;
 
-public class VerticalVideoAdapter extends RecyclerView.Adapter<VerticalVideoAdapter.VerticalVideoViewHolder> {
+public class VerticalAlbumAdapter extends RecyclerView.Adapter<VerticalAlbumAdapter.VerticalAlbumsViewHolder>{
 
-    List<Video> videoList;
+    List<Album> albumList;
 
-    public VerticalVideoAdapter(List<Video> videoList) {
-        this.videoList = videoList;
+    public VerticalAlbumAdapter(List<Album> albumList) {
+        this.albumList = albumList;
     }
 
     @NonNull
     @Override
-    public VerticalVideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public VerticalAlbumsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         VerticalItemLayoutBinding itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.vertical_item_layout, parent, false);
-        return new VerticalVideoViewHolder(itemLayoutBinding);
+        return new VerticalAlbumsViewHolder(itemLayoutBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VerticalVideoViewHolder holder, int position) {
-        holder.bindData(videoList.get(position));
+    public void onBindViewHolder(@NonNull VerticalAlbumsViewHolder holder, int position) {
+        holder.bindData(albumList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return videoList.size();
+        return albumList.size();
     }
 
-    public void updateList(List<Video> videos) {
-        videoList = videos;
+    public void updateList(List<Album> albums) {
+        albumList = albums;
         notifyDataSetChanged();
     }
 
-    static class VerticalVideoViewHolder extends RecyclerView.ViewHolder {
+    static class VerticalAlbumsViewHolder extends RecyclerView.ViewHolder {
 
         VerticalItemLayoutBinding itemLayoutBinding;
 
-        public VerticalVideoViewHolder(VerticalItemLayoutBinding itemLayoutBinding) {
+        public VerticalAlbumsViewHolder(VerticalItemLayoutBinding itemLayoutBinding) {
             super(itemLayoutBinding.getRoot());
             this.itemLayoutBinding = itemLayoutBinding;
         }
 
-        private void bindData(Video video) {
+        private void bindData(Album album) {
             Glide.with(itemLayoutBinding.getRoot().getContext())
-                    .load(video.getCover())
+                    .load(album.getCover())
                     .thumbnail(
                             Glide.with(itemLayoutBinding.getRoot().getContext())
                                     .load(R.drawable.loading)
@@ -68,8 +68,8 @@ public class VerticalVideoAdapter extends RecyclerView.Adapter<VerticalVideoAdap
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .override(150, 150)
                     .into(itemLayoutBinding.verticalItemImageView);
-            itemLayoutBinding.verticalItemNameTextView.setText(video.getName());
-            itemLayoutBinding.verticalItemArtistTextView.setText(video.getArtist());
+            itemLayoutBinding.verticalItemNameTextView.setText(album.getName());
+            itemLayoutBinding.verticalItemArtistTextView.setText(album.getArtist());
             itemLayoutBinding.executePendingBindings();
         }
     }

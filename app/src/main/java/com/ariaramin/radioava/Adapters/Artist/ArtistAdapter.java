@@ -1,10 +1,14 @@
 package com.ariaramin.radioava.Adapters.Artist;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ariaramin.radioava.Models.Artist;
@@ -18,24 +22,25 @@ import java.util.List;
 
 public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder> {
 
-    HorizontalArtistItemLayoutBinding artistItemLayoutBinding;
     List<Artist> artistList;
+    String TAG;
 
-    public ArtistAdapter(List<Artist> artists) {
-        this.artistList = artists;
+    public ArtistAdapter(List<Artist> artistList, String TAG) {
+        this.artistList = artistList;
+        this.TAG = TAG;
     }
 
     @NonNull
     @Override
     public ArtistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        artistItemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.horizontal_artist_item_layout, parent, false);
+        HorizontalArtistItemLayoutBinding artistItemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.horizontal_artist_item_layout, parent, false);
         return new ArtistViewHolder(artistItemLayoutBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ArtistViewHolder holder, int position) {
-        holder.bindData(artistList.get(position));
+        holder.bindData(artistList.get(position), TAG);
     }
 
     @Override
@@ -57,7 +62,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
             this.artistItemLayoutBinding = artistItemLayoutBinding;
         }
 
-        private void bindData(Artist artist) {
+        private void bindData(Artist artist, String TAG) {
             Glide.with(artistItemLayoutBinding.getRoot().getContext())
                     .load(artist.getImage())
                     .thumbnail(
@@ -69,6 +74,25 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
                     .override(300, 300)
                     .into(artistItemLayoutBinding.horizontalArtistImageView);
             artistItemLayoutBinding.horizontalArtistNameTextView.setText(artist.getName());
+            artistItemLayoutBinding.horizontalArtistCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("Artist", artist);
+                    switch (TAG) {
+                        case "home":
+                            Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_detailArtistFragment, bundle);
+                            break;
+                        case "artists":
+                            Navigation.findNavController(v).navigate(R.id.action_artistsFragment_to_detailArtistFragment, bundle);
+                            break;
+                        case "browser":
+                            Navigation.findNavController(v).navigate(R.id.action_browseFragment_to_detailArtistFragment, bundle);
+                            break;
+                    }
+                }
+            });
+            artistItemLayoutBinding.executePendingBindings();
         }
     }
 }

@@ -44,6 +44,7 @@ public class ArtistsFragment extends Fragment {
     FragmentArtistsBinding artistsBinding;
     MainViewModel mainViewModel;
     CompositeDisposable compositeDisposable;
+    private static final String TAG = "artists";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,8 +54,14 @@ public class ArtistsFragment extends Fragment {
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         compositeDisposable = new CompositeDisposable();
 
-        getAllArtists();
+//        getAllArtists();
         return artistsBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getAllArtists();
     }
 
     private void getAllArtists() {
@@ -68,7 +75,7 @@ public class ArtistsFragment extends Fragment {
 
                         if (!artists.isEmpty()) {
                             List<Artist> topFourArtists = artists.subList(0, 4);
-                            List<Artist> topArtists = artists.subList(4, 34);
+                            List<Artist> topArtists = artists.subList(4, 19);
 
                             setTopArtistsImage(topFourArtists);
 
@@ -91,12 +98,13 @@ public class ArtistsFragment extends Fragment {
                             });
 
                             if (artistsBinding.topArtistsRecyclerView.getAdapter() == null) {
-                                VerticalArtistAdapter artistAdapter = new VerticalArtistAdapter(topArtists);
+                                VerticalArtistAdapter artistAdapter = new VerticalArtistAdapter(topArtists, TAG);
                                 artistsBinding.topArtistsRecyclerView.setAdapter(artistAdapter);
                             } else {
                                 VerticalArtistAdapter adapter = (VerticalArtistAdapter) artistsBinding.topArtistsRecyclerView.getAdapter();
                                 adapter.updateList(topArtists);
                             }
+                            artistsBinding.topArtistsRecyclerView.setHasFixedSize(false);
                         }
 
                         if (artists.isEmpty()) {
@@ -138,47 +146,50 @@ public class ArtistsFragment extends Fragment {
     }
 
     private void setCurrentArtist(int position) {
-        ArrayList<ImageView> imageViews = new ArrayList<>();
-        imageViews.add(artistsBinding.firstArtistImageView);
-        imageViews.add(artistsBinding.secondArtistImageView);
-        imageViews.add(artistsBinding.thirdArtistImageView);
-        imageViews.add(artistsBinding.fourthArtistImageView);
+        ImageView[] imageViews = {
+                artistsBinding.firstArtistImageView,
+                artistsBinding.secondArtistImageView,
+                artistsBinding.thirdArtistImageView,
+                artistsBinding.fourthArtistImageView
+        };
 
-        ArrayList<MaterialCardView> cardViews = new ArrayList<>();
-        cardViews.add(artistsBinding.firstArtistCardView);
-        cardViews.add(artistsBinding.secondArtistCardView);
-        cardViews.add(artistsBinding.thirdArtistCardView);
-        cardViews.add(artistsBinding.fourthArtistCardView);
+        MaterialCardView[] cardViews = {
+                artistsBinding.firstArtistCardView,
+                artistsBinding.secondArtistCardView,
+                artistsBinding.thirdArtistCardView,
+                artistsBinding.fourthArtistCardView
+        };
 
         ColorMatrix matrix = new ColorMatrix();
 
-        for (int i = 0; i < imageViews.size(); i++) {
+        for (int i = 0; i < imageViews.length; i++) {
             if (i == position) {
                 matrix.setSaturation(1);
                 ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                imageViews.get(i).setColorFilter(filter);
-                cardViews.get(i).setStrokeWidth(3);
+                imageViews[i].setColorFilter(filter);
+                cardViews[i].setStrokeWidth(3);
             } else {
                 matrix.setSaturation(0);
                 ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                imageViews.get(i).setColorFilter(filter);
-                cardViews.get(i).setStrokeWidth(0);
+                imageViews[i].setColorFilter(filter);
+                cardViews[i].setStrokeWidth(0);
             }
         }
     }
 
     private void setTopArtistsImage(List<Artist> artists) {
-        ArrayList<ImageView> imageViews = new ArrayList<>();
-        imageViews.add(artistsBinding.firstArtistImageView);
-        imageViews.add(artistsBinding.secondArtistImageView);
-        imageViews.add(artistsBinding.thirdArtistImageView);
-        imageViews.add(artistsBinding.fourthArtistImageView);
+        ImageView[] imageViews = {
+                artistsBinding.firstArtistImageView,
+                artistsBinding.secondArtistImageView,
+                artistsBinding.thirdArtistImageView,
+                artistsBinding.fourthArtistImageView
+        };
 
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
 
-        for (int i = 0; i < imageViews.size(); i++) {
+        for (int i = 0; i < imageViews.length; i++) {
             Glide.with(artistsBinding.getRoot().getContext())
                     .load(artists.get(i).getImage())
                     .thumbnail(
@@ -187,11 +198,16 @@ public class ArtistsFragment extends Fragment {
                     )
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .override(300, 300)
-                    .into(imageViews.get(i));
+                    .override(200, 200)
+                    .into(imageViews[i]);
 
-            imageViews.get(i).setColorFilter(filter);
+            imageViews[i].setColorFilter(filter);
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
+    }
 }

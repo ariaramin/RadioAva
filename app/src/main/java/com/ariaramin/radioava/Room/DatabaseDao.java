@@ -28,12 +28,20 @@ public interface DatabaseDao {
     Flowable<List<Music>> readAllMusics();
 
     @Transaction
+    @Query("SELECT * FROM music_tbl WHERE artist LIKE '%' || :artist || '%' AND album IS NULL ORDER BY releaseDate DESC")
+    Flowable<List<Music>> readArtistMusics(String artist);
+
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAlbums(List<Album> albumList);
 
     @Transaction
     @Query("SELECT * FROM album_tbl ORDER BY releaseDate DESC")
     Flowable<List<Album>> readAllAlbums();
+
+    @Transaction
+    @Query("SELECT * FROM album_tbl WHERE artist LIKE '%' || :artist || '%' ORDER BY releaseDate DESC")
+    Flowable<List<Album>> readArtistAlbums(String artist);
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -50,4 +58,8 @@ public interface DatabaseDao {
     @Transaction
     @Query("SELECT * FROM video_tbl ORDER BY releaseDate DESC")
     Flowable<List<Video>> readAllVideos();
+
+    @Transaction
+    @Query("SELECT * FROM video_tbl WHERE artist LIKE '%' || :artist || '%' ORDER BY releaseDate DESC")
+    Flowable<List<Video>> readArtistVideos(String artist);
 }

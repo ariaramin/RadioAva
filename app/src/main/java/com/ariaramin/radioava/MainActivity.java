@@ -13,6 +13,7 @@ import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ariaramin.radioava.Models.Album;
@@ -20,6 +21,7 @@ import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     ConnectivityManager connectivityManager;
     @Inject
     NetworkRequest networkRequest;
+    public BottomNavigationView bottomNavigationView;
+    public ImageView homeImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         compositeDisposable = new CompositeDisposable();
+        bottomNavigationView = mainBinding.bottomNavigationView;
+        homeImageView = mainBinding.homeIcon;
 
         checkNetworkConnection();
         setupBottomNavigationView();

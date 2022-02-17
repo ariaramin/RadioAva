@@ -7,289 +7,254 @@
 
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/frameLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/secondaryDarkColor"
-        tools:context=".ui.Fragments.ArtistsFragment">
+        android:fillViewport="true"
+        tools:context=".ui.Fragments.ArtistsFragment"
+        tools:ignore="ScrollViewCount">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/appbar_bg"
+                android:paddingStart="12dp"
+                android:paddingTop="26dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="16dp"
+                app:contentInsetStart="0dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout6"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        style="@style/pageTitleTextAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/artists"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton2"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/circular_button_bg"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_user" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton3"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/circular_button_bg"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
+                        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+                        app:layout_constraintTop_toTopOf="@+id/imageButton2"
+                        app:srcCompat="@drawable/ic_search" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout17"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="74dp">
+
+
+                    <com.smarteist.autoimageslider.SliderView
+                        android:id="@+id/artistSliderView"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:sliderAnimationDuration="600"
+                        app:sliderAutoCycleDirection="back_and_forth"
+                        app:sliderAutoCycleEnabled="true"
+                        app:sliderIndicatorAnimationDuration="600"
+                        app:sliderIndicatorGravity="center_horizontal|bottom"
+                        app:sliderIndicatorMargin="15dp"
+                        app:sliderIndicatorOrientation="horizontal"
+                        app:sliderIndicatorPadding="3dp"
+                        app:sliderIndicatorRadius="1.5dp"
+                        app:sliderIndicatorSelectedColor="@color/primaryColor"
+                        app:sliderIndicatorUnselectedColor="@color/grey"
+                        app:sliderScrollTimeInSec="1"
+                        app:sliderStartAutoCycle="true" />
+
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        android:id="@+id/artistSliderSpinKit"
+                        style="@style/SpinKitView.ThreeBounce"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        app:SpinKit_Color="@color/white"
+                        app:layout_constraintBottom_toBottomOf="@+id/artistSliderView"
+                        app:layout_constraintEnd_toEndOf="@+id/artistSliderView"
+                        app:layout_constraintStart_toStartOf="@+id/artistSliderView"
+                        app:layout_constraintTop_toTopOf="@+id/artistSliderView" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:weightSum="4"
+                        app:layout_constraintBottom_toBottomOf="@+id/artistSliderView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/artistSliderView">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/firstArtistCardView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="56dp"
+                            app:strokeColor="@color/primaryColor">
+
+                            <ImageView
+                                android:id="@+id/firstArtistImageView"
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"
+                                android:scaleType="centerCrop"
+                                tools:src="@tools:sample/avatars" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/secondArtistCardView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="56dp"
+                            app:strokeColor="@color/primaryColor">
+
+                            <ImageView
+                                android:id="@+id/secondArtistImageView"
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"
+                                android:scaleType="centerCrop"
+                                tools:src="@tools:sample/avatars" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/thirdArtistCardView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="56dp"
+                            app:strokeColor="@color/primaryColor">
+
+                            <ImageView
+                                android:id="@+id/thirdArtistImageView"
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"
+                                android:scaleType="centerCrop"
+                                tools:src="@tools:sample/avatars" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/fourthArtistCardView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="56dp"
+                            app:strokeColor="@color/primaryColor">
+
+                            <ImageView
+                                android:id="@+id/fourthArtistImageView"
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"
+                                android:scaleType="centerCrop"
+                                tools:src="@tools:sample/avatars" />
+
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
+            <TextView
+                android:id="@+id/textView10"
+                style="@style/boldTitleTextAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/top"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout6"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="26dp"
-                android:layout_marginEnd="12dp"
+            <TextView
+                android:id="@+id/textView11"
+                style="@style/lightTitleTextAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/artists"
+                app:layout_constraintBottom_toBottomOf="@id/textView10"
+                app:layout_constraintStart_toEndOf="@+id/textView10"
+                app:layout_constraintTop_toTopOf="@+id/textView10" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/topArtistsRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:nestedScrollingEnabled="true"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/textView8"
-                    style="@style/pageTitleTextAppearance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/artists"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/imageButton2"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/circular_button_bg"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_user" />
-
-                <ImageButton
-                    android:id="@+id/imageButton3"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="12dp"
-                    android:background="@drawable/circular_button_bg"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
-                    app:layout_constraintEnd_toStartOf="@+id/imageButton2"
-                    app:layout_constraintTop_toTopOf="@+id/imageButton2"
-                    app:srcCompat="@drawable/ic_search" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.smarteist.autoimageslider.SliderView
-                android:id="@+id/artistSliderView"
-                android:layout_width="0dp"
-                android:layout_height="368dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout6"
-                app:sliderAnimationDuration="600"
-                app:sliderAutoCycleDirection="back_and_forth"
-                app:sliderAutoCycleEnabled="true"
-                app:sliderIndicatorAnimationDuration="600"
-                app:sliderIndicatorGravity="center_horizontal|bottom"
-                app:sliderIndicatorMargin="15dp"
-                app:sliderIndicatorOrientation="horizontal"
-                app:sliderIndicatorPadding="3dp"
-                app:sliderIndicatorRadius="1.5dp"
-                app:sliderIndicatorSelectedColor="@color/primaryColor"
-                app:sliderIndicatorUnselectedColor="@color/grey"
-                app:sliderScrollTimeInSec="1"
-                app:sliderStartAutoCycle="true" />
+                app:layout_constraintTop_toBottomOf="@+id/textView10"
+                tools:listitem="@layout/vertical_artist_item_layout" />
 
             <com.github.ybq.android.spinkit.SpinKitView
-                android:id="@+id/artistSliderSpinKit"
+                android:id="@+id/topArtistSpinKit"
                 style="@style/SpinKitView.ThreeBounce"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
                 app:SpinKit_Color="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/artistSliderView"
-                app:layout_constraintEnd_toEndOf="@+id/artistSliderView"
-                app:layout_constraintStart_toStartOf="@+id/artistSliderView"
-                app:layout_constraintTop_toTopOf="@+id/artistSliderView" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginEnd="12dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@+id/artistSliderView"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/artistSliderView">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/firstArtistCardView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="56dp"
-                    app:strokeColor="@color/primaryColor">
-
-                    <ImageView
-                        android:id="@+id/firstArtistImageView"
-                        android:layout_width="86dp"
-                        android:layout_height="86dp"
-                        android:scaleType="centerCrop"
-                        tools:src="@tools:sample/avatars" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/secondArtistCardView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="56dp"
-                    app:strokeColor="@color/primaryColor">
-
-                    <ImageView
-                        android:id="@+id/secondArtistImageView"
-                        android:layout_width="86dp"
-                        android:layout_height="86dp"
-                        android:scaleType="centerCrop"
-                        tools:src="@tools:sample/avatars" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/thirdArtistCardView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="56dp"
-                    app:strokeColor="@color/primaryColor">
-
-                    <ImageView
-                        android:id="@+id/thirdArtistImageView"
-                        android:layout_width="86dp"
-                        android:layout_height="86dp"
-                        android:scaleType="centerCrop"
-                        tools:src="@tools:sample/avatars" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/fourthArtistCardView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="56dp"
-                    app:strokeColor="@color/primaryColor">
-
-                    <ImageView
-                        android:id="@+id/fourthArtistImageView"
-                        android:layout_width="86dp"
-                        android:layout_height="86dp"
-                        android:scaleType="centerCrop"
-                        tools:src="@tools:sample/avatars" />
-
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-                app:layout_constraintStart_toStartOf="@+id/artistSliderView"
-                app:layout_constraintTop_toBottomOf="@+id/artistSliderView">
-
-                <TextView
-                    android:id="@+id/textView10"
-                    style="@style/boldTitleTextAppearance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/top"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView11"
-                    style="@style/lightTitleTextAppearance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/artists"
-                    app:layout_constraintBottom_toBottomOf="@id/textView10"
-                    app:layout_constraintStart_toEndOf="@+id/textView10"
-                    app:layout_constraintTop_toTopOf="@+id/textView10" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/topArtistsRecyclerView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-                <com.github.ybq.android.spinkit.SpinKitView
-                    android:id="@+id/topArtistSpinKit"
-                    style="@style/SpinKitView.ThreeBounce"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    app:SpinKit_Color="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/topArtistsRecyclerView" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--                android:id="@+id/constraintLayout12"-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="18dp"-->
-            <!--                app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"-->
-            <!--                app:layout_constraintStart_toStartOf="@+id/constraintLayout3"-->
-            <!--                app:layout_constraintTop_toBottomOf="@id/constraintLayout3">-->
-
-            <!--                <TextView-->
-            <!--                    android:id="@+id/textView9"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:fontFamily="@font/circular_std_bold"-->
-            <!--                    android:text="@string/must"-->
-            <!--                    android:textColor="@color/white"-->
-            <!--                    android:textSize="20sp"-->
-            <!--                    android:textStyle="bold"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    app:layout_constraintTop_toTopOf="parent" />-->
-
-            <!--                <TextView-->
-            <!--                    android:id="@+id/textView13"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_marginStart="8dp"-->
-            <!--                    android:fontFamily="@font/circular_std_light"-->
-            <!--                    android:text="@string/follow"-->
-            <!--                    android:textColor="@color/white"-->
-            <!--                    android:textSize="20sp"-->
-            <!--                    app:layout_constraintBottom_toBottomOf="@+id/textView9"-->
-            <!--                    app:layout_constraintStart_toEndOf="@+id/textView9"-->
-            <!--                    app:layout_constraintTop_toTopOf="@+id/textView9" />-->
-
-            <!--                <androidx.recyclerview.widget.RecyclerView-->
-            <!--                    android:id="@+id/moreArtistRecyclerView"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_marginTop="12dp"-->
-            <!--                    android:orientation="horizontal"-->
-            <!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    app:layout_constraintTop_toBottomOf="@+id/textView9" />-->
-
-            <!--                <com.github.ybq.android.spinkit.SpinKitView-->
-            <!--                    android:id="@+id/moreArtistSpinKit"-->
-            <!--                    style="@style/SpinKitView.ThreeBounce"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:visibility="visible"-->
-            <!--                    app:SpinKit_Color="@color/white"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    app:layout_constraintTop_toTopOf="@+id/moreArtistRecyclerView" />-->
-            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/topArtistsRecyclerView"
+                app:layout_constraintVertical_bias="0.2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

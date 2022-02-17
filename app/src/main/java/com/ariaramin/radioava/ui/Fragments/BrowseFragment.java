@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class BrowseFragment extends Fragment {
     FragmentBrowseBinding browseBinding;
     MainViewModel mainViewModel;
     CompositeDisposable compositeDisposable;
+    private static final String TAG = "browser";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,16 +62,11 @@ public class BrowseFragment extends Fragment {
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         compositeDisposable = new CompositeDisposable();
 
-        return browseBinding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         getLatestMusics();
         getPopularVideos();
         getLatestAlbums();
         getTopArtist();
+        return browseBinding.getRoot();
     }
 
     private void getTopArtist() {
@@ -85,7 +82,7 @@ public class BrowseFragment extends Fragment {
                             List<Artist> topArtists = artists.subList(0, 15);
 
                             if (browseBinding.mustFollowRecyclerView.getAdapter() == null) {
-                                ArtistAdapter artistAdapter = new ArtistAdapter(topArtists);
+                                ArtistAdapter artistAdapter = new ArtistAdapter(topArtists, TAG);
                                 browseBinding.mustFollowRecyclerView.setAdapter(artistAdapter);
                             } else {
                                 ArtistAdapter adapter = (ArtistAdapter) browseBinding.mustFollowRecyclerView.getAdapter();
@@ -213,10 +210,8 @@ public class BrowseFragment extends Fragment {
                     public void accept(List<Music> musics) throws Throwable {
 
                         if (!musics.isEmpty()) {
-                            List<Music> topThreeMusics = musics.subList(0, 3);
-                            List<Music> latestMusics = musics.subList(3, 18);
-
-                            setTopMusicsImage(topThreeMusics);
+                            List<Music> topThreeMusics = musics.subList(0, 5);
+                            List<Music> latestMusics = musics.subList(5, 20);
 
                             if (browseBinding.latestMusicsSliderView.getSliderAdapter() == null) {
                                 SliderAdapter sliderAdapter = new SliderAdapter(topThreeMusics);
@@ -229,12 +224,6 @@ public class BrowseFragment extends Fragment {
                             browseBinding.latestMusicsSliderView.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
                             browseBinding.latestMusicsSliderView.setScrollTimeInSec(5);
                             browseBinding.latestMusicsSliderView.startAutoCycle();
-                            browseBinding.latestMusicsSliderView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                                @Override
-                                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                                    setCurrentMusic(browseBinding.latestMusicsSliderView.getCurrentPagePosition());
-                                }
-                            });
 
                             if (browseBinding.latestMusicsRecyclerView.getAdapter() == null) {
                                 MusicAdapter musicAdapter = new MusicAdapter(latestMusics);
@@ -267,57 +256,9 @@ public class BrowseFragment extends Fragment {
         return latest;
     }
 
-    private void setCurrentMusic(int position) {
-        ArrayList<ImageView> imageViews = new ArrayList<>();
-        imageViews.add(browseBinding.firstMusicImageView);
-        imageViews.add(browseBinding.secondMusicImageView);
-        imageViews.add(browseBinding.thirdMusicImageView);
-
-        ArrayList<MaterialCardView> cardViews = new ArrayList<>();
-        cardViews.add(browseBinding.firstMusicCardView);
-        cardViews.add(browseBinding.secondMusicCardView);
-        cardViews.add(browseBinding.thirdMusicCardView);
-
-        ColorMatrix matrix = new ColorMatrix();
-
-        for (int i = 0; i < imageViews.size(); i++) {
-            if (i == position) {
-                matrix.setSaturation(1);
-                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                imageViews.get(i).setColorFilter(filter);
-                cardViews.get(i).setStrokeWidth(3);
-            } else {
-                matrix.setSaturation(0);
-                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                imageViews.get(i).setColorFilter(filter);
-                cardViews.get(i).setStrokeWidth(0);
-            }
-        }
-    }
-
-    private void setTopMusicsImage(List<Music> musics) {
-        ArrayList<ImageView> imageViews = new ArrayList<>();
-        imageViews.add(browseBinding.firstMusicImageView);
-        imageViews.add(browseBinding.secondMusicImageView);
-        imageViews.add(browseBinding.thirdMusicImageView);
-
-        ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation(0);
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-
-        for (int i = 0; i < imageViews.size(); i++) {
-            Glide.with(browseBinding.getRoot().getContext())
-                    .load(musics.get(i).getCover())
-                    .thumbnail(
-                            Glide.with(browseBinding.getRoot().getContext())
-                                    .load(R.drawable.loading)
-                    )
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .override(300, 300)
-                    .into(imageViews.get(i));
-
-            imageViews.get(i).setColorFilter(filter);
-        }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 }
