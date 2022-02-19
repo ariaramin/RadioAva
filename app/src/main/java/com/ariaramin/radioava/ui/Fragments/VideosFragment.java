@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,12 @@ public class VideosFragment extends Fragment {
         videosBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_videos, container, false);
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         compositeDisposable = new CompositeDisposable();
-
+        videosBinding.searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_videosFragment_to_searchFragment);
+            }
+        });
         return videosBinding.getRoot();
     }
 
@@ -114,15 +120,18 @@ public class VideosFragment extends Fragment {
         return videos;
     }
 
-    private int convertStringToInt(String likes) {
-        if (likes.contains("K")) {
-            String str = likes.replace("K", "");
+    private int convertStringToInt(String string) {
+        if (string.contains("B")) {
+            String str = string.replace("B", "");
             return (int) Double.parseDouble(str);
-        } else if (likes.contains("M")) {
-            String str = likes.replace("M", "");
+        } else if (string.contains("M")) {
+            String str = string.replace("M", "");
+            return (int) Double.parseDouble(str);
+        } else if (string.contains("K")) {
+            String str = string.replace("K", "");
             return (int) Double.parseDouble(str);
         }
-        return (int) Double.parseDouble(likes);
+        return (int) Double.parseDouble(string);
     }
 
     @Override

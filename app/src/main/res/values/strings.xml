@@ -34,4 +34,5 @@
     <string name="total_musics">Total Musics</string>
     <string name="followers">Followers</string>
     <string name="plays">Plays</string>
+    <string name="search">Search Music, Video, Artist</string>
 </resources>

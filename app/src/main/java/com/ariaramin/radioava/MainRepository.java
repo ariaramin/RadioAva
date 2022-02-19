@@ -73,6 +73,10 @@ public class MainRepository {
         return databaseDao.readArtistMusics(artist);
     }
 
+    public Flowable<List<Music>> searchInMusicsFromDb(String query) {
+        return databaseDao.searchInMusics(query);
+    }
+
     ///////////////////////////////////// Album
 
     public Observable<List<Album>> getAllAlbums() {
@@ -109,6 +113,10 @@ public class MainRepository {
         return databaseDao.readArtistAlbums(artist);
     }
 
+    public Flowable<List<Album>> searchInAlbumsFromDb(String query) {
+        return databaseDao.searchInAlbums(query);
+    }
+
 
     ////////////////////////////////////// Artist
 
@@ -140,6 +148,10 @@ public class MainRepository {
 
     public Flowable<List<Artist>> getAllArtistsFromDb() {
         return databaseDao.readAllArtists();
+    }
+
+    public Flowable<List<Artist>> searchInArtistsFromDb(String query) {
+        return databaseDao.searchInArtists(query);
     }
 
 
@@ -176,6 +188,10 @@ public class MainRepository {
 
     public Flowable<List<Video>> getArtistVideosFromDb(String artist) {
         return databaseDao.readArtistVideos(artist);
+    }
+
+    public Flowable<List<Video>> searchInVideosFromDb(String query) {
+        return databaseDao.searchInVideos(query);
     }
 
 }

@@ -58,6 +58,10 @@ public class MainViewModel extends AndroidViewModel {
         return mainRepository.getAllMusicsFromDb();
     }
 
+    public Flowable<List<Music>> searchInMusicsFromDb(String query) {
+        return mainRepository.searchInMusicsFromDb(query);
+    }
+
     public Flowable<List<Music>> getArtistMusicsFromDb(String artist) {
         return mainRepository.getArtistMusicsFromDb(artist);
     }
@@ -80,6 +84,10 @@ public class MainViewModel extends AndroidViewModel {
         return mainRepository.getArtistAlbumsFromDb(artist);
     }
 
+    public Flowable<List<Album>> searchInAlbumsFromDb(String query) {
+        return mainRepository.searchInAlbumsFromDb(query);
+    }
+
     //////////////////////////// Artist
 
     public Observable<List<Artist>> getAllArtists() {
@@ -92,6 +100,10 @@ public class MainViewModel extends AndroidViewModel {
 
     public Flowable<List<Artist>> getAllArtistsFromDb() {
         return mainRepository.getAllArtistsFromDb();
+    }
+
+    public Flowable<List<Artist>> searchInArtistsFromDb(String query) {
+        return mainRepository.searchInArtistsFromDb(query);
     }
 
     /////////////////////////// Video
@@ -110,6 +122,10 @@ public class MainViewModel extends AndroidViewModel {
 
     public Flowable<List<Video>> getArtistVideosFromDb(String artist) {
         return mainRepository.getArtistVideosFromDb(artist);
+    }
+
+    public Flowable<List<Video>> searchInVideosFromDb(String query) {
+        return mainRepository.searchInVideosFromDb(query);
     }
 
 }

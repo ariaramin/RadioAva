@@ -19,6 +19,7 @@ import io.reactivex.rxjava3.core.Flowable;
 @Dao
 public interface DatabaseDao {
 
+    ////////////////////////////////////////////////////////////// Music
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMusics(List<Music> musicList);
@@ -28,9 +29,14 @@ public interface DatabaseDao {
     Flowable<List<Music>> readAllMusics();
 
     @Transaction
-    @Query("SELECT * FROM music_tbl WHERE artist LIKE '%' || :artist || '%' AND album IS NULL ORDER BY releaseDate DESC")
+    @Query("SELECT * FROM music_tbl WHERE name LIKE '%' || :query || '%' LIMIT 20")
+    Flowable<List<Music>> searchInMusics(String query);
+
+    @Transaction
+    @Query("SELECT * FROM music_tbl WHERE artist LIKE '%' || :artist || '%' COLLATE SQL_Latin1_General_CP1_CS_AS AND album IS NULL ORDER BY releaseDate DESC")
     Flowable<List<Music>> readArtistMusics(String artist);
 
+    /////////////////////////////////////////////////////////// Album
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAlbums(List<Album> albumList);
@@ -40,17 +46,27 @@ public interface DatabaseDao {
     Flowable<List<Album>> readAllAlbums();
 
     @Transaction
-    @Query("SELECT * FROM album_tbl WHERE artist LIKE '%' || :artist || '%' ORDER BY releaseDate DESC")
+    @Query("SELECT * FROM album_tbl WHERE name LIKE '%' || :query || '%' LIMIT 20")
+    Flowable<List<Album>> searchInAlbums(String query);
+
+    @Transaction
+    @Query("SELECT * FROM album_tbl WHERE artist LIKE '%' || :artist || '%' COLLATE SQL_Latin1_General_CP1_CS_AS ORDER BY releaseDate DESC")
     Flowable<List<Album>> readArtistAlbums(String artist);
 
+    //////////////////////////////////////////////////////////// Artist
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertArtists(List<Artist> artistList);
 
     @Transaction
+    @Query("SELECT * FROM artist_tbl WHERE name LIKE '%' || :query || '%' LIMIT 20")
+    Flowable<List<Artist>> searchInArtists(String query);
+
+    @Transaction
     @Query("SELECT * FROM artist_tbl")
     Flowable<List<Artist>> readAllArtists();
 
+    //////////////////////////////////////////////////////////// Video
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertVideos(List<Video> videoList);
@@ -60,6 +76,10 @@ public interface DatabaseDao {
     Flowable<List<Video>> readAllVideos();
 
     @Transaction
-    @Query("SELECT * FROM video_tbl WHERE artist LIKE '%' || :artist || '%' ORDER BY releaseDate DESC")
+    @Query("SELECT * FROM video_tbl WHERE name LIKE '%' || :query || '%' LIMIT 20")
+    Flowable<List<Video>> searchInVideos(String query);
+
+    @Transaction
+    @Query("SELECT * FROM video_tbl WHERE artist LIKE '%' || :artist || '%' COLLATE SQL_Latin1_General_CP1_CS_AS ORDER BY releaseDate DESC")
     Flowable<List<Video>> readArtistVideos(String artist);
 }

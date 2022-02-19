@@ -38,10 +38,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/slider_item_gradient"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="@id/cardView3"
+            app:layout_constraintEnd_toEndOf="@id/cardView3"
+            app:layout_constraintStart_toStartOf="@id/cardView3"
+            app:layout_constraintTop_toTopOf="@id/cardView3" />
 
 <!--        <TextView-->
 <!--            android:id="@+id/sliderNameTextView"-->

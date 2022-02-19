@@ -11,6 +11,7 @@
         <entry key="app/src/main/res/drawable/circular_button_bg.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/cricular_button_bg.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/divider_bg.xml" value="0.1995" />
+        <entry key="app/src/main/res/drawable/field_bg.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/ic_album.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/ic_back_stack.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/ic_browse.xml" value="0.2" />
@@ -43,7 +44,9 @@
         <entry key="app/src/main/res/layout/fragment_detail_artist.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_my_music.xml" value="0.33645833333333336" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/fragment_videos.xml" value="0.33645833333333336" />
+        <entry key="app/src/main/res/layout/header_layout.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/horizontal_artist_item_layout.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/horizontal_item_layout.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/horizontal_video_item_layout.xml" value="0.33645833333333336" />
@@ -56,6 +59,11 @@
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.33645833333333336" />
       </map>
     </option>
+  </component>
+  <component name="EntryPointsManager">
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="androidx.room.Query" />
+    </list>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

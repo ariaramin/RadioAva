@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_browseFragment_to_detailArtistFragment"
             app:destination="@id/detailArtistFragment" />
+        <action
+            android:id="@+id/action_browseFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/artistsFragment"
@@ -31,6 +34,9 @@
         <action
             android:id="@+id/action_artistsFragment_to_detailArtistFragment"
             app:destination="@id/detailArtistFragment" />
+        <action
+            android:id="@+id/action_artistsFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/myMusicFragment"
@@ -41,10 +47,22 @@
         android:id="@+id/videosFragment"
         android:name="com.ariaramin.radioava.ui.Fragments.VideosFragment"
         android:label="fragment_videos"
-        tools:layout="@layout/fragment_videos" />
+        tools:layout="@layout/fragment_videos" >
+        <action
+            android:id="@+id/action_videosFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailArtistFragment"
         android:name="com.ariaramin.radioava.ui.Fragments.DetailArtistFragment"
         android:label="fragment_detail_artist"
         tools:layout="@layout/fragment_detail_artist" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.SearchFragment"
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_detailArtistFragment"
+            app:destination="@id/detailArtistFragment" />
+    </fragment>
 </navigation>

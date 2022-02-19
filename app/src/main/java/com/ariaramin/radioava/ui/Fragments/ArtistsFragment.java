@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,8 +54,13 @@ public class ArtistsFragment extends Fragment {
         artistsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_artists, container, false);
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         compositeDisposable = new CompositeDisposable();
+        artistsBinding.searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_artistsFragment_to_searchFragment);
+            }
+        });
 
-//        getAllArtists();
         return artistsBinding.getRoot();
     }
 
