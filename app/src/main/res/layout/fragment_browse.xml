@@ -128,7 +128,7 @@
                     app:layout_constraintTop_toTopOf="@+id/textView19" />
 
                 <TextView
-                    android:id="@+id/textView21"
+                    android:id="@+id/seeMoreMusicsTextView"
                     style="@style/seeMoreTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -249,7 +249,7 @@
                     app:layout_constraintTop_toTopOf="@+id/textView29" />
 
                 <TextView
-                    android:id="@+id/textView31"
+                    android:id="@+id/seeMoreAlbumsTextView"
                     style="@style/seeMoreTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

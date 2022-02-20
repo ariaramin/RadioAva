@@ -38,4 +38,10 @@
         <item name="android:textSize">30sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="Theme.RadioAva.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.RadioAva.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.RadioAva.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

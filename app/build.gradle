@@ -30,6 +30,7 @@ android {
 
     buildFeatures {
         dataBinding true
+        viewBinding true
     }
 }
 
@@ -56,8 +57,9 @@ dependencies {
     // Auto Slider
     implementation 'com.github.smarteist:autoimageslider:1.4.0'
 
-    // Rounded ImageView
-//    implementation 'com.makeramen:roundedimageview:2.3.0'
+    // Lottie
+    def lottieVersion = "4.2.2"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     // Spin Kit
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'

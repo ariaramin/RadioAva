@@ -44,32 +44,5 @@
             app:layout_constraintStart_toStartOf="@id/cardView3"
             app:layout_constraintTop_toTopOf="@id/cardView3" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/sliderNameTextView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="6dp"-->
-<!--            android:fontFamily="@font/circular_std_bold"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="22sp"-->
-<!--            android:textStyle="bold"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/sliderArtistTextView"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            tools:text="Name" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/sliderArtistTextView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="32dp"-->
-<!--            android:fontFamily="@font/circular_std_book"-->
-<!--            android:textColor="@color/grey"-->
-<!--            android:textSize="16sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            tools:text="artist" />-->
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

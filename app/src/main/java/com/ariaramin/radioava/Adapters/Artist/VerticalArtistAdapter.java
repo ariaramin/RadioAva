@@ -75,7 +75,7 @@ public class VerticalArtistAdapter extends RecyclerView.Adapter<VerticalArtistAd
                     .into(itemLayoutBinding.verticalArtistImageView);
             itemLayoutBinding.verticalArtistNameTextView.setText(artist.getName());
             itemLayoutBinding.verticalFollowersTextView.setText(artist.getFollowers());
-            itemLayoutBinding.verticalPlayTextView.setText(artist.getPlays());
+            itemLayoutBinding.verticalPlayTextView.setText(artist.getPlaysCount());
             itemLayoutBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

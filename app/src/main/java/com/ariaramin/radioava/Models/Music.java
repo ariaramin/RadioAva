@@ -27,6 +27,9 @@ public class Music {
     @SerializedName("source")
     public String source;
 
+    @SerializedName("lyric")
+    public String lyric;
+
     @SerializedName("release_year")
     public String releaseDate;
 
@@ -55,6 +58,10 @@ public class Music {
 
     public String getSource() {
         return source;
+    }
+
+    public String getLyric() {
+        return lyric;
     }
 
     public String getReleaseDate() {

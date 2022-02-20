@@ -29,6 +29,14 @@ public interface DatabaseDao {
     Flowable<List<Music>> readAllMusics();
 
     @Transaction
+    @Query("SELECT * FROM music_tbl WHERE type='trending' AND album IS NULL ORDER BY releaseDate DESC")
+    Flowable<List<Music>> readTrendingMusics();
+
+    @Transaction
+    @Query("SELECT * FROM music_tbl WHERE type='popular' AND album IS NULL ORDER BY releaseDate DESC")
+    Flowable<List<Music>> readPopularMusics();
+
+    @Transaction
     @Query("SELECT * FROM music_tbl WHERE name LIKE '%' || :query || '%' LIMIT 20")
     Flowable<List<Music>> searchInMusics(String query);
 
@@ -50,7 +58,7 @@ public interface DatabaseDao {
     Flowable<List<Album>> searchInAlbums(String query);
 
     @Transaction
-    @Query("SELECT * FROM album_tbl WHERE artist LIKE '%' || :artist || '%' COLLATE SQL_Latin1_General_CP1_CS_AS ORDER BY releaseDate DESC")
+    @Query("SELECT * FROM album_tbl WHERE artist LIKE '%' || :artist || '%' COLLATE Latin1_General_CS_AS ORDER BY releaseDate DESC")
     Flowable<List<Album>> readArtistAlbums(String artist);
 
     //////////////////////////////////////////////////////////// Artist
@@ -80,6 +88,6 @@ public interface DatabaseDao {
     Flowable<List<Video>> searchInVideos(String query);
 
     @Transaction
-    @Query("SELECT * FROM video_tbl WHERE artist LIKE '%' || :artist || '%' COLLATE SQL_Latin1_General_CP1_CS_AS ORDER BY releaseDate DESC")
+    @Query("SELECT * FROM video_tbl WHERE artist LIKE '%' || :artist || '%' COLLATE Latin1_General_CS_AS ORDER BY releaseDate DESC")
     Flowable<List<Video>> readArtistVideos(String artist);
 }

@@ -58,6 +58,14 @@ public class MainViewModel extends AndroidViewModel {
         return mainRepository.getAllMusicsFromDb();
     }
 
+    public Flowable<List<Music>> getTrendingMusicsFromDb() {
+        return mainRepository.getTrendingMusicsFromDb();
+    }
+
+    public Flowable<List<Music>> getPopularMusicsFromDb() {
+        return mainRepository.getPopularMusicsFromDb();
+    }
+
     public Flowable<List<Music>> searchInMusicsFromDb(String query) {
         return mainRepository.searchInMusicsFromDb(query);
     }

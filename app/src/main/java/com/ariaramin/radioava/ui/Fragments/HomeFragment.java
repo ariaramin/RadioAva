@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,6 +61,19 @@ public class HomeFragment extends Fragment {
         getNewVideos();
         getPopularArtists();
         getPopularMusics();
+        setupNavigation();
+    }
+
+    private void setupNavigation() {
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_allMusicsFragment);
+            }
+        };
+
+        homeBinding.seeMoreTrendingMusicsTextView.setOnClickListener(clickListener);
+        homeBinding.seeMorePopularMusicsTextView.setOnClickListener(clickListener);
     }
 
     private void getPopularArtists() {
@@ -93,8 +107,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void getPopularMusics() {
-        Disposable disposable = mainViewModel.getAllMusicsFromDb()
-                .map(this::getPopularMusics)
+        Disposable disposable = mainViewModel.getPopularMusicsFromDb()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Music>>() {
@@ -122,16 +135,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
         compositeDisposable.add(disposable);
-    }
-
-    private ArrayList<Music> getPopularMusics(List<Music> musicList) {
-        ArrayList<Music> popular = new ArrayList<>();
-        for (int i = 0; i < musicList.size(); i++) {
-            if (musicList.get(i).getType().equals("popular") && musicList.get(i).getAlbum() == null) {
-                popular.add(musicList.get(i));
-            }
-        }
-        return popular;
     }
 
     private void getNewVideos() {
@@ -165,8 +168,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void getTrendingMusics() {
-        Disposable disposable = mainViewModel.getAllMusicsFromDb()
-                .map(this::getTrendingMusics)
+        Disposable disposable = mainViewModel.getTrendingMusicsFromDb()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Music>>() {
@@ -208,16 +210,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
         compositeDisposable.add(disposable);
-    }
-
-    private ArrayList<Music> getTrendingMusics(List<Music> musicList) {
-        ArrayList<Music> trending = new ArrayList<>();
-        for (int i = 0; i < musicList.size(); i++) {
-            if (musicList.get(i).getType().equals("trending") && musicList.get(i).getAlbum() == null) {
-                trending.add(musicList.get(i));
-            }
-        }
-        return trending;
     }
 
     @Override

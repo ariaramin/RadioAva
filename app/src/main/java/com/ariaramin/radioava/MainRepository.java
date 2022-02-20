@@ -69,6 +69,14 @@ public class MainRepository {
         return databaseDao.readAllMusics();
     }
 
+    public Flowable<List<Music>> getTrendingMusicsFromDb() {
+        return databaseDao.readTrendingMusics();
+    }
+
+    public Flowable<List<Music>> getPopularMusicsFromDb() {
+        return databaseDao.readPopularMusics();
+    }
+
     public Flowable<List<Music>> getArtistMusicsFromDb(String artist) {
         return databaseDao.readArtistMusics(artist);
     }

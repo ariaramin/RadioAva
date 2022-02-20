@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.ariaramin.radioava.Adapters.Video.VerticalVideoAdapter;
 import com.ariaramin.radioava.Adapters.Video.VideoSliderAdapter;
@@ -19,6 +20,9 @@ import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.FragmentVideosBinding;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 
@@ -71,15 +75,18 @@ public class VideosFragment extends Fragment {
                     public void accept(List<Video> videos) throws Throwable {
 
                         if (!videos.isEmpty()) {
-                            List<Video> topThreeVideos = videos.subList(0, 5);
-                            List<Video> mostViewedVideos = videos.subList(5, 20);
+                            List<Video> topFiveVideos = videos.subList(0, 5);
+                            List<Video> mostViewedVideos = videos.subList(7, 22);
+
+                            loadImage(videos.get(5), videosBinding.sixthVideoImageView);
+                            loadImage(videos.get(6), videosBinding.seventhVideoImageView);
 
                             if (videosBinding.videoSliderView.getSliderAdapter() == null) {
-                                VideoSliderAdapter sliderAdapter = new VideoSliderAdapter(topThreeVideos);
+                                VideoSliderAdapter sliderAdapter = new VideoSliderAdapter(topFiveVideos);
                                 videosBinding.videoSliderView.setSliderAdapter(sliderAdapter);
                             } else {
                                 VideoSliderAdapter sliderAdapter = (VideoSliderAdapter) videosBinding.videoSliderView.getSliderAdapter();
-                                sliderAdapter.updateList(topThreeVideos);
+                                sliderAdapter.updateList(topFiveVideos);
                             }
                             videosBinding.videoSliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
                             videosBinding.videoSliderView.setSliderTransformAnimation(SliderAnimations.FADETRANSFORMATION);
@@ -108,30 +115,26 @@ public class VideosFragment extends Fragment {
         compositeDisposable.add(disposable);
     }
 
+    private void loadImage(Video video, ImageView imageView) {
+        Glide.with(videosBinding.getRoot().getContext())
+                .load(video.getCover())
+                .thumbnail(
+                        Glide.with(videosBinding.getRoot().getContext())
+                                .load(R.drawable.loading)
+                )
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .into(imageView);
+    }
+
     private List<Video> sortByViewed(List<Video> videos) {
         Collections.sort(videos, new Comparator<Video>() {
             @Override
             public int compare(Video o1, Video o2) {
-                int o1Views = convertStringToInt(o1.getViews());
-                int o2Views = convertStringToInt(o2.getViews());
-                return Integer.compare(o2Views, o1Views);
+                return Integer.compare(o2.getViews(), o1.getViews());
             }
         });
         return videos;
-    }
-
-    private int convertStringToInt(String string) {
-        if (string.contains("B")) {
-            String str = string.replace("B", "");
-            return (int) Double.parseDouble(str);
-        } else if (string.contains("M")) {
-            String str = string.replace("M", "");
-            return (int) Double.parseDouble(str);
-        } else if (string.contains("K")) {
-            String str = string.replace("K", "");
-            return (int) Double.parseDouble(str);
-        }
-        return (int) Double.parseDouble(string);
     }
 
     @Override

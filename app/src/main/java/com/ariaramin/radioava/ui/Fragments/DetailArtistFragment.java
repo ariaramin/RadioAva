@@ -84,7 +84,7 @@ public class DetailArtistFragment extends Fragment {
             }
         });
         detailArtistBinding.detailArtistFollowersTextView.setText(artist.getFollowers());
-        detailArtistBinding.detailArtistPlaysTextView.setText(artist.getPlays());
+        detailArtistBinding.detailArtistPlaysTextView.setText(artist.getPlaysCount());
     }
 
     private void setupTabLayout() {

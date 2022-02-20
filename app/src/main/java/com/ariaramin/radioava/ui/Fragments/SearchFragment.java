@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +83,10 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 searchMusics(s.toString().toLowerCase(Locale.ROOT));
                 searchAlbums(s.toString().toLowerCase(Locale.ROOT));
                 searchArtists(s.toString().toLowerCase(Locale.ROOT));
@@ -92,11 +97,6 @@ public class SearchFragment extends Fragment {
                 } else {
                     searchBinding.notFoundTextView.setVisibility(View.GONE);
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
             }
         });
     }
@@ -121,6 +121,7 @@ public class SearchFragment extends Fragment {
                             isMusicsEmpty = true;
                         } else {
                             searchBinding.musicsLayout.setVisibility(View.VISIBLE);
+                            isMusicsEmpty = false;
                         }
                     }
                 });
@@ -147,6 +148,7 @@ public class SearchFragment extends Fragment {
                             isAlbumsEmpty = true;
                         } else {
                             searchBinding.albumsLayout.setVisibility(View.VISIBLE);
+                            isAlbumsEmpty = false;
                         }
                     }
                 });
@@ -173,6 +175,7 @@ public class SearchFragment extends Fragment {
                             isArtistsEmpty = true;
                         } else {
                             searchBinding.artistsLayout.setVisibility(View.VISIBLE);
+                            isArtistsEmpty = false;
                         }
                     }
                 });
@@ -199,6 +202,7 @@ public class SearchFragment extends Fragment {
                             isVideosEmpty = true;
                         } else {
                             searchBinding.videosLayout.setVisibility(View.VISIBLE);
+                            isVideosEmpty = false;
                         }
                     }
                 });
@@ -208,6 +212,8 @@ public class SearchFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        mainActivity.homeImageView.setVisibility(View.VISIBLE);
         compositeDisposable.clear();
     }
 }

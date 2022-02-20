@@ -139,4 +139,10 @@ public class ArtistWorksFragment extends Fragment {
                 });
         compositeDisposable.add(disposable);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
+    }
 }

@@ -107,7 +107,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/sliderView">
 
                 <TextView
-                    android:id="@+id/textView15"
+                    android:id="@+id/seeMoreTrendingMusicsTextView"
                     style="@style/seeMoreTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
 
                 <TextView
-                    android:id="@+id/textView16"
+                    android:id="@+id/seeMorePopularMusicsTextView"
                     style="@style/seeMoreTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -30,191 +30,197 @@
                 app:contentInsetStart="0dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <ImageButton
-                    android:id="@+id/backStackButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/circular_button_bg"
-                    android:src="@drawable/ic_back_stack" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="36dp">
+                    android:orientation="vertical">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/materialCardView"
+                    <ImageButton
+                        android:id="@+id/backStackButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="68dp"
-                        app:cardElevation="6dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:background="@drawable/circular_button_bg"
+                        android:src="@drawable/ic_back_stack" />
 
-                        <ImageView
-                            android:id="@+id/detailArtistImageView"
-                            android:layout_width="132dp"
-                            android:layout_height="132dp"
-                            android:scaleType="centerCrop"
-                            tools:src="@tools:sample/avatars" />
-                    </com.google.android.material.card.MaterialCardView>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/detailArtistNameTextView"
-                        style="@style/boldTitleTextAppearance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        app:layout_constraintEnd_toEndOf="@+id/materialCardView"
-                        app:layout_constraintStart_toStartOf="@+id/materialCardView"
-                        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
-                        tools:text="name" />
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal"
-                        android:weightSum="3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/detailArtistNameTextView">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/textView38"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/total_musics"
-                                android:textColor="@color/grey" />
-
-                            <TextView
-                                android:id="@+id/detailArtistMusicCountTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="4dp"
-                                android:textColor="@color/white"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                tools:text="12" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/textView39"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/followers"
-                                android:textColor="@color/grey" />
-
-                            <TextView
-                                android:id="@+id/detailArtistFollowersTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="4dp"
-                                android:textColor="@color/white"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                tools:text="123K" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/textView40"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/plays"
-                                android:textColor="@color/grey" />
-
-                            <TextView
-                                android:id="@+id/detailArtistPlaysTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="4dp"
-                                android:textColor="@color/white"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                tools:text="234M" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <Button
-                        android:id="@+id/button"
-                        android:layout_width="184dp"
-                        android:layout_height="46dp"
-                        android:layout_marginTop="18dp"
-                        android:background="@drawable/button_bg"
-                        android:text="@string/follow"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/detailArtistTabLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="24dp"
-                        android:background="@drawable/tablayout_bg"
-                        android:clipToPadding="true"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/button"
-                        app:tabGravity="fill"
-                        app:tabIconTint="@android:color/transparent"
-                        app:tabIndicator="@drawable/indicator_bg"
-                        app:tabIndicatorGravity="stretch"
-                        app:tabMode="fixed"
-                        app:tabRippleColor="@android:color/transparent"
-                        app:tabSelectedTextColor="@color/white"
-                        app:tabTextColor="@color/grey">
-
-                        <com.google.android.material.tabs.TabItem
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/materialCardView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/musics" />
+                            android:layout_gravity="center"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="68dp"
+                            app:cardElevation="6dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <com.google.android.material.tabs.TabItem
+                            <ImageView
+                                android:id="@+id/detailArtistImageView"
+                                android:layout_width="132dp"
+                                android:layout_height="132dp"
+                                android:scaleType="centerCrop"
+                                tools:src="@tools:sample/avatars" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <TextView
+                            android:id="@+id/detailArtistNameTextView"
+                            style="@style/boldTitleTextAppearance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/albums" />
+                            android:layout_marginTop="6dp"
+                            app:layout_constraintEnd_toEndOf="@+id/materialCardView"
+                            app:layout_constraintStart_toStartOf="@+id/materialCardView"
+                            app:layout_constraintTop_toBottomOf="@+id/materialCardView"
+                            tools:text="name" />
 
-                        <com.google.android.material.tabs.TabItem
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/linearLayout2"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/videos" />
-                    </com.google.android.material.tabs.TabLayout>
+                            android:layout_marginTop="18dp"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/detailArtistNameTextView">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textView38"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:text="@string/total_musics"
+                                    android:textColor="@color/grey" />
+
+                                <TextView
+                                    android:id="@+id/detailArtistMusicCountTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="4dp"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    tools:text="12" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textView39"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:text="@string/followers"
+                                    android:textColor="@color/grey" />
+
+                                <TextView
+                                    android:id="@+id/detailArtistFollowersTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="4dp"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    tools:text="123K" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textView40"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:text="@string/plays"
+                                    android:textColor="@color/grey" />
+
+                                <TextView
+                                    android:id="@+id/detailArtistPlaysTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="4dp"
+                                    android:textColor="@color/white"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    tools:text="234M" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/button"
+                            android:layout_width="184dp"
+                            android:layout_height="46dp"
+                            android:layout_marginTop="18dp"
+                            android:background="@drawable/button_bg"
+                            android:text="@string/follow"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/detailArtistTabLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="56dp"
+                            android:layout_marginTop="24dp"
+                            android:background="@drawable/tablayout_bg"
+                            android:clipToPadding="true"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/button"
+                            app:tabGravity="fill"
+                            app:tabIconTint="@android:color/transparent"
+                            app:tabIndicator="@drawable/indicator_bg"
+                            app:tabIndicatorGravity="stretch"
+                            app:tabMode="fixed"
+                            app:tabRippleColor="@android:color/transparent"
+                            app:tabSelectedTextColor="@color/white"
+                            app:tabTextColor="@color/grey">
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/musics" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/albums" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/videos" />
+                        </com.google.android.material.tabs.TabLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -224,7 +230,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

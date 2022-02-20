@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,26 +130,10 @@ public class ArtistsFragment extends Fragment {
         Collections.sort(artists, new Comparator<Artist>() {
             @Override
             public int compare(Artist o1, Artist o2) {
-                int o2Plays = convertStringToInt(o2.getPlays());
-                int o1Plays = convertStringToInt(o1.getPlays());
-                return Integer.compare(o2Plays, o1Plays);
+                return Integer.compare(o2.getPlays(), o1.getPlays());
             }
         });
         return artists;
-    }
-
-    private int convertStringToInt(String string) {
-        if (string.contains("B")) {
-            String str = string.replace("B", "");
-            return (int) Double.parseDouble(str);
-        } else if (string.contains("M")) {
-            String str = string.replace("M", "");
-            return (int) Double.parseDouble(str);
-        } else if (string.contains("K")) {
-            String str = string.replace("K", "");
-            return (int) Double.parseDouble(str);
-        }
-        return (int) Double.parseDouble(string);
     }
 
     private void setCurrentArtist(int position) {

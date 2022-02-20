@@ -24,14 +24,14 @@ public class Video {
     @SerializedName("source")
     public String source;
 
-    @SerializedName("views_count")
-    public String views;
+    @SerializedName("views")
+    public int views;
 
-    @SerializedName("likes_count")
-    public String likes;
+    @SerializedName("likes")
+    public int likes;
 
-    @SerializedName("dislikes_count")
-    public String dislikes;
+    @SerializedName("dislikes")
+    public int dislikes;
 
     @SerializedName("release_year")
     public String releaseDate;
@@ -59,15 +59,15 @@ public class Video {
         return source;
     }
 
-    public String getViews() {
+    public int getViews() {
         return views;
     }
 
-    public String getLikes() {
+    public int getLikes() {
         return likes;
     }
 
-    public String getDislikes() {
+    public int getDislikes() {
         return dislikes;
     }
 

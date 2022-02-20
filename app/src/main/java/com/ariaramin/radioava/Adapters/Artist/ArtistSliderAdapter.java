@@ -1,10 +1,12 @@
 package com.ariaramin.radioava.Adapters.Artist;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.navigation.Navigation;
@@ -71,7 +73,7 @@ public class ArtistSliderAdapter extends SliderViewAdapter<ArtistSliderAdapter.A
 
             itemLayoutBinding.sliderArtistTextView.setText(artist.getName());
             itemLayoutBinding.sliderFollowersTextView.setText(artist.getFollowers());
-            itemLayoutBinding.sliderPlayTextView.setText(artist.getPlays());
+            itemLayoutBinding.sliderPlayTextView.setText(artist.getPlaysCount());
             itemLayoutBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

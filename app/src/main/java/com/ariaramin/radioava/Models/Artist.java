@@ -25,10 +25,20 @@ public class Artist implements Parcelable {
     public String name;
 
     @SerializedName("plays_count")
-    public String plays;
+    public String playsCount;
+
+    @SerializedName("plays")
+    public int plays;
 
     @SerializedName("followers")
     public String followers;
+
+    @SerializedName("followers_count")
+    public int followersCount;
+
+    public int getId() {
+        return id;
+    }
 
     public String getBackgroundImage() {
         return backgroundImage;
@@ -42,13 +52,22 @@ public class Artist implements Parcelable {
         return name;
     }
 
-    public String getPlays() {
+    public String getPlaysCount() {
+        return playsCount;
+    }
+
+    public int getPlays() {
         return plays;
     }
 
     public String getFollowers() {
         return followers;
     }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
 
     @Override
     public int describeContents() {
@@ -61,8 +80,10 @@ public class Artist implements Parcelable {
         dest.writeString(this.backgroundImage);
         dest.writeString(this.image);
         dest.writeString(this.name);
-        dest.writeString(this.plays);
+        dest.writeString(this.playsCount);
+        dest.writeInt(this.plays);
         dest.writeString(this.followers);
+        dest.writeInt(this.followersCount);
     }
 
     public void readFromParcel(Parcel source) {
@@ -70,8 +91,10 @@ public class Artist implements Parcelable {
         this.backgroundImage = source.readString();
         this.image = source.readString();
         this.name = source.readString();
-        this.plays = source.readString();
+        this.playsCount = source.readString();
+        this.plays = source.readInt();
         this.followers = source.readString();
+        this.followersCount = source.readInt();
     }
 
     public Artist() {
@@ -82,11 +105,13 @@ public class Artist implements Parcelable {
         this.backgroundImage = in.readString();
         this.image = in.readString();
         this.name = in.readString();
-        this.plays = in.readString();
+        this.playsCount = in.readString();
+        this.plays = in.readInt();
         this.followers = in.readString();
+        this.followersCount = in.readInt();
     }
 
-    public static final Parcelable.Creator<Artist> CREATOR = new Parcelable.Creator<Artist>() {
+    public static final Creator<Artist> CREATOR = new Creator<Artist>() {
         @Override
         public Artist createFromParcel(Parcel source) {
             return new Artist(source);

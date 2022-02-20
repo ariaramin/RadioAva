@@ -62,7 +62,6 @@ public class BrowseFragment extends Fragment {
         browseBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_browse, container, false);
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         compositeDisposable = new CompositeDisposable();
-
         browseBinding.searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +72,20 @@ public class BrowseFragment extends Fragment {
         getPopularVideos();
         getLatestAlbums();
         getTopArtist();
+        setupNavigation();
         return browseBinding.getRoot();
+    }
+
+    private void setupNavigation() {
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_browseFragment_to_allMusicsFragment);
+            }
+        };
+
+        browseBinding.seeMoreMusicsTextView.setOnClickListener(clickListener);
+        browseBinding.seeMoreAlbumsTextView.setOnClickListener(clickListener);
     }
 
     private void getTopArtist() {
@@ -111,9 +123,7 @@ public class BrowseFragment extends Fragment {
         Collections.sort(artists, new Comparator<Artist>() {
             @Override
             public int compare(Artist o1, Artist o2) {
-                int o2Followers = convertStringToInt(o2.getFollowers());
-                int o1Followers = convertStringToInt(o1.getFollowers());
-                return Integer.compare(o2Followers, o1Followers);
+                return Integer.compare(o2.getFollowersCount(), o1.getFollowersCount());
             }
         });
         return artists;
@@ -185,26 +195,10 @@ public class BrowseFragment extends Fragment {
         Collections.sort(videos, new Comparator<Video>() {
             @Override
             public int compare(Video o1, Video o2) {
-                int o1Likes = convertStringToInt(o1.getLikes());
-                int o2Likes = convertStringToInt(o2.getLikes());
-                return Integer.compare(o2Likes, o1Likes);
+                return Integer.compare(o2.getLikes(), o1.getLikes());
             }
         });
         return videos;
-    }
-
-    private int convertStringToInt(String string) {
-        if (string.contains("B")) {
-            String str = string.replace("B", "");
-            return (int) Double.parseDouble(str);
-        } else if (string.contains("M")) {
-            String str = string.replace("M", "");
-            return (int) Double.parseDouble(str);
-        } else if (string.contains("K")) {
-            String str = string.replace("K", "");
-            return (int) Double.parseDouble(str);
-        }
-        return (int) Double.parseDouble(string);
     }
 
     private void getLatestMusics() {

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_detailArtistFragment"
             app:destination="@id/detailArtistFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_allMusicsFragment"
+            app:destination="@id/allMusicsFragment" />
     </fragment>
     <fragment
         android:id="@+id/browseFragment"
@@ -25,6 +28,9 @@
         <action
             android:id="@+id/action_browseFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_browseFragment_to_allMusicsFragment"
+            app:destination="@id/allMusicsFragment" />
     </fragment>
     <fragment
         android:id="@+id/artistsFragment"
@@ -65,4 +71,8 @@
             android:id="@+id/action_searchFragment_to_detailArtistFragment"
             app:destination="@id/detailArtistFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/allMusicsFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.AllMusicsFragment"
+        android:label="AllMusicsFragment" />
 </navigation>
