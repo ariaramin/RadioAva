@@ -1,4 +1,4 @@
-package com.ariaramin.radioava.ui.Fragments;
+package com.ariaramin.radioava.ui.Fragments.Artist;
 
 import android.os.Bundle;
 
@@ -98,7 +98,7 @@ public class ArtistWorksFragment extends Fragment {
                     @Override
                     public void accept(List<Album> albums) throws Throwable {
                         if (artistWorksBinding.artistWorksRecyclerView.getAdapter() == null) {
-                            VerticalAlbumAdapter adapter = new VerticalAlbumAdapter(albums);
+                            VerticalAlbumAdapter adapter = new VerticalAlbumAdapter(albums, TAG);
                             artistWorksBinding.artistWorksRecyclerView.setAdapter(adapter);
                         } else {
                             VerticalAlbumAdapter adapter = (VerticalAlbumAdapter) artistWorksBinding.artistWorksRecyclerView.getAdapter();

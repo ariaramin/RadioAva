@@ -63,6 +63,16 @@ public class VideosFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getMostViewedVideos();
+        setupNavigation();
+    }
+
+    private void setupNavigation() {
+        videosBinding.seeMoreVideosTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_videosFragment_to_allVideosFragment);
+            }
+        });
     }
 
     private void getMostViewedVideos() {

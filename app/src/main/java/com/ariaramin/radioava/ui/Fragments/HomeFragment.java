@@ -50,7 +50,12 @@ public class HomeFragment extends Fragment {
         homeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         compositeDisposable = new CompositeDisposable();
-
+        homeBinding.searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_searchFragment);
+            }
+        });
         return homeBinding.getRoot();
     }
 
@@ -58,7 +63,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getTrendingMusics();
-        getNewVideos();
+        getTrendingVideos();
         getPopularArtists();
         getPopularMusics();
         setupNavigation();
@@ -68,12 +73,16 @@ public class HomeFragment extends Fragment {
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_allMusicsFragment);
+                if (v.getId() == R.id.seeMoreTrendingMusicsTextView || v.getId() == R.id.seeMorePopularMusicsTextView) {
+                    Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_allMusicsFragment);
+                } else if (v.getId() == R.id.seeMoreVideosTextView) {
+                    Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_allVideosFragment);
+                }
             }
         };
-
         homeBinding.seeMoreTrendingMusicsTextView.setOnClickListener(clickListener);
         homeBinding.seeMorePopularMusicsTextView.setOnClickListener(clickListener);
+        homeBinding.seeMoreVideosTextView.setOnClickListener(clickListener);
     }
 
     private void getPopularArtists() {
@@ -137,14 +146,13 @@ public class HomeFragment extends Fragment {
         compositeDisposable.add(disposable);
     }
 
-    private void getNewVideos() {
-        Disposable disposable = mainViewModel.getAllVideosFromDb()
+    private void getTrendingVideos() {
+        Disposable disposable = mainViewModel.getTrendingVideosFromDb()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Video>>() {
                     @Override
                     public void accept(List<Video> videos) throws Throwable {
-
                         if (!videos.isEmpty()) {
                             List<Video> latestVideos = videos.subList(0, 10);
 

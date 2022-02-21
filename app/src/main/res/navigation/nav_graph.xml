@@ -16,6 +16,12 @@
         <action
             android:id="@+id/action_homeFragment_to_allMusicsFragment"
             app:destination="@id/allMusicsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_allVideosFragment"
+            app:destination="@id/allVideosFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/browseFragment"
@@ -31,6 +37,12 @@
         <action
             android:id="@+id/action_browseFragment_to_allMusicsFragment"
             app:destination="@id/allMusicsFragment" />
+        <action
+            android:id="@+id/action_browseFragment_to_allVideosFragment"
+            app:destination="@id/allVideosFragment" />
+        <action
+            android:id="@+id/action_browseFragment_to_albumFragment"
+            app:destination="@id/albumFragment" />
     </fragment>
     <fragment
         android:id="@+id/artistsFragment"
@@ -57,12 +69,19 @@
         <action
             android:id="@+id/action_videosFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_videosFragment_to_allVideosFragment"
+            app:destination="@id/allVideosFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailArtistFragment"
         android:name="com.ariaramin.radioava.ui.Fragments.DetailArtistFragment"
         android:label="fragment_detail_artist"
-        tools:layout="@layout/fragment_detail_artist" />
+        tools:layout="@layout/fragment_detail_artist" >
+        <action
+            android:id="@+id/action_detailArtistFragment_to_albumFragment"
+            app:destination="@id/albumFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.ariaramin.radioava.ui.Fragments.SearchFragment"
@@ -70,9 +89,31 @@
         <action
             android:id="@+id/action_searchFragment_to_detailArtistFragment"
             app:destination="@id/detailArtistFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_albumFragment"
+            app:destination="@id/albumFragment" />
     </fragment>
     <fragment
         android:id="@+id/allMusicsFragment"
-        android:name="com.ariaramin.radioava.ui.Fragments.AllMusicsFragment"
-        android:label="AllMusicsFragment" />
+        android:name="com.ariaramin.radioava.ui.Fragments.Music.AllMusicsFragment"
+        android:label="AllMusicsFragment" >
+        <action
+            android:id="@+id/action_allMusicsFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_allMusicsFragment_to_albumFragment"
+            app:destination="@id/albumFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allVideosFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.Video.AllVideosFragment"
+        android:label="AllVideosFragment" >
+        <action
+            android:id="@+id/action_allVideosFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/albumFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.AlbumFragment"
+        android:label="AlbumFragment" />
 </navigation>

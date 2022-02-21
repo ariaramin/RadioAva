@@ -1,4 +1,4 @@
-package com.ariaramin.radioava.ui.Fragments;
+package com.ariaramin.radioava.ui.Fragments.Music;
 
 import android.os.Bundle;
 
@@ -17,7 +17,7 @@ import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Album;
 import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.R;
-import com.ariaramin.radioava.databinding.FragmentMusicsBinding;
+import com.ariaramin.radioava.databinding.FragmentMusicsListBinding;
 
 import java.util.List;
 
@@ -27,17 +27,18 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class MusicsFragment extends Fragment {
+public class MusicsListFragment extends Fragment {
 
-    FragmentMusicsBinding musicsBinding;
+    FragmentMusicsListBinding musicsBinding;
     MainViewModel mainViewModel;
     CompositeDisposable compositeDisposable;
+    private static final String TAG = "music_list";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        musicsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_musics, container, false);
+        musicsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_musics_list, container, false);
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         compositeDisposable = new CompositeDisposable();
         Bundle args = getArguments();
@@ -119,7 +120,7 @@ public class MusicsFragment extends Fragment {
                         List<Album> albumList = albums.subList(0, 30);
 
                         if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
-                            VerticalAlbumAdapter albumAdapter = new VerticalAlbumAdapter(albumList);
+                            VerticalAlbumAdapter albumAdapter = new VerticalAlbumAdapter(albumList, TAG);
                             musicsBinding.musicsRecyclerView.setAdapter(albumAdapter);
                         } else {
                             VerticalAlbumAdapter adapter = (VerticalAlbumAdapter) musicsBinding.musicsRecyclerView.getAdapter();

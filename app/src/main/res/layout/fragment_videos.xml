@@ -194,6 +194,15 @@
                 app:layout_constraintStart_toEndOf="@+id/textView18"
                 app:layout_constraintTop_toTopOf="@+id/textView18" />
 
+            <TextView
+                android:id="@+id/seeMoreVideosTextView"
+                style="@style/seeMoreTextAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/textView25"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView25" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/mostViewedRecyclerView"
                 android:layout_width="0dp"

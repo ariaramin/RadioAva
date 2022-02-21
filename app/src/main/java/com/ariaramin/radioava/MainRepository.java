@@ -194,6 +194,10 @@ public class MainRepository {
         return databaseDao.readAllVideos();
     }
 
+    public Flowable<List<Video>> getTrendingVideosFromDb() {
+        return databaseDao.readTrendingVideos();
+    }
+
     public Flowable<List<Video>> getArtistVideosFromDb(String artist) {
         return databaseDao.readArtistVideos(artist);
     }

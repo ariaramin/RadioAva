@@ -1,4 +1,4 @@
-package com.ariaramin.radioava.ui.Fragments;
+package com.ariaramin.radioava.ui.Fragments.Music;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,12 @@ public class AllMusicsFragment extends Fragment {
                 requireActivity().onBackPressed();
             }
         });
-
+        allMusicsBinding.searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_allMusicsFragment_to_searchFragment);
+            }
+        });
         setupTabLayout();
         return allMusicsBinding.getRoot();
     }

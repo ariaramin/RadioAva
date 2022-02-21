@@ -21,7 +21,7 @@
             android:fontFamily="@font/circular_std_light"
             android:textColor="@color/grey"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardView6"
+            app:layout_constraintBottom_toBottomOf="@+id/verticalItemCardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/verticalItemNameTextView"
             app:layout_constraintTop_toBottomOf="@+id/verticalItemNameTextView"
@@ -38,13 +38,13 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/verticalItemArtistTextView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardView6"
+            app:layout_constraintStart_toEndOf="@+id/verticalItemCardView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="name" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView6"
+            android:id="@+id/verticalItemCardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"

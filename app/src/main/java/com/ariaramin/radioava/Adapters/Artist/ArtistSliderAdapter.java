@@ -74,14 +74,6 @@ public class ArtistSliderAdapter extends SliderViewAdapter<ArtistSliderAdapter.A
             itemLayoutBinding.sliderArtistTextView.setText(artist.getName());
             itemLayoutBinding.sliderFollowersTextView.setText(artist.getFollowers());
             itemLayoutBinding.sliderPlayTextView.setText(artist.getPlaysCount());
-            itemLayoutBinding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("Artist", artist);
-                    Navigation.findNavController(v).navigate(R.id.action_artistsFragment_to_detailArtistFragment, bundle);
-                }
-            });
             itemLayoutBinding.executePendingBindings();
         }
     }

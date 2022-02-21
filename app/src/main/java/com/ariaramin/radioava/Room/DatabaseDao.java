@@ -84,6 +84,10 @@ public interface DatabaseDao {
     Flowable<List<Video>> readAllVideos();
 
     @Transaction
+    @Query("SELECT * FROM video_tbl WHERE type='trending' ORDER BY releaseDate DESC")
+    Flowable<List<Video>> readTrendingVideos();
+
+    @Transaction
     @Query("SELECT * FROM video_tbl WHERE name LIKE '%' || :query || '%' LIMIT 20")
     Flowable<List<Video>> searchInVideos(String query);
 

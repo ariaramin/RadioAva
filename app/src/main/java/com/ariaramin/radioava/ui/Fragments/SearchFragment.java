@@ -136,7 +136,7 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void accept(List<Album> albums) throws Throwable {
                         if (searchBinding.searchedAlbumsRecyclerView.getAdapter() == null) {
-                            VerticalAlbumAdapter albumAdapter = new VerticalAlbumAdapter(albums);
+                            VerticalAlbumAdapter albumAdapter = new VerticalAlbumAdapter(albums, TAG);
                             searchBinding.searchedAlbumsRecyclerView.setAdapter(albumAdapter);
                         } else {
                             VerticalAlbumAdapter albumAdapter = (VerticalAlbumAdapter) searchBinding.searchedAlbumsRecyclerView.getAdapter();

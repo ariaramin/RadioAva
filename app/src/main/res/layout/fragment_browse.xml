@@ -189,7 +189,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView24"
+                    android:id="@+id/seeMorePopularVideosTextView"
                     style="@style/seeMoreTextAppearance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -306,15 +306,6 @@
                     app:layout_constraintBottom_toBottomOf="@id/textView32"
                     app:layout_constraintStart_toEndOf="@+id/textView32"
                     app:layout_constraintTop_toTopOf="@id/textView32" />
-
-                <TextView
-                    android:id="@+id/textView34"
-                    style="@style/seeMoreTextAppearance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@id/textView33"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/textView33" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/mustFollowRecyclerView"

@@ -1,10 +1,14 @@
 package com.ariaramin.radioava.Adapters.Album;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ariaramin.radioava.Models.Album;
@@ -18,7 +22,6 @@ import java.util.List;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
 
-    HorizontalItemLayoutBinding itemLayoutBinding;
     List<Album> albumList;
 
     public AlbumAdapter(List<Album> albumList) {
@@ -29,7 +32,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
     @Override
     public AlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.horizontal_item_layout, parent, false);
+        HorizontalItemLayoutBinding itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.horizontal_item_layout, parent, false);
         return new AlbumViewHolder(itemLayoutBinding);
     }
 
@@ -70,6 +73,15 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                     .into(itemLayoutBinding.itemImageView);
             itemLayoutBinding.itemNameTextView.setText(songNameCutter(album.getName()));
             itemLayoutBinding.itemArtistTextView.setText(artistNameCutter(album.getArtist()));
+            itemLayoutBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("Album", album);
+                    Navigation.findNavController(v).navigate(R.id.action_browseFragment_to_albumFragment, bundle);
+                }
+            });
+            itemLayoutBinding.executePendingBindings();
         }
 
         private String songNameCutter(String name) {

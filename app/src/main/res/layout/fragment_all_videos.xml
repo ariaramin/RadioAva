@@ -8,12 +8,11 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/frameLayout9"
+        android:id="@+id/frameLayout12"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/secondaryDarkColor"
-        tools:context=".ui.Fragments.Music.AllMusicsFragment">
-
+        tools:context=".ui.Fragments.Video.AllVideosFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -50,12 +49,12 @@
                             android:src="@drawable/ic_back_stack" />
 
                         <TextView
-                            android:id="@+id/textView16"
+                            android:id="@+id/textView17"
                             style="@style/pageTitleTextAppearance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="@string/musics" />
+                            android:text="@string/videos" />
 
                         <ImageButton
                             android:id="@+id/searchButton"
@@ -68,7 +67,7 @@
                     </RelativeLayout>
 
                     <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/allMusicsTabLayout"
+                        android:id="@+id/allVideosTabLayout"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
                         android:layout_marginTop="24dp"
@@ -95,23 +94,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/popular" />
-
-                        <com.google.android.material.tabs.TabItem
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/albums" />
                     </com.google.android.material.tabs.TabLayout>
                 </LinearLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/allMusicsViewPager"
+            android:id="@+id/allVideosViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

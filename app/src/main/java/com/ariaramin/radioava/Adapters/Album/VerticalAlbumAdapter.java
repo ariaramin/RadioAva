@@ -1,11 +1,13 @@
 package com.ariaramin.radioava.Adapters.Album;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ariaramin.radioava.Models.Album;
@@ -17,12 +19,14 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import java.util.List;
 
-public class VerticalAlbumAdapter extends RecyclerView.Adapter<VerticalAlbumAdapter.VerticalAlbumsViewHolder>{
+public class VerticalAlbumAdapter extends RecyclerView.Adapter<VerticalAlbumAdapter.VerticalAlbumsViewHolder> {
 
     List<Album> albumList;
+    String TAG;
 
-    public VerticalAlbumAdapter(List<Album> albumList) {
+    public VerticalAlbumAdapter(List<Album> albumList, String TAG) {
         this.albumList = albumList;
+        this.TAG = TAG;
     }
 
     @NonNull
@@ -35,7 +39,7 @@ public class VerticalAlbumAdapter extends RecyclerView.Adapter<VerticalAlbumAdap
 
     @Override
     public void onBindViewHolder(@NonNull VerticalAlbumsViewHolder holder, int position) {
-        holder.bindData(albumList.get(position));
+        holder.bindData(albumList.get(position), TAG);
     }
 
     @Override
@@ -57,7 +61,7 @@ public class VerticalAlbumAdapter extends RecyclerView.Adapter<VerticalAlbumAdap
             this.itemLayoutBinding = itemLayoutBinding;
         }
 
-        private void bindData(Album album) {
+        private void bindData(Album album, String TAG) {
             Glide.with(itemLayoutBinding.getRoot().getContext())
                     .load(album.getCover())
                     .thumbnail(
@@ -70,6 +74,24 @@ public class VerticalAlbumAdapter extends RecyclerView.Adapter<VerticalAlbumAdap
                     .into(itemLayoutBinding.verticalItemImageView);
             itemLayoutBinding.verticalItemNameTextView.setText(album.getName());
             itemLayoutBinding.verticalItemArtistTextView.setText(album.getArtist());
+            itemLayoutBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("Album", album);
+                    switch (TAG) {
+                        case "artist_works":
+                            Navigation.findNavController(v).navigate(R.id.action_detailArtistFragment_to_albumFragment, bundle);
+                            break;
+                        case "search":
+                            Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_albumFragment, bundle);
+                            break;
+                        case "music_list":
+                            Navigation.findNavController(v).navigate(R.id.action_allMusicsFragment_to_albumFragment, bundle);
+                            break;
+                    }
+                }
+            });
             itemLayoutBinding.executePendingBindings();
         }
     }

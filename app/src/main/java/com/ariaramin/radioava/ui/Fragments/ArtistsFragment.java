@@ -61,7 +61,6 @@ public class ArtistsFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.action_artistsFragment_to_searchFragment);
             }
         });
-
         return artistsBinding.getRoot();
     }
 

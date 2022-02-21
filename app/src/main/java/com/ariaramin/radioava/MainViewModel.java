@@ -128,6 +128,10 @@ public class MainViewModel extends AndroidViewModel {
         return mainRepository.getAllVideosFromDb();
     }
 
+    public Flowable<List<Video>> getTrendingVideosFromDb() {
+        return mainRepository.getTrendingVideosFromDb();
+    }
+
     public Flowable<List<Video>> getArtistVideosFromDb(String artist) {
         return mainRepository.getArtistVideosFromDb(artist);
     }

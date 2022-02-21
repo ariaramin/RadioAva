@@ -68,24 +68,33 @@ public class BrowseFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.action_browseFragment_to_searchFragment);
             }
         });
+        return browseBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         getLatestMusics();
         getPopularVideos();
         getLatestAlbums();
         getTopArtist();
         setupNavigation();
-        return browseBinding.getRoot();
     }
 
     private void setupNavigation() {
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_browseFragment_to_allMusicsFragment);
+                if (v.getId() == R.id.seeMoreMusicsTextView || v.getId() == R.id.seeMoreAlbumsTextView) {
+                    Navigation.findNavController(v).navigate(R.id.action_browseFragment_to_allMusicsFragment);
+                } else if (v.getId() == R.id.seeMorePopularVideosTextView) {
+                    Navigation.findNavController(v).navigate(R.id.action_browseFragment_to_allVideosFragment);
+                }
             }
         };
-
         browseBinding.seeMoreMusicsTextView.setOnClickListener(clickListener);
         browseBinding.seeMoreAlbumsTextView.setOnClickListener(clickListener);
+        browseBinding.seeMorePopularVideosTextView.setOnClickListener(clickListener);
     }
 
     private void getTopArtist() {

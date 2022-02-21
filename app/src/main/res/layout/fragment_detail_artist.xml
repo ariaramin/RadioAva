@@ -179,6 +179,7 @@
                             android:textColor="@color/white"
                             android:textSize="14sp"
                             android:textStyle="bold"
+                            android:fontFamily="@font/circular_std_bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
