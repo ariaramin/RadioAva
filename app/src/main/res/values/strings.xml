@@ -35,6 +35,8 @@
     <string name="followers">Followers</string>
     <string name="plays">Plays</string>
     <string name="play">Play</string>
-    <string name="shuffle">Shuffle</string>
+    <string name="download">Download</string>
     <string name="search">Search Music, Video, Artist</string>
+    <string name="channel_name">Music PlayBack</string>
+    <string name="channel_id">music_playback</string>
 </resources>

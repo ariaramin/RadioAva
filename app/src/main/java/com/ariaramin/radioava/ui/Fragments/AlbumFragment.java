@@ -18,14 +18,19 @@ import com.ariaramin.radioava.Adapters.Music.VerticalMusicAdapter;
 import com.ariaramin.radioava.MainActivity;
 import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Album;
+import com.ariaramin.radioava.MusicPlayer;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.FragmentAlbumBinding;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
+@AndroidEntryPoint
 public class AlbumFragment extends Fragment {
 
     FragmentAlbumBinding albumBinding;
@@ -33,6 +38,8 @@ public class AlbumFragment extends Fragment {
     CompositeDisposable compositeDisposable;
     MainActivity mainActivity;
     Album album;
+    @Inject
+    MusicPlayer musicPlayer;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -59,6 +66,7 @@ public class AlbumFragment extends Fragment {
         });
 
         setupDetail();
+        setupButtons();
         return albumBinding.getRoot();
     }
 
@@ -74,10 +82,19 @@ public class AlbumFragment extends Fragment {
                 .into(albumBinding.albumImageView);
         albumBinding.albumNameTextView.setText(album.getName());
         albumBinding.albumArtistTextView.setText(album.getArtist());
-//        albumBinding.albumMusicsCountTextView.setText(album.getTotalMusic() + " Musics");
-
+        albumBinding.albumMusicsCountTextView.setText(album.getTotalMusic() + " Musics");
         VerticalMusicAdapter adapter = new VerticalMusicAdapter(album.getMusics());
         albumBinding.albumMusicsRecyclerView.setAdapter(adapter);
+    }
+
+    private void setupButtons() {
+        albumBinding.albumPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                musicPlayer.addPlaylist(album.getMusics());
+                musicPlayer.play();
+            }
+        });
     }
 
     @Override

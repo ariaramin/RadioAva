@@ -1,6 +1,7 @@
 package com.ariaramin.radioava.Adapters.Music;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -70,6 +71,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
                     .into(itemLayoutBinding.itemImageView);
             itemLayoutBinding.itemNameTextView.setText(stringCutter(music.getName(), 16));
             itemLayoutBinding.itemArtistTextView.setText(stringCutter(music.getArtist(), 22));
+            itemLayoutBinding.executePendingBindings();
         }
 
         private String stringCutter(String name, int length) {

@@ -1,12 +1,14 @@
 package com.ariaramin.radioava;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkRequest;
@@ -20,6 +22,7 @@ import com.ariaramin.radioava.Models.Album;
 import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.Models.Video;
+import com.ariaramin.radioava.Service.MusicPlayerService;
 import com.ariaramin.radioava.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -47,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     NetworkRequest networkRequest;
     public BottomNavigationView bottomNavigationView;
     public ImageView homeImageView;
+    @Inject
+    MusicPlayer musicPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,14 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable = new CompositeDisposable();
         bottomNavigationView = mainBinding.bottomNavigationView;
         homeImageView = mainBinding.homeIcon;
+
+        musicPlayer.playingMusic.observe(this, new androidx.lifecycle.Observer<Music>() {
+            @Override
+            public void onChanged(Music music) {
+                Intent intent = new Intent(getApplicationContext(), MusicPlayerService.class);
+                ContextCompat.startForegroundService(getApplicationContext(), intent);
+            }
+        });
 
         checkNetworkConnection();
         setupBottomNavigationView();
