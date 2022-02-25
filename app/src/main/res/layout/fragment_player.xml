@@ -105,7 +105,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="68dp"
-            android:layout_marginTop="108dp"
+            android:layout_marginTop="118dp"
             android:layout_marginEnd="68dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="168dp"
@@ -129,6 +129,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:textAlignment="center"
             android:textSize="26sp"
@@ -155,7 +156,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="42dp"
-            android:layout_marginTop="82dp"
+            android:layout_marginTop="92dp"
             android:layout_marginEnd="42dp"
             app:cs_circle_color="@color/grey"
             app:cs_circle_progress_color="@color/primaryColor"
@@ -180,7 +181,8 @@
             app:layout_constraintBottom_toTopOf="@+id/playerLyricButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/playerArtistTextView">
+            app:layout_constraintTop_toBottomOf="@+id/playerArtistTextView"
+            app:layout_constraintVertical_bias="0.4">
 
             <ImageButton
                 android:id="@+id/repeatModeImageButton"

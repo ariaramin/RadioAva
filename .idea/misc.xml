@@ -61,6 +61,7 @@
         <entry key="app/src/main/res/layout/fragment_browse.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/fragment_detail_artist.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_lyric.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/fragment_musics.xml" value="0.32135416666666666" />
         <entry key="app/src/main/res/layout/fragment_musics_list.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/fragment_my_music.xml" value="0.33645833333333336" />

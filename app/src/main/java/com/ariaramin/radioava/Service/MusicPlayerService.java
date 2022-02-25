@@ -19,6 +19,7 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.Observer;
 import androidx.media.session.MediaButtonReceiver;
@@ -43,7 +44,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class MusicPlayerService extends LifecycleService {
 
-    private final String CHANNEL_ID = "music_playback";
     RemoteViews notificationView;
     RemoteViews notificationLargeView;
     Notification notification;
@@ -52,36 +52,30 @@ public class MusicPlayerService extends LifecycleService {
     PendingIntent pendingIntent;
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        createNotificationChannel();
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
         if (intent.getAction() != null && intent.getAction().equals("STOP_SERVICE")) {
             stopForeground(true);
             stopSelf();
+        } else {
+            musicPlayer.playingMusic.observe(this, new Observer<Music>() {
+                @Override
+                public void onChanged(Music music) {
+                    createPendingIntent(music);
+                    createNotification();
+                    updateNotificationInfo(music);
+                    startForeground(1, notification);
+                }
+            });
+
+            musicPlayer.isPlaying.observe(this, new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean aBoolean) {
+                    updateNotificationPlayBack(aBoolean);
+                }
+            });
         }
-
-        musicPlayer.playingMusic.observe(this, new Observer<Music>() {
-            @Override
-            public void onChanged(Music music) {
-                createPendingIntent(music);
-                createNotification();
-                updateNotificationInfo(music);
-                startForeground(1, notification);
-            }
-        });
-
-        musicPlayer.isPlaying.observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                updateNotificationPlayBack(aBoolean);
-            }
-        });
 
         return START_NOT_STICKY;
     }
@@ -116,7 +110,6 @@ public class MusicPlayerService extends LifecycleService {
     }
 
     private void updateNotificationPlayBack(boolean isPlaying) {
-        Log.i("b", isPlaying+"");
         notificationView.setImageViewResource(R.id.notificationPlayImageView, isPlaying ? R.drawable.ic_pause : R.drawable.ic_play);
         notificationLargeView.setImageViewResource(R.id.notificationPlayImageView, isPlaying ? R.drawable.ic_pause : R.drawable.ic_play);
         updateNotification(notificationView, notificationLargeView);
@@ -142,11 +135,12 @@ public class MusicPlayerService extends LifecycleService {
 
     private void createNotification() {
         setNotificationViews();
+        String CHANNEL_ID = getResources().getString(R.string.channel_id);
         notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.notification_icon)
                 .setContentIntent(pendingIntent)
                 .setOnlyAlertOnce(true)
-                .setOngoing(false)
+                .setOngoing(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCustomContentView(notificationView)
                 .setCustomBigContentView(notificationLargeView)
@@ -160,17 +154,17 @@ public class MusicPlayerService extends LifecycleService {
         // play and pause intent
         Intent playAndPauseIntent = new Intent(this, MusicPlayerBroadcastReceiver.class);
         playAndPauseIntent.setAction("PLAY/PAUSE");
-        PendingIntent playAndPausePendingIntent = PendingIntent.getBroadcast(this, 1, playAndPauseIntent, 0);
+        PendingIntent playAndPausePendingIntent = PendingIntent.getBroadcast(this, 1, playAndPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // next intent
         Intent nextIntent = new Intent(this, MusicPlayerBroadcastReceiver.class);
         nextIntent.setAction("NEXT");
-        PendingIntent nextPendingIntent = PendingIntent.getBroadcast(this, 2, nextIntent, 0);
+        PendingIntent nextPendingIntent = PendingIntent.getBroadcast(this, 2, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // prev intent
         Intent prevIntent = new Intent(this, MusicPlayerBroadcastReceiver.class);
         prevIntent.setAction("PREV");
-        PendingIntent prevPendingIntent = PendingIntent.getBroadcast(this, 3, prevIntent, 0);
+        PendingIntent prevPendingIntent = PendingIntent.getBroadcast(this, 3, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent deleteIntent = new Intent(this, MusicPlayerService.class);
         deleteIntent.setAction("STOP_SERVICE");
@@ -188,15 +182,6 @@ public class MusicPlayerService extends LifecycleService {
         notificationLargeView.setOnClickPendingIntent(R.id.notificationNextImageView, nextPendingIntent);
         notificationLargeView.setOnClickPendingIntent(R.id.notificationPrevImageView, prevPendingIntent);
         notificationLargeView.setOnClickPendingIntent(R.id.stopImageView, deletePendingIntent);
-    }
-
-    private void createNotificationChannel() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            String channelName = getString(R.string.channel_name);
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
     }
 
     @Override

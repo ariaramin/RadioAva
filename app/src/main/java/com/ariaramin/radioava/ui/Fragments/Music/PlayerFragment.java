@@ -277,6 +277,25 @@ public class PlayerFragment extends Fragment {
                         .into(playerBinding.playerImageView);
                 playerBinding.playerNameTextView.setText(playingMusic.getName());
                 playerBinding.playerArtistTextView.setText(playingMusic.getArtist());
+                if (playingMusic.getLyric() != null && !playingMusic.getLyric().equals("")) {
+                    playerBinding.playerLyricButton.setVisibility(View.VISIBLE);
+                    setupLyric(playingMusic.getLyric());
+                } else {
+                    playerBinding.playerLyricButton.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    private void setupLyric(String lyric) {
+        playerBinding.playerLyricButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LyricBottomSheet lyricBottomSheet = new LyricBottomSheet();
+                Bundle bundle = new Bundle();
+                bundle.putString("Lyric", lyric);
+                lyricBottomSheet.setArguments(bundle);
+                lyricBottomSheet.show(requireActivity().getSupportFragmentManager(), lyricBottomSheet.getTag());
             }
         });
     }
@@ -302,7 +321,9 @@ public class PlayerFragment extends Fragment {
                             }
                         }
                         musicPlayer.addPlaylist(musics);
-                        musicPlayer.play();
+                        if (!musicPlayer.isPlaying()) {
+                            musicPlayer.play();
+                        }
                     }
                 });
         compositeDisposable.add(disposable);

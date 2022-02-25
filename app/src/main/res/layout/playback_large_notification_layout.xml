@@ -74,7 +74,7 @@
             android:layout_height="22dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:src="@drawable/ic_play" />
+            android:src="@drawable/ic_pause" />
 
         <ImageView
             android:id="@+id/notificationNextImageView"

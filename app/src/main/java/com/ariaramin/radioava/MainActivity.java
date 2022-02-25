@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(Music music) {
                 if (music != null) {
                     Intent intent = new Intent(getApplicationContext(), MusicPlayerService.class);
-                    ContextCompat.startForegroundService(getApplicationContext(), intent);
+                    startService(intent);
                 }
             }
         });
