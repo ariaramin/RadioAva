@@ -73,7 +73,7 @@ public class ArtistWorksFragment extends Fragment {
                         mainViewModel.setArtistTotalMusics(musicList.size());
 
                         if (artistWorksBinding.artistWorksRecyclerView.getAdapter() == null) {
-                            VerticalMusicAdapter adapter = new VerticalMusicAdapter(musicList);
+                            VerticalMusicAdapter adapter = new VerticalMusicAdapter(musicList, TAG);
                             artistWorksBinding.artistWorksRecyclerView.setAdapter(adapter);
                         } else {
                             VerticalMusicAdapter adapter = (VerticalMusicAdapter) artistWorksBinding.artistWorksRecyclerView.getAdapter();

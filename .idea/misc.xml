@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/appbar_bg.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/artist_toolbar_bg.xml" value="0.301" />
+        <entry key="app/src/main/res/drawable/background_gradient.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/bottom_nav_center_icon.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/bottom_nav_item_color.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/button_bg.xml" value="0.301" />
@@ -14,13 +15,16 @@
         <entry key="app/src/main/res/drawable/field_bg.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/ic_add_to_playlist.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/ic_album.xml" value="0.217" />
+        <entry key="app/src/main/res/drawable/ic_arrow_up.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/ic_back_stack.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/ic_browse.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_cross.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/ic_download.xml" value="0.217" />
+        <entry key="app/src/main/res/drawable/ic_download_small.xml" value="0.3385" />
         <entry key="app/src/main/res/drawable/ic_following.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/ic_headphone.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_heart.xml" value="0.217" />
+        <entry key="app/src/main/res/drawable/ic_heart_fill.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/ic_home.xml" value="0.2265" />
         <entry key="app/src/main/res/drawable/ic_like.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/ic_microphone.xml" value="0.3005" />
@@ -31,6 +35,7 @@
         <entry key="app/src/main/res/drawable/ic_playlist.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/ic_polygon.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/ic_previous.xml" value="0.217" />
+        <entry key="app/src/main/res/drawable/ic_repeat.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/ic_right_arrow.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/ic_show.xml" value="0.217" />
@@ -40,6 +45,7 @@
         <entry key="app/src/main/res/drawable/iconly_curved_video.xml" value="0.2065" />
         <entry key="app/src/main/res/drawable/inactive_button_bg.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/indicator_bg.xml" value="0.301" />
+        <entry key="app/src/main/res/drawable/player_botton_layout_bg.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/radical_gradient.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/slider_item_gradient.xml" value="0.301" />
         <entry key="app/src/main/res/drawable/tablayout_bg.xml" value="0.301" />
@@ -56,7 +62,9 @@
         <entry key="app/src/main/res/layout/fragment_detail_artist.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_musics.xml" value="0.32135416666666666" />
+        <entry key="app/src/main/res/layout/fragment_musics_list.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/fragment_my_music.xml" value="0.33645833333333336" />
+        <entry key="app/src/main/res/layout/fragment_player.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/fragment_videos.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/layout/fragment_videos_list.xml" value="0.33645833333333336" />

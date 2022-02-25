@@ -1,11 +1,13 @@
 package com.ariaramin.radioava.Adapters.Music;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ariaramin.radioava.Models.Music;
@@ -20,9 +22,11 @@ import java.util.List;
 public class VerticalMusicAdapter extends RecyclerView.Adapter<VerticalMusicAdapter.VerticalMusicViewHolder> {
 
     List<Music> musicList;
+    String TAG;
 
-    public VerticalMusicAdapter(List<Music> musicList) {
+    public VerticalMusicAdapter(List<Music> musicList, String TAG) {
         this.musicList = musicList;
+        this.TAG = TAG;
     }
 
     @NonNull
@@ -35,7 +39,7 @@ public class VerticalMusicAdapter extends RecyclerView.Adapter<VerticalMusicAdap
 
     @Override
     public void onBindViewHolder(@NonNull VerticalMusicViewHolder holder, int position) {
-        holder.bindData(musicList.get(position));
+        holder.bindData(musicList.get(position), TAG);
     }
 
     @Override
@@ -57,7 +61,7 @@ public class VerticalMusicAdapter extends RecyclerView.Adapter<VerticalMusicAdap
             this.itemLayoutBinding = itemLayoutBinding;
         }
 
-        private void bindData(Music music) {
+        private void bindData(Music music, String TAG) {
             Glide.with(itemLayoutBinding.getRoot().getContext())
                     .load(music.getCover())
                     .thumbnail(
@@ -70,6 +74,27 @@ public class VerticalMusicAdapter extends RecyclerView.Adapter<VerticalMusicAdap
                     .into(itemLayoutBinding.verticalItemImageView);
             itemLayoutBinding.verticalItemNameTextView.setText(stringCutter(music.getName(), 32));
             itemLayoutBinding.verticalItemArtistTextView.setText(stringCutter(music.getArtist(), 46));
+            itemLayoutBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("Music", music);
+                    switch (TAG) {
+                        case "music_list":
+                            Navigation.findNavController(v).navigate(R.id.action_allMusicsFragment_to_playerFragment, bundle);
+                            break;
+                        case "album":
+                            Navigation.findNavController(v).navigate(R.id.action_albumFragment_to_playerFragment, bundle);
+                            break;
+                        case "search":
+                            Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_playerFragment, bundle);
+                            break;
+                        case "artist_works":
+                            Navigation.findNavController(v).navigate(R.id.action_detailArtistFragment_to_playerFragment, bundle);
+                            break;
+                    }
+                }
+            });
             itemLayoutBinding.executePendingBindings();
         }
 

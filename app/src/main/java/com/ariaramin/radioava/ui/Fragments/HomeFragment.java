@@ -127,7 +127,7 @@ public class HomeFragment extends Fragment {
                             List<Music> popularMusics = musics.subList(0, 15);
 
                             if (homeBinding.mustListenRecyclerView.getAdapter() == null) {
-                                MusicAdapter musicAdapter = new MusicAdapter(popularMusics);
+                                MusicAdapter musicAdapter = new MusicAdapter(popularMusics, TAG);
                                 homeBinding.mustListenRecyclerView.setAdapter(musicAdapter);
                             } else {
                                 MusicAdapter adapter = (MusicAdapter) homeBinding.mustListenRecyclerView.getAdapter();
@@ -200,7 +200,7 @@ public class HomeFragment extends Fragment {
                             homeBinding.sliderView.startAutoCycle();
 
                             if (homeBinding.trendingMusicsRecyclerView.getAdapter() == null) {
-                                MusicAdapter musicAdapter = new MusicAdapter(topTrending);
+                                MusicAdapter musicAdapter = new MusicAdapter(topTrending, TAG);
                                 homeBinding.trendingMusicsRecyclerView.setAdapter(musicAdapter);
                             } else {
                                 MusicAdapter adapter = (MusicAdapter) homeBinding.trendingMusicsRecyclerView.getAdapter();

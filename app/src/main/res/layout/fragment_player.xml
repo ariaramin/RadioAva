@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameLayout14"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/secondaryDarkColor"
+        tools:context=".ui.Fragments.Music.PlayerFragment">
+
+        <ImageView
+            android:id="@+id/backgroundImageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_gradient" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/backStackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/circular_button_bg"
+                android:src="@drawable/ic_back_stack" />
+
+            <ImageButton
+                android:id="@+id/playerLikeButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/circular_button_bg"
+                android:src="@drawable/ic_heart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/backStackButton" />
+
+            <ImageButton
+                android:id="@+id/playerDownloadButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignTop="@id/playerLikeButton"
+                android:layout_marginEnd="12dp"
+
+                android:layout_toStartOf="@id/playerLikeButton"
+                android:background="@drawable/circular_button_bg"
+                android:src="@drawable/ic_download"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/backStackButton" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/playerDurationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="26dp"
+            android:text="0:00"
+            android:textColor="@color/grey"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/cardView2"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+        <TextView
+            android:id="@+id/playerCurrentDurationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="4dp"
+            android:text="0:00"
+            android:textColor="@color/grey"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/cardView2"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="68dp"
+            android:layout_marginTop="108dp"
+            android:layout_marginEnd="68dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="168dp"
+            app:cardElevation="8dp"
+            app:layout_constraintDimensionRatio="w,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+            <ImageView
+                android:id="@+id/playerImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:src="@tools:sample/avatars" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/playerNameTextView"
+            style="@style/pageTitleTextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:textAlignment="center"
+            android:textSize="26sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/playerSeekBar"
+            tools:text="name" />
+
+        <TextView
+            android:id="@+id/playerArtistTextView"
+            style="@style/lightTitleTextAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/grey"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/playerNameTextView"
+            app:layout_constraintStart_toStartOf="@+id/playerNameTextView"
+            app:layout_constraintTop_toBottomOf="@+id/playerNameTextView"
+            tools:text="artist" />
+
+        <me.tankery.lib.circularseekbar.CircularSeekBar
+            android:id="@+id/playerSeekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="82dp"
+            android:layout_marginEnd="42dp"
+            app:cs_circle_color="@color/grey"
+            app:cs_circle_progress_color="@color/primaryColor"
+            app:cs_circle_stroke_width="6dp"
+            app:cs_circle_style="round"
+            app:cs_end_angle="60"
+            app:cs_max="100"
+            app:cs_negative_enabled="true"
+            app:cs_pointer_color="@color/white"
+            app:cs_pointer_stroke_width="14dp"
+            app:cs_progress="0"
+            app:cs_start_angle="-240"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/playerLyricButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/playerArtistTextView">
+
+            <ImageButton
+                android:id="@+id/repeatModeImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="32dp"
+                android:background="@null"
+                android:padding="8dp"
+                android:src="@drawable/ic_repeat" />
+
+            <ImageButton
+                android:id="@+id/previousImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:padding="8dp"
+                android:src="@drawable/ic_previous" />
+
+            <ImageButton
+                android:id="@+id/playButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/bottom_nav_center_icon"
+                android:backgroundTint="@color/primaryColor"
+                android:elevation="8dp"
+                android:src="@drawable/ic_play"
+                android:text="Button" />
+
+            <ImageButton
+                android:id="@+id/nextImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="32dp"
+                android:background="@null"
+                android:padding="8dp"
+                android:src="@drawable/ic_next" />
+
+            <ImageButton
+                android:id="@+id/shuffleImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:padding="8dp"
+                android:src="@drawable/ic_shuffle" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/playerLyricButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/player_lyric_button_bg"
+            android:elevation="6dp"
+            android:insetBottom="0dp"
+            android:text="@string/lyric"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_arrow_up"
+            app:iconGravity="top"
+            app:iconPadding="4dp"
+            app:iconTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

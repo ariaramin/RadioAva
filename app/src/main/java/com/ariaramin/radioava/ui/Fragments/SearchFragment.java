@@ -109,7 +109,7 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void accept(List<Music> musics) throws Throwable {
                         if (searchBinding.searchedMusicsRecyclerView.getAdapter() == null) {
-                            VerticalMusicAdapter musicAdapter = new VerticalMusicAdapter(musics);
+                            VerticalMusicAdapter musicAdapter = new VerticalMusicAdapter(musics, TAG);
                             searchBinding.searchedMusicsRecyclerView.setAdapter(musicAdapter);
                         } else {
                             VerticalMusicAdapter musicAdapter = (VerticalMusicAdapter) searchBinding.searchedMusicsRecyclerView.getAdapter();

@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/browseFragment"
@@ -43,6 +46,9 @@
         <action
             android:id="@+id/action_browseFragment_to_albumFragment"
             app:destination="@id/albumFragment" />
+        <action
+            android:id="@+id/action_browseFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/artistsFragment"
@@ -75,12 +81,15 @@
     </fragment>
     <fragment
         android:id="@+id/detailArtistFragment"
-        android:name="com.ariaramin.radioava.ui.Fragments.DetailArtistFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.Artist.DetailArtistFragment"
         android:label="fragment_detail_artist"
         tools:layout="@layout/fragment_detail_artist" >
         <action
             android:id="@+id/action_detailArtistFragment_to_albumFragment"
             app:destination="@id/albumFragment" />
+        <action
+            android:id="@+id/action_detailArtistFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -92,6 +101,9 @@
         <action
             android:id="@+id/action_searchFragment_to_albumFragment"
             app:destination="@id/albumFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/allMusicsFragment"
@@ -103,6 +115,9 @@
         <action
             android:id="@+id/action_allMusicsFragment_to_albumFragment"
             app:destination="@id/albumFragment" />
+        <action
+            android:id="@+id/action_allMusicsFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
     <fragment
         android:id="@+id/allVideosFragment"
@@ -114,6 +129,15 @@
     </fragment>
     <fragment
         android:id="@+id/albumFragment"
-        android:name="com.ariaramin.radioava.ui.Fragments.AlbumFragment"
-        android:label="AlbumFragment" />
+        android:name="com.ariaramin.radioava.ui.Fragments.Music.AlbumFragment"
+        android:label="AlbumFragment" >
+        <action
+            android:id="@+id/action_albumFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.Music.PlayerFragment"
+        android:label="fragment_player"
+        tools:layout="@layout/fragment_player" />
 </navigation>

@@ -1,23 +1,26 @@
-package com.ariaramin.radioava.ui.Fragments;
+package com.ariaramin.radioava.ui.Fragments.Music;
 
+import android.app.DownloadManager;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ariaramin.radioava.Adapters.Music.VerticalMusicAdapter;
 import com.ariaramin.radioava.MainActivity;
 import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Album;
+import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.MusicPlayer;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.FragmentAlbumBinding;
@@ -40,6 +43,7 @@ public class AlbumFragment extends Fragment {
     Album album;
     @Inject
     MusicPlayer musicPlayer;
+    private static final String TAG = "album";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -55,7 +59,12 @@ public class AlbumFragment extends Fragment {
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         compositeDisposable = new CompositeDisposable();
         Bundle args = getArguments();
-        album = args.getParcelable("Album");
+        if (args != null) {
+            album = args.getParcelable("Album");
+        } else {
+            onDestroy();
+            Toast.makeText(mainActivity, "Something went wrong!", Toast.LENGTH_SHORT).show();
+        }
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
         mainActivity.homeImageView.setVisibility(View.GONE);
         albumBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +92,7 @@ public class AlbumFragment extends Fragment {
         albumBinding.albumNameTextView.setText(album.getName());
         albumBinding.albumArtistTextView.setText(album.getArtist());
         albumBinding.albumMusicsCountTextView.setText(album.getTotalMusic() + " Musics");
-        VerticalMusicAdapter adapter = new VerticalMusicAdapter(album.getMusics());
+        VerticalMusicAdapter adapter = new VerticalMusicAdapter(album.getMusics(), TAG);
         albumBinding.albumMusicsRecyclerView.setAdapter(adapter);
     }
 
@@ -91,8 +100,29 @@ public class AlbumFragment extends Fragment {
         albumBinding.albumPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                musicPlayer.addPlaylist(album.getMusics());
+                musicPlayer.setNewPlaylist(album.getMusics());
                 musicPlayer.play();
+            }
+        });
+
+        albumBinding.albumDownloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DownloadManager downloadManager = (DownloadManager) requireContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                for (int i = 0; i < album.getMusics().size(); i++) {
+                    Music music = album.getMusics().get(i);
+                    String title = music.getName();
+                    Uri uri = Uri.parse(music.getSource());
+                    DownloadManager.Request request = new DownloadManager.Request(uri);
+                    request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
+                            .setAllowedOverRoaming(true)
+                            .setTitle(title)
+                            .setDescription("Downloading...")
+                            .setMimeType("audio/*")
+                            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                            .setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, title + ".m4a");
+                    downloadManager.enqueue(request);
+                }
             }
         });
     }

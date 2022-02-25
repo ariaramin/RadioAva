@@ -2,6 +2,7 @@ package com.ariaramin.radioava;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Handler;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -10,18 +11,21 @@ import com.ariaramin.radioava.Models.Music;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusicPlayer {
+public class MusicPlayer implements Player.Listener {
 
     ArrayList<MediaItem> mediaItemPlaylist;
     ArrayList<Music> musicPlaylist;
     public MutableLiveData<Music> playingMusic;
     public MutableLiveData<Boolean> isPlaying;
-    MutableLiveData<Boolean> isShuffleModeEnabled;
-    MutableLiveData<Boolean> isRepeatModeEnabled;
+    public MutableLiveData<Long> duration;
+    public MutableLiveData<Long> currentPosition;
+    public MutableLiveData<Boolean> isShuffleModeEnabled;
+    public MutableLiveData<Boolean> isRepeatModeEnabled;
     ExoPlayer player;
 
     public MusicPlayer(Context context) {
@@ -29,6 +33,8 @@ public class MusicPlayer {
         musicPlaylist = new ArrayList<>();
         playingMusic = new MutableLiveData<>();
         isPlaying = new MutableLiveData<>();
+        duration = new MutableLiveData<>(0L);
+        currentPosition = new MutableLiveData<>();
         isShuffleModeEnabled = new MutableLiveData<>();
         isRepeatModeEnabled = new MutableLiveData<>();
         player = new ExoPlayer.Builder(context).build();
@@ -40,6 +46,7 @@ public class MusicPlayer {
             player.stop();
             if (!mediaItemPlaylist.isEmpty()) {
                 player.setMediaItems(mediaItemPlaylist, true);
+                player.addListener(this);
                 player.prepare();
                 player.setPlayWhenReady(true);
                 player.play();
@@ -48,20 +55,48 @@ public class MusicPlayer {
         }
     }
 
-    public void playMusic(Music music) {
-        if (player != null) {
-            player.stop();
+//    public void playMusic(Music music) {
+//        if (player != null) {
+//            player.stop();
+////            player.clearMediaItems();
+////            musicPlaylist.clear();
+//        }
+//        Uri musicUri = Uri.parse(music.getSource());
+//        MediaItem mediaItem = MediaItem.fromUri(musicUri);
+//        playingMusic.setValue(music);
+//        mediaItemPlaylist.add(mediaItem);
+//        musicPlaylist.add(music);
+//        player.setMediaItems(mediaItemPlaylist, true);
+//        player.addListener(this);
+//        player.prepare();
+//        player.setPlayWhenReady(true);
+//        player.play();
+//        isPlaying.setValue(true);
+//    }
+
+    @Override
+    public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
+        if (player.getMediaItemCount() > 1) {
+            int musicPosition = player.getCurrentMediaItemIndex();
+            playingMusic.setValue(musicPlaylist.get(musicPosition));
+            isPlaying.setValue(true);
         }
-        Uri musicUri = Uri.parse(music.getSource());
-        MediaItem mediaItem = MediaItem.fromUri(musicUri);
-        playingMusic.setValue(music);
-        player.clearMediaItems();
-        mediaItemPlaylist.add(mediaItem);
-        player.setMediaItems(mediaItemPlaylist, true);
-        player.prepare();
-        player.setPlayWhenReady(true);
-        player.play();
-        isPlaying.setValue(true);
+    }
+
+    @Override
+    public void onPlaybackStateChanged(int playbackState) {
+        if (playbackState == ExoPlayer.STATE_READY) {
+            duration.setValue(player.getContentDuration());
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    long currentPos = player.getCurrentPosition();
+                    currentPosition.setValue(currentPos);
+                    handler.postDelayed(this, 1000);
+                }
+            }, 1000);
+        }
     }
 
     public void pause() {
@@ -86,6 +121,7 @@ public class MusicPlayer {
         if (player != null) {
             player.release();
             player.clearMediaItems();
+            isPlaying.setValue(false);
         }
     }
 
@@ -96,9 +132,11 @@ public class MusicPlayer {
         return false;
     }
 
-    public void seekTo(int progress) {
+    public void seekTo(float progress) {
         if (player != null) {
-            player.seekTo((player.getDuration() / 100) * progress);
+            long currentPos = (long) (progress * 1000);
+            player.seekTo(currentPos);
+            currentPosition.setValue(currentPos);
         }
     }
 
@@ -106,10 +144,8 @@ public class MusicPlayer {
         if (player != null) {
             if (isPlaying()) {
                 pause();
-                isPlaying.setValue(false);
             } else {
                 resume();
-                isPlaying.setValue(true);
             }
         }
     }
@@ -120,7 +156,8 @@ public class MusicPlayer {
                 player.seekToNextMediaItem();
                 int musicPosition = player.getCurrentMediaItemIndex();
                 playingMusic.setValue(musicPlaylist.get(musicPosition));
-            } else {
+            }
+            else {
                 player.seekTo(0, 0);
             }
         }
@@ -132,7 +169,8 @@ public class MusicPlayer {
                 player.seekToPreviousMediaItem();
                 int musicPosition = player.getCurrentMediaItemIndex();
                 playingMusic.setValue(musicPlaylist.get(musicPosition));
-            } else {
+            }
+            else {
                 player.seekTo(mediaItemPlaylist.size() - 1, 0);
             }
         }
@@ -157,6 +195,9 @@ public class MusicPlayer {
             if (player.getShuffleModeEnabled()) {
                 disableShuffleMode();
             } else {
+                if (player.getRepeatMode() == player.REPEAT_MODE_ALL) {
+                    disableRepeatMode();
+                }
                 enableShuffleMode();
             }
         }
@@ -181,19 +222,26 @@ public class MusicPlayer {
             if (player.getRepeatMode() == player.REPEAT_MODE_ALL) {
                 disableRepeatMode();
             } else {
+                if (player.getShuffleModeEnabled()) {
+                    disableShuffleMode();
+                }
                 enableRepeatMode();
             }
         }
     }
 
     public void addMusicToPlaylist(Music music) {
+        player.clearMediaItems();
+        mediaItemPlaylist.clear();
+        musicPlaylist.clear();
         Uri musicUri = Uri.parse(music.getSource());
         MediaItem mediaItem = MediaItem.fromUri(musicUri);
         mediaItemPlaylist.add(mediaItem);
         musicPlaylist.add(music);
+        playingMusic.setValue(music);
     }
 
-    public void addPlaylist(List<Music> musicList) {
+    public void setNewPlaylist(List<Music> musicList) {
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
         for (int i = 0; i < musicList.size(); i++) {
             Uri musicUri = Uri.parse(musicList.get(i).getSource());
@@ -203,5 +251,18 @@ public class MusicPlayer {
         mediaItemPlaylist = mediaItems;
         musicPlaylist = new ArrayList<>(musicList);
         playingMusic.setValue(musicList.get(0));
+    }
+
+    public void addPlaylist(List<Music> musicList) {
+        ArrayList<MediaItem> mediaItems = new ArrayList<>();
+        for (int i = 0; i < musicList.size(); i++) {
+            Uri musicUri = Uri.parse(musicList.get(i).getSource());
+            MediaItem mediaItem = MediaItem.fromUri(musicUri);
+            mediaItems.add(mediaItem);
+        }
+        if (!mediaItemPlaylist.containsAll(mediaItems) && !musicPlaylist.containsAll(musicList)) {
+            mediaItemPlaylist.addAll(mediaItems);
+            musicPlaylist.addAll(musicList);
+        }
     }
 }

@@ -1,9 +1,12 @@
-package com.ariaramin.radioava.ui.Fragments;
+package com.ariaramin.radioava.ui.Fragments.Artist;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -13,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ariaramin.radioava.Adapters.Artist.ArtistWorkPagerAdapter;
 import com.ariaramin.radioava.MainActivity;
@@ -25,6 +29,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
@@ -35,6 +44,8 @@ public class DetailArtistFragment extends Fragment {
     CompositeDisposable compositeDisposable;
     MainActivity mainActivity;
     Artist artist;
+    ArrayList<String> followedArtists;
+    boolean artistFollowed = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -51,7 +62,12 @@ public class DetailArtistFragment extends Fragment {
         compositeDisposable = new CompositeDisposable();
 
         Bundle args = getArguments();
-        artist = args.getParcelable("Artist");
+        if (args != null) {
+            artist = args.getParcelable("Artist");
+        } else {
+            onDestroy();
+            Toast.makeText(mainActivity, "Something went wrong!", Toast.LENGTH_SHORT).show();
+        }
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
         mainActivity.homeImageView.setVisibility(View.GONE);
         detailArtistBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +79,7 @@ public class DetailArtistFragment extends Fragment {
 
         setupDetail();
         setupTabLayout();
+        followArtist();
         return detailArtistBinding.getRoot();
     }
 
@@ -105,6 +122,65 @@ public class DetailArtistFragment extends Fragment {
                 tab.setText(title);
             }
         }).attach();
+    }
+
+    private void followArtist() {
+        checkIsArtistFollowed();
+        detailArtistBinding.followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!artistFollowed) {
+                    if (!followedArtists.contains(artist.getName())) {
+                        followedArtists.add(artist.getName());
+                    }
+                    storeData();
+                    detailArtistBinding.followButton.setBackgroundResource(R.drawable.inactive_button_bg);
+                    detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.secondaryDarkColor));
+                    detailArtistBinding.followButton.setText(requireContext().getString(R.string.followed));
+                    artistFollowed = true;
+                } else {
+                    followedArtists.remove(artist.getName());
+                    storeData();
+                    detailArtistBinding.followButton.setBackgroundResource(R.drawable.button_bg);
+                    detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.primaryColor));
+                    detailArtistBinding.followButton.setText(requireContext().getString(R.string.follow));
+                    artistFollowed = false;
+                }
+            }
+        });
+    }
+
+    private void checkIsArtistFollowed() {
+        readData();
+        if (followedArtists.contains(artist.getName())) {
+            detailArtistBinding.followButton.setBackgroundResource(R.drawable.inactive_button_bg);
+            detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.secondaryDarkColor));
+            detailArtistBinding.followButton.setText(requireContext().getString(R.string.followed));
+            artistFollowed = true;
+        } else {
+            detailArtistBinding.followButton.setBackgroundResource(R.drawable.button_bg);
+            detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.primaryColor));
+            detailArtistBinding.followButton.setText(requireContext().getString(R.string.follow));
+            artistFollowed = false;
+        }
+    }
+
+    private void readData() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("followed_artist", Context.MODE_PRIVATE);
+        String json = sharedPreferences.getString("followed_artist", String.valueOf(new ArrayList<String>()));
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        Gson gson = new Gson();
+        followedArtists = gson.fromJson(json, type);
+    }
+
+    private void storeData() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("followed_artist", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(followedArtists);
+        editor.putString("followed_artist", json);
+        editor.apply();
     }
 
     @Override

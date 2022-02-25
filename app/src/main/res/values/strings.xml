@@ -33,10 +33,12 @@
     <string name="nothing_to_display">There is nothing to display</string>
     <string name="total_musics">Total Musics</string>
     <string name="followers">Followers</string>
+    <string name="followed">Followed</string>
     <string name="plays">Plays</string>
     <string name="play">Play</string>
     <string name="download">Download</string>
     <string name="search">Search Music, Video, Artist</string>
     <string name="channel_name">Music PlayBack</string>
     <string name="channel_id">music_playback</string>
+    <string name="lyric">Lyrics</string>
 </resources>

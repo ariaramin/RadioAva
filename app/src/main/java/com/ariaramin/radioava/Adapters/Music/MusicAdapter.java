@@ -1,11 +1,13 @@
 package com.ariaramin.radioava.Adapters.Music;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ariaramin.radioava.Models.Music;
@@ -19,24 +21,25 @@ import java.util.List;
 
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHolder> {
 
-    HorizontalItemLayoutBinding itemLayoutBinding;
     List<Music> musicList;
+    String TAG;
 
-    public MusicAdapter(List<Music> musicList) {
+    public MusicAdapter(List<Music> musicList, String TAG) {
         this.musicList = musicList;
+        this.TAG = TAG;
     }
 
     @NonNull
     @Override
     public MusicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.horizontal_item_layout, parent, false);
+        HorizontalItemLayoutBinding itemLayoutBinding = DataBindingUtil.inflate(inflater, R.layout.horizontal_item_layout, parent, false);
         return new MusicViewHolder(itemLayoutBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MusicViewHolder holder, int position) {
-        holder.bindData(musicList.get(position));
+        holder.bindData(musicList.get(position), TAG);
     }
 
     @Override
@@ -58,7 +61,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
             this.itemLayoutBinding = itemLayoutBinding;
         }
 
-        private void bindData(Music music) {
+        private void bindData(Music music, String TAG) {
             Glide.with(itemLayoutBinding.getRoot().getContext())
                     .load(music.getCover())
                     .thumbnail(
@@ -71,6 +74,21 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicViewHol
                     .into(itemLayoutBinding.itemImageView);
             itemLayoutBinding.itemNameTextView.setText(stringCutter(music.getName(), 16));
             itemLayoutBinding.itemArtistTextView.setText(stringCutter(music.getArtist(), 22));
+            itemLayoutBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("Music", music);
+                    switch (TAG) {
+                        case "home":
+                            Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_playerFragment, bundle);
+                            break;
+                        case "browser":
+                            Navigation.findNavController(v).navigate(R.id.action_browseFragment_to_playerFragment, bundle);
+                            break;
+                    }
+                }
+            });
             itemLayoutBinding.executePendingBindings();
         }
 

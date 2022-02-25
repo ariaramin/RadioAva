@@ -65,8 +65,10 @@ public class MainActivity extends AppCompatActivity {
         musicPlayer.playingMusic.observe(this, new androidx.lifecycle.Observer<Music>() {
             @Override
             public void onChanged(Music music) {
-                Intent intent = new Intent(getApplicationContext(), MusicPlayerService.class);
-                ContextCompat.startForegroundService(getApplicationContext(), intent);
+                if (music != null) {
+                    Intent intent = new Intent(getApplicationContext(), MusicPlayerService.class);
+                    ContextCompat.startForegroundService(getApplicationContext(), intent);
+                }
             }
         });
 

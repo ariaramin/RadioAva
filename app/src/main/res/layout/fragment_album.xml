@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/secondaryDarkColor"
-        tools:context=".ui.Fragments.AlbumFragment">
+        tools:context=".ui.Fragments.Music.AlbumFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -101,16 +101,7 @@
                                     android:textColor="@color/grey"
                                     android:textSize="12sp"
                                     tools:text="13 songs" />
-                                <!--                                <ImageView-->
-                                <!--                                    android:layout_width="24dp"-->
-                                <!--                                    android:layout_height="match_parent"-->
-                                <!--                                    android:layout_marginEnd="14dp"-->
-                                <!--                                    android:src="@drawable/ic_add_to_playlist" />-->
 
-                                <!--                                <ImageView-->
-                                <!--                                    android:layout_width="24dp"-->
-                                <!--                                    android:layout_height="28dp"-->
-                                <!--                                    android:src="@drawable/ic_download" />-->
                             </LinearLayout>
                         </LinearLayout>
 
@@ -142,11 +133,11 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="@drawable/button_bg"
-                            android:text="download"
+                            android:text="@string/download"
                             android:textColor="@color/white"
                             android:textStyle="bold"
                             app:backgroundTint="@color/secondaryDarkColor"
-                            app:icon="@drawable/ic_download"
+                            app:icon="@drawable/ic_download_small"
                             app:iconGravity="textStart"
                             app:iconTint="#FFFFFF" />
                     </LinearLayout>

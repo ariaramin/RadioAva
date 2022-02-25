@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.ariaramin.radioava.MusicPlayer;
+import com.google.android.exoplayer2.util.Log;
 
 import javax.inject.Inject;
 
@@ -19,12 +20,16 @@ public class MusicPlayerBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if (action.equals("PLAY/PAUSE") || action.equals(Intent.ACTION_MEDIA_BUTTON)) {
-            musicPlayer.togglePlayBack();
-        } else if (action.equals("NEXT")) {
-            musicPlayer.next();
-        } else if (action.equals("PREV")) {
-            musicPlayer.previous();
+        switch (action) {
+            case "PLAY/PAUSE":
+                musicPlayer.togglePlayBack();
+                break;
+            case "NEXT":
+                musicPlayer.next();
+                break;
+            case "PREV":
+                musicPlayer.previous();
+                break;
         }
     }
 }

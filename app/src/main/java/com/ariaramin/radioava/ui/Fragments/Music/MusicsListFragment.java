@@ -67,7 +67,7 @@ public class MusicsListFragment extends Fragment {
                     public void accept(List<Music> musics) throws Throwable {
 
                         if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
-                            VerticalMusicAdapter musicAdapter = new VerticalMusicAdapter(musics);
+                            VerticalMusicAdapter musicAdapter = new VerticalMusicAdapter(musics, TAG);
                             musicsBinding.musicsRecyclerView.setAdapter(musicAdapter);
                         } else {
                             VerticalMusicAdapter adapter = (VerticalMusicAdapter) musicsBinding.musicsRecyclerView.getAdapter();
@@ -93,7 +93,7 @@ public class MusicsListFragment extends Fragment {
                     public void accept(List<Music> musics) throws Throwable {
 
                         if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
-                            VerticalMusicAdapter musicAdapter = new VerticalMusicAdapter(musics);
+                            VerticalMusicAdapter musicAdapter = new VerticalMusicAdapter(musics, TAG);
                             musicsBinding.musicsRecyclerView.setAdapter(musicAdapter);
                         } else {
                             VerticalMusicAdapter adapter = (VerticalMusicAdapter) musicsBinding.musicsRecyclerView.getAdapter();

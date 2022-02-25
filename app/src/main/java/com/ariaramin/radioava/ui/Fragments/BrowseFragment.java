@@ -236,7 +236,7 @@ public class BrowseFragment extends Fragment {
                             browseBinding.latestMusicsSliderView.startAutoCycle();
 
                             if (browseBinding.latestMusicsRecyclerView.getAdapter() == null) {
-                                MusicAdapter musicAdapter = new MusicAdapter(latestMusics);
+                                MusicAdapter musicAdapter = new MusicAdapter(latestMusics, TAG);
                                 browseBinding.latestMusicsRecyclerView.setAdapter(musicAdapter);
                             } else {
                                 MusicAdapter adapter = (MusicAdapter) browseBinding.latestMusicsRecyclerView.getAdapter();
