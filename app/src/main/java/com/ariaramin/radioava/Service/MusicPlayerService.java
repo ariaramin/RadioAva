@@ -58,24 +58,23 @@ public class MusicPlayerService extends LifecycleService {
         if (intent.getAction() != null && intent.getAction().equals("STOP_SERVICE")) {
             stopForeground(true);
             stopSelf();
-        } else {
-            musicPlayer.playingMusic.observe(this, new Observer<Music>() {
-                @Override
-                public void onChanged(Music music) {
-                    createPendingIntent(music);
-                    createNotification();
-                    updateNotificationInfo(music);
-                    startForeground(1, notification);
-                }
-            });
-
-            musicPlayer.isPlaying.observe(this, new Observer<Boolean>() {
-                @Override
-                public void onChanged(Boolean aBoolean) {
-                    updateNotificationPlayBack(aBoolean);
-                }
-            });
         }
+        musicPlayer.playingMusic.observe(this, new Observer<Music>() {
+            @Override
+            public void onChanged(Music music) {
+                createPendingIntent(music);
+                createNotification();
+                updateNotificationInfo(music);
+                startForeground(1, notification);
+            }
+        });
+
+        musicPlayer.isPlaying.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                updateNotificationPlayBack(aBoolean);
+            }
+        });
 
         return START_NOT_STICKY;
     }

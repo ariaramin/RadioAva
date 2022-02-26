@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
@@ -15,7 +16,9 @@ import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.ariaramin.radioava.Models.Album;
@@ -24,6 +27,9 @@ import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.Service.MusicPlayerService;
 import com.ariaramin.radioava.databinding.ActivityMainBinding;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
@@ -48,8 +54,10 @@ public class MainActivity extends AppCompatActivity {
     ConnectivityManager connectivityManager;
     @Inject
     NetworkRequest networkRequest;
+    ConnectivityManager.NetworkCallback networkCallback;
     public BottomNavigationView bottomNavigationView;
     public ImageView homeImageView;
+    public RelativeLayout playBackLayout;
     @Inject
     MusicPlayer musicPlayer;
 
@@ -61,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable = new CompositeDisposable();
         bottomNavigationView = mainBinding.bottomNavigationView;
         homeImageView = mainBinding.homeIcon;
+        playBackLayout = mainBinding.playBackLayout;
 
         musicPlayer.playingMusic.observe(this, new androidx.lifecycle.Observer<Music>() {
             @Override
@@ -68,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 if (music != null) {
                     Intent intent = new Intent(getApplicationContext(), MusicPlayerService.class);
                     startService(intent);
+                    setupPlayBack(music);
                 }
             }
         });
@@ -76,8 +86,67 @@ public class MainActivity extends AppCompatActivity {
         setupBottomNavigationView();
     }
 
+    private void setupPlayBack(Music music) {
+//        mainBinding.playBackLayout.setVisibility(View.VISIBLE);
+        mainBinding.playBackLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+                NavController navController = navHostFragment.getNavController();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("Music", music);
+                navController.navigate(R.id.playerFragment, bundle);
+            }
+        });
+        Glide.with(getApplicationContext())
+                .load(music.getCover())
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .override(150, 150)
+                .into(mainBinding.playBackImageView);
+        mainBinding.playBackNameTextView.setText(stringCutter(music.getName(), 29));
+        mainBinding.playBackArtistTextView.setText(stringCutter(music.getArtist(), 42));
+        setupButtons();
+    }
+
+    private void setupButtons() {
+        mainBinding.playBackNextImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                musicPlayer.next();
+            }
+        });
+        mainBinding.playBackPrevImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                musicPlayer.previous();
+            }
+        });
+        musicPlayer.isPlaying.observe(this, new androidx.lifecycle.Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                mainBinding.playBackPlayImageView.setImageResource(aBoolean ? R.drawable.ic_pause : R.drawable.ic_play);
+            }
+        });
+        mainBinding.playBackPlayImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                musicPlayer.togglePlayBack();
+            }
+        });
+    }
+
+    private String stringCutter(String name, int length) {
+        int nameLength = name.length();
+        if (nameLength > length) {
+            String subString = name.substring(0, length);
+            return subString + "...";
+        }
+        return name;
+    }
+
     private void checkNetworkConnection() {
-        ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback() {
+        networkCallback = new ConnectivityManager.NetworkCallback() {
             @Override
             public void onAvailable(@androidx.annotation.NonNull Network network) {
                 super.onAvailable(network);
@@ -220,5 +289,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         mainViewModel.clearCompositeDisposable();
         compositeDisposable.clear();
+        connectivityManager.unregisterNetworkCallback(networkCallback);
     }
 }

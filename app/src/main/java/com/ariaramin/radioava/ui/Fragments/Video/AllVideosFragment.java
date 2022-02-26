@@ -27,7 +27,6 @@ public class AllVideosFragment extends Fragment {
 
     FragmentAllVideosBinding videosBinding;
     MainViewModel mainViewModel;
-    CompositeDisposable compositeDisposable;
     MainActivity mainActivity;
 
     @Override
@@ -42,7 +41,6 @@ public class AllVideosFragment extends Fragment {
         // Inflate the layout for this fragment
         videosBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_all_videos, container, false);
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-        compositeDisposable = new CompositeDisposable();
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
         mainActivity.homeImageView.setVisibility(View.GONE);
         videosBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +82,5 @@ public class AllVideosFragment extends Fragment {
         super.onDestroy();
         mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
         mainActivity.homeImageView.setVisibility(View.VISIBLE);
-        compositeDisposable.clear();
     }
 }

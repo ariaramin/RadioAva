@@ -41,7 +41,6 @@ public class DetailArtistFragment extends Fragment {
 
     FragmentDetailArtistBinding detailArtistBinding;
     MainViewModel mainViewModel;
-    CompositeDisposable compositeDisposable;
     MainActivity mainActivity;
     Artist artist;
     ArrayList<String> followedArtists;
@@ -59,8 +58,6 @@ public class DetailArtistFragment extends Fragment {
         // Inflate the layout for this fragment
         detailArtistBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail_artist, container, false);
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-        compositeDisposable = new CompositeDisposable();
-
         Bundle args = getArguments();
         if (args != null) {
             artist = args.getParcelable("Artist");

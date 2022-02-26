@@ -55,30 +55,12 @@ public class MusicPlayer implements Player.Listener {
         }
     }
 
-//    public void playMusic(Music music) {
-//        if (player != null) {
-//            player.stop();
-////            player.clearMediaItems();
-////            musicPlaylist.clear();
-//        }
-//        Uri musicUri = Uri.parse(music.getSource());
-//        MediaItem mediaItem = MediaItem.fromUri(musicUri);
-//        playingMusic.setValue(music);
-//        mediaItemPlaylist.add(mediaItem);
-//        musicPlaylist.add(music);
-//        player.setMediaItems(mediaItemPlaylist, true);
-//        player.addListener(this);
-//        player.prepare();
-//        player.setPlayWhenReady(true);
-//        player.play();
-//        isPlaying.setValue(true);
-//    }
-
     @Override
     public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
         if (player.getMediaItemCount() > 1) {
             int musicPosition = player.getCurrentMediaItemIndex();
             playingMusic.setValue(musicPlaylist.get(musicPosition));
+            duration.setValue(player.getContentDuration());
             isPlaying.setValue(true);
         }
     }

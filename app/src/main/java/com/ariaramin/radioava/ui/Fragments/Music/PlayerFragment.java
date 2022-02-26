@@ -76,6 +76,7 @@ public class PlayerFragment extends Fragment {
         compositeDisposable = new CompositeDisposable();
         mainActivity.homeImageView.setVisibility(View.GONE);
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
+        mainActivity.playBackLayout.setVisibility(View.GONE);
         playerBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -309,6 +310,8 @@ public class PlayerFragment extends Fragment {
 
     private void play() {
         musicPlayer.addMusicToPlaylist(music);
+
+        // add related musics and play
         Disposable disposable = mainViewModel.getArtistMusicsFromDb(music.getArtist())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -386,6 +389,7 @@ public class PlayerFragment extends Fragment {
         super.onDestroy();
         mainActivity.homeImageView.setVisibility(View.VISIBLE);
         mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        mainActivity.playBackLayout.setVisibility(View.VISIBLE);
         compositeDisposable.clear();
     }
 }

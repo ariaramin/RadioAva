@@ -27,7 +27,6 @@ public class AllMusicsFragment extends Fragment {
 
     FragmentAllMusicsBinding allMusicsBinding;
     MainViewModel mainViewModel;
-    CompositeDisposable compositeDisposable;
     MainActivity mainActivity;
 
     @Override
@@ -42,7 +41,6 @@ public class AllMusicsFragment extends Fragment {
         // Inflate the layout for this fragment
         allMusicsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_all_musics, container, false);
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-        compositeDisposable = new CompositeDisposable();
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
         mainActivity.homeImageView.setVisibility(View.GONE);
         allMusicsBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +84,5 @@ public class AllMusicsFragment extends Fragment {
         super.onDestroy();
         mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
         mainActivity.homeImageView.setVisibility(View.VISIBLE);
-        compositeDisposable.clear();
     }
 }
