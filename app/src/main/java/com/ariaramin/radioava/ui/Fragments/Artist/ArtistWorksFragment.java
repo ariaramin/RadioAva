@@ -123,7 +123,7 @@ public class ArtistWorksFragment extends Fragment {
                     @Override
                     public void accept(List<Video> videos) throws Throwable {
                         if (artistWorksBinding.artistWorksRecyclerView.getAdapter() == null) {
-                            VerticalVideoAdapter adapter = new VerticalVideoAdapter(videos);
+                            VerticalVideoAdapter adapter = new VerticalVideoAdapter(videos, TAG);
                             artistWorksBinding.artistWorksRecyclerView.setAdapter(adapter);
                         } else {
                             VerticalVideoAdapter adapter = (VerticalVideoAdapter) artistWorksBinding.artistWorksRecyclerView.getAdapter();

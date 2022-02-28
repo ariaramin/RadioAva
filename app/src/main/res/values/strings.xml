@@ -24,7 +24,8 @@
     <string name="see_more">See more</string>
     <string name="your_activities">Your Activities</string>
     <string name="your_downloads">Your Downloads</string>
-    <string name="recently_played">Recently Played</string>
+    <string name="recently_played_musics">Recently Played Musics</string>
+    <string name="recently_played_videos">Recently Played Videos</string>
     <string name="likes">Liked</string>
     <string name="followed_artist">Followed Artist</string>
     <string name="your_playlist">Your Playlist</string>
@@ -41,6 +42,4 @@
     <string name="channel_name">Music PlayBack</string>
     <string name="channel_id">music_playback</string>
     <string name="lyric">Lyrics</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -32,6 +32,7 @@ public class VideosListFragment extends Fragment {
     FragmentVideosListBinding videosListBinding;
     MainViewModel mainViewModel;
     CompositeDisposable compositeDisposable;
+    private static final String TAG = "all_videos";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +65,7 @@ public class VideosListFragment extends Fragment {
                         List<Video> trending = videos.subList(0, 30);
 
                         if (videosListBinding.videosRecyclerView.getAdapter() == null) {
-                            VerticalVideoAdapter videoAdapter = new VerticalVideoAdapter(trending);
+                            VerticalVideoAdapter videoAdapter = new VerticalVideoAdapter(trending, TAG);
                             videosListBinding.videosRecyclerView.setAdapter(videoAdapter);
                         } else {
                             VerticalVideoAdapter adapter = (VerticalVideoAdapter) videosListBinding.videosRecyclerView.getAdapter();
@@ -92,7 +93,7 @@ public class VideosListFragment extends Fragment {
                         List<Video> mostViewed = videos.subList(0, 30);
 
                         if (videosListBinding.videosRecyclerView.getAdapter() == null) {
-                            VerticalVideoAdapter videoAdapter = new VerticalVideoAdapter(mostViewed);
+                            VerticalVideoAdapter videoAdapter = new VerticalVideoAdapter(mostViewed, TAG);
                             videosListBinding.videosRecyclerView.setAdapter(videoAdapter);
                         } else {
                             VerticalVideoAdapter adapter = (VerticalVideoAdapter) videosListBinding.videosRecyclerView.getAdapter();

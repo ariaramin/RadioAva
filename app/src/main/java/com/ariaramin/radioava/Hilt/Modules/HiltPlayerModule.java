@@ -2,7 +2,8 @@ package com.ariaramin.radioava.Hilt.Modules;
 
 import android.content.Context;
 
-import com.ariaramin.radioava.MusicPlayer;
+import com.ariaramin.radioava.Players.MusicPlayer;
+import com.ariaramin.radioava.Players.VideoPlayer;
 
 import javax.inject.Singleton;
 
@@ -20,5 +21,11 @@ public class HiltPlayerModule {
     @Singleton
     MusicPlayer ProvideMusicPlayer(@ApplicationContext Context context) {
         return new MusicPlayer(context);
+    }
+
+    @Provides
+    @Singleton
+    VideoPlayer ProvideVideoPlayer(@ApplicationContext Context context) {
+        return new VideoPlayer(context);
     }
 }

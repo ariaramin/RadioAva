@@ -21,7 +21,7 @@ import com.ariaramin.radioava.MainActivity;
 import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Album;
 import com.ariaramin.radioava.Models.Music;
-import com.ariaramin.radioava.MusicPlayer;
+import com.ariaramin.radioava.Players.MusicPlayer;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.FragmentAlbumBinding;
 import com.bumptech.glide.Glide;

@@ -1,16 +1,20 @@
 package com.ariaramin.radioava.Adapters.Video;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.VerticalItemLayoutBinding;
+import com.ariaramin.radioava.ui.Fragments.Video.OnClickVideoListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -20,9 +24,12 @@ import java.util.List;
 public class VerticalVideoAdapter extends RecyclerView.Adapter<VerticalVideoAdapter.VerticalVideoViewHolder> {
 
     List<Video> videoList;
+    String TAG;
+    OnClickVideoListener listener;
 
-    public VerticalVideoAdapter(List<Video> videoList) {
+    public VerticalVideoAdapter(List<Video> videoList, String TAG) {
         this.videoList = videoList;
+        this.TAG = TAG;
     }
 
     @NonNull
@@ -35,7 +42,7 @@ public class VerticalVideoAdapter extends RecyclerView.Adapter<VerticalVideoAdap
 
     @Override
     public void onBindViewHolder(@NonNull VerticalVideoViewHolder holder, int position) {
-        holder.bindData(videoList.get(position));
+        holder.bindData(videoList.get(position), TAG, listener);
     }
 
     @Override
@@ -48,6 +55,15 @@ public class VerticalVideoAdapter extends RecyclerView.Adapter<VerticalVideoAdap
         notifyDataSetChanged();
     }
 
+    public void addVideos(List<Video> videos) {
+        videoList.addAll(videos);
+        notifyDataSetChanged();
+    }
+
+    public void addListener(OnClickVideoListener videoListener) {
+        listener = videoListener;
+    }
+
     static class VerticalVideoViewHolder extends RecyclerView.ViewHolder {
 
         VerticalItemLayoutBinding itemLayoutBinding;
@@ -57,7 +73,7 @@ public class VerticalVideoAdapter extends RecyclerView.Adapter<VerticalVideoAdap
             this.itemLayoutBinding = itemLayoutBinding;
         }
 
-        private void bindData(Video video) {
+        private void bindData(Video video, String TAG, OnClickVideoListener listener) {
             Glide.with(itemLayoutBinding.getRoot().getContext())
                     .load(video.getCover())
                     .thumbnail(
@@ -70,6 +86,32 @@ public class VerticalVideoAdapter extends RecyclerView.Adapter<VerticalVideoAdap
                     .into(itemLayoutBinding.verticalItemImageView);
             itemLayoutBinding.verticalItemNameTextView.setText(video.getName());
             itemLayoutBinding.verticalItemArtistTextView.setText(video.getArtist());
+            itemLayoutBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("Video", video);
+                    switch (TAG) {
+                        case "videos":
+                            Navigation.findNavController(v).navigate(R.id.action_videosFragment_to_videoPlayerFragment, bundle);
+                            break;
+                        case "all_videos":
+                            Navigation.findNavController(v).navigate(R.id.action_allVideosFragment_to_videoPlayerFragment, bundle);
+                            break;
+                        case "search":
+                            Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_videoPlayerFragment, bundle);
+                            break;
+                        case "artist_works":
+                            Navigation.findNavController(v).navigate(R.id.action_detailArtistFragment_to_videoPlayerFragment, bundle);
+                            break;
+                        case "video_player":
+                            if (listener != null) {
+                                listener.OnClick(video);
+                            }
+                            break;
+                    }
+                }
+            });
             itemLayoutBinding.executePendingBindings();
         }
     }

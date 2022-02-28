@@ -23,6 +23,7 @@ import com.ariaramin.radioava.MainActivity;
 import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.R;
+import com.ariaramin.radioava.SharedPreference.SharedPreferenceManager;
 import com.ariaramin.radioava.databinding.FragmentDetailArtistBinding;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -35,14 +36,20 @@ import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
+@AndroidEntryPoint
 public class DetailArtistFragment extends Fragment {
 
     FragmentDetailArtistBinding detailArtistBinding;
     MainViewModel mainViewModel;
     MainActivity mainActivity;
     Artist artist;
+    @Inject
+    SharedPreferenceManager sharedPreferenceManager;
     ArrayList<String> followedArtists;
     boolean artistFollowed = false;
 
@@ -130,14 +137,14 @@ public class DetailArtistFragment extends Fragment {
                     if (!followedArtists.contains(artist.getName())) {
                         followedArtists.add(artist.getName());
                     }
-                    storeData();
+                    sharedPreferenceManager.storeFollowedArtistData(followedArtists);
                     detailArtistBinding.followButton.setBackgroundResource(R.drawable.inactive_button_bg);
                     detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.secondaryDarkColor));
                     detailArtistBinding.followButton.setText(requireContext().getString(R.string.followed));
                     artistFollowed = true;
                 } else {
                     followedArtists.remove(artist.getName());
-                    storeData();
+                    sharedPreferenceManager.storeFollowedArtistData(followedArtists);
                     detailArtistBinding.followButton.setBackgroundResource(R.drawable.button_bg);
                     detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.primaryColor));
                     detailArtistBinding.followButton.setText(requireContext().getString(R.string.follow));
@@ -148,7 +155,7 @@ public class DetailArtistFragment extends Fragment {
     }
 
     private void checkIsArtistFollowed() {
-        readData();
+        followedArtists = sharedPreferenceManager.readFollowedArtistData();
         if (followedArtists.contains(artist.getName())) {
             detailArtistBinding.followButton.setBackgroundResource(R.drawable.inactive_button_bg);
             detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.secondaryDarkColor));
@@ -160,24 +167,6 @@ public class DetailArtistFragment extends Fragment {
             detailArtistBinding.followButton.setText(requireContext().getString(R.string.follow));
             artistFollowed = false;
         }
-    }
-
-    private void readData() {
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("followed_artist", Context.MODE_PRIVATE);
-        String json = sharedPreferences.getString("followed_artist", String.valueOf(new ArrayList<String>()));
-        Type type = new TypeToken<ArrayList<String>>() {
-        }.getType();
-        Gson gson = new Gson();
-        followedArtists = gson.fromJson(json, type);
-    }
-
-    private void storeData() {
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("followed_artist", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(followedArtists);
-        editor.putString("followed_artist", json);
-        editor.apply();
     }
 
     @Override

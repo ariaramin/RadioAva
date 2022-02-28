@@ -1,4 +1,4 @@
-package com.ariaramin.radioava;
+package com.ariaramin.radioava.Players;
 
 import android.content.Context;
 import android.net.Uri;
@@ -11,7 +11,6 @@ import com.ariaramin.radioava.Models.Music;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +59,9 @@ public class MusicPlayer implements Player.Listener {
         if (player.getMediaItemCount() > 1) {
             int musicPosition = player.getCurrentMediaItemIndex();
             playingMusic.setValue(musicPlaylist.get(musicPosition));
-            duration.setValue(player.getContentDuration());
+            if (player.getContentDuration() > 0) {
+                duration.setValue(player.getContentDuration());
+            }
             isPlaying.setValue(true);
         }
     }
@@ -99,13 +100,18 @@ public class MusicPlayer implements Player.Listener {
         }
     }
 
-    public void stop() {
-        if (player != null) {
-            player.release();
-            player.clearMediaItems();
-            isPlaying.setValue(false);
-        }
-    }
+//    public void stop() {
+//        if (player != null) {
+//            player.stop();
+//            isPlaying.setValue(false);
+//        }
+//    }
+
+//    public void release() {
+//        if (player != null) {
+//            player.release();
+//        }
+//    }
 
     public Boolean isPlaying() {
         if (player != null) {
@@ -138,8 +144,7 @@ public class MusicPlayer implements Player.Listener {
                 player.seekToNextMediaItem();
                 int musicPosition = player.getCurrentMediaItemIndex();
                 playingMusic.setValue(musicPlaylist.get(musicPosition));
-            }
-            else {
+            } else {
                 player.seekTo(0, 0);
             }
         }
@@ -151,8 +156,7 @@ public class MusicPlayer implements Player.Listener {
                 player.seekToPreviousMediaItem();
                 int musicPosition = player.getCurrentMediaItemIndex();
                 playingMusic.setValue(musicPlaylist.get(musicPosition));
-            }
-            else {
+            } else {
                 player.seekTo(mediaItemPlaylist.size() - 1, 0);
             }
         }
@@ -177,7 +181,7 @@ public class MusicPlayer implements Player.Listener {
             if (player.getShuffleModeEnabled()) {
                 disableShuffleMode();
             } else {
-                if (player.getRepeatMode() == player.REPEAT_MODE_ALL) {
+                if (player.getRepeatMode() == player.REPEAT_MODE_ONE) {
                     disableRepeatMode();
                 }
                 enableShuffleMode();
@@ -187,7 +191,7 @@ public class MusicPlayer implements Player.Listener {
 
     public void enableRepeatMode() {
         if (player != null) {
-            player.setRepeatMode(player.REPEAT_MODE_ALL);
+            player.setRepeatMode(player.REPEAT_MODE_ONE);
             isRepeatModeEnabled.setValue(true);
         }
     }
@@ -201,7 +205,7 @@ public class MusicPlayer implements Player.Listener {
 
     public void toggleRepeatMode() {
         if (player != null) {
-            if (player.getRepeatMode() == player.REPEAT_MODE_ALL) {
+            if (player.getRepeatMode() == player.REPEAT_MODE_ONE) {
                 disableRepeatMode();
             } else {
                 if (player.getShuffleModeEnabled()) {

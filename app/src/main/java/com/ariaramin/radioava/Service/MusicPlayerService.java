@@ -1,41 +1,27 @@
 package com.ariaramin.radioava.Service;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleService;
 import androidx.lifecycle.Observer;
-import androidx.media.session.MediaButtonReceiver;
 import androidx.navigation.NavDeepLinkBuilder;
 
 import com.ariaramin.radioava.Broadcast.MusicPlayerBroadcastReceiver;
 import com.ariaramin.radioava.MainActivity;
 import com.ariaramin.radioava.Models.Music;
-import com.ariaramin.radioava.MusicPlayer;
+import com.ariaramin.radioava.Players.MusicPlayer;
 import com.ariaramin.radioava.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-
-import java.io.IOException;
-import java.net.URL;
 
 import javax.inject.Inject;
 
@@ -186,7 +172,7 @@ public class MusicPlayerService extends LifecycleService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        musicPlayer.stop();
+        musicPlayer.pause();
     }
 
     @Nullable

@@ -157,7 +157,7 @@ public class HomeFragment extends Fragment {
                             List<Video> latestVideos = videos.subList(0, 10);
 
                             if (homeBinding.newVideosRecyclerView.getAdapter() == null) {
-                                VideoAdapter videoAdapter = new VideoAdapter(latestVideos);
+                                VideoAdapter videoAdapter = new VideoAdapter(latestVideos, TAG);
                                 homeBinding.newVideosRecyclerView.setAdapter(videoAdapter);
                             } else {
                                 VideoAdapter adapter = (VideoAdapter) homeBinding.newVideosRecyclerView.getAdapter();

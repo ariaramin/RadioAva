@@ -1,11 +1,9 @@
 package com.ariaramin.radioava;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
@@ -15,7 +13,6 @@ import android.net.Network;
 import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,6 +22,7 @@ import com.ariaramin.radioava.Models.Album;
 import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.Models.Video;
+import com.ariaramin.radioava.Players.MusicPlayer;
 import com.ariaramin.radioava.Service.MusicPlayerService;
 import com.ariaramin.radioava.databinding.ActivityMainBinding;
 import com.bumptech.glide.Glide;
@@ -104,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .override(150, 150)
                 .into(mainBinding.playBackImageView);
-        mainBinding.playBackNameTextView.setText(stringCutter(music.getName(), 29));
+        mainBinding.playBackNameTextView.setText(stringCutter(music.getName(), 27));
         mainBinding.playBackArtistTextView.setText(stringCutter(music.getArtist(), 42));
         setupButtons();
     }

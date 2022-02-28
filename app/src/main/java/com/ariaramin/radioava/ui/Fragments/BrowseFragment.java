@@ -181,7 +181,7 @@ public class BrowseFragment extends Fragment {
                             List<Video> popularVideos = videos.subList(0, 10);
 
                             if (browseBinding.popularVideosRecyclerView.getAdapter() == null) {
-                                VideoAdapter videoAdapter = new VideoAdapter(popularVideos);
+                                VideoAdapter videoAdapter = new VideoAdapter(popularVideos, TAG);
                                 browseBinding.popularVideosRecyclerView.setAdapter(videoAdapter);
                             } else {
                                 VideoAdapter adapter = (VideoAdapter) browseBinding.popularVideosRecyclerView.getAdapter();

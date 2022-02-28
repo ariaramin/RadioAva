@@ -190,7 +190,7 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void accept(List<Video> videos) throws Throwable {
                         if (searchBinding.searchedVideosRecyclerView.getAdapter() == null) {
-                            VerticalVideoAdapter musicAdapter = new VerticalVideoAdapter(videos);
+                            VerticalVideoAdapter musicAdapter = new VerticalVideoAdapter(videos, TAG);
                             searchBinding.searchedVideosRecyclerView.setAdapter(musicAdapter);
                         } else {
                             VerticalVideoAdapter musicAdapter = (VerticalVideoAdapter) searchBinding.searchedVideosRecyclerView.getAdapter();

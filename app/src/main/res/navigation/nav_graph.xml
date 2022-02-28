@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_homeFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
     </fragment>
     <fragment
         android:id="@+id/browseFragment"
@@ -49,6 +52,9 @@
         <action
             android:id="@+id/action_browseFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_browseFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
     </fragment>
     <fragment
         android:id="@+id/artistsFragment"
@@ -78,6 +84,9 @@
         <action
             android:id="@+id/action_videosFragment_to_allVideosFragment"
             app:destination="@id/allVideosFragment" />
+        <action
+            android:id="@+id/action_videosFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailArtistFragment"
@@ -90,6 +99,9 @@
         <action
             android:id="@+id/action_detailArtistFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_detailArtistFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -104,6 +116,9 @@
         <action
             android:id="@+id/action_searchFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
     </fragment>
     <fragment
         android:id="@+id/allMusicsFragment"
@@ -126,6 +141,9 @@
         <action
             android:id="@+id/action_allVideosFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_allVideosFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
     </fragment>
     <fragment
         android:id="@+id/albumFragment"
@@ -140,4 +158,8 @@
         android:name="com.ariaramin.radioava.ui.Fragments.Music.PlayerFragment"
         android:label="fragment_player"
         tools:layout="@layout/fragment_player" />
+    <fragment
+        android:id="@+id/videoPlayerFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.Video.VideoPlayerFragment"
+        android:label="VideoPlayerFragment" />
 </navigation>

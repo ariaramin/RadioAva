@@ -4,8 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.ariaramin.radioava.MusicPlayer;
-import com.google.android.exoplayer2.util.Log;
+import com.ariaramin.radioava.Players.MusicPlayer;
 
 import javax.inject.Inject;
 

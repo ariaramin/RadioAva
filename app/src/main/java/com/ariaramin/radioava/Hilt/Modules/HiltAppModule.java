@@ -5,6 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 
+import com.ariaramin.radioava.SharedPreference.SharedPreferenceManager;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -23,5 +25,10 @@ public class HiltAppModule {
     @Provides
     NetworkRequest ProvideNetworkRequest() {
         return new NetworkRequest.Builder().addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET).build();
+    }
+
+    @Provides
+    SharedPreferenceManager ProvideSharedPreferencesManager(@ApplicationContext Context context) {
+        return new SharedPreferenceManager(context);
     }
 }

@@ -7,14 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Environment;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +21,14 @@ import android.widget.Toast;
 import com.ariaramin.radioava.MainActivity;
 import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Music;
-import com.ariaramin.radioava.MusicPlayer;
+import com.ariaramin.radioava.Models.Video;
+import com.ariaramin.radioava.Players.MusicPlayer;
 import com.ariaramin.radioava.R;
+import com.ariaramin.radioava.SharedPreference.SharedPreferenceManager;
 import com.ariaramin.radioava.databinding.FragmentPlayerBinding;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestOptions;
-import com.google.android.exoplayer2.util.Log;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
@@ -58,8 +56,11 @@ public class PlayerFragment extends Fragment {
     @Inject
     MusicPlayer musicPlayer;
     Music music;
+    @Inject
+    SharedPreferenceManager sharedPreferenceManager;
     ArrayList<String> likedMusics;
     boolean musicLiked = false;
+    ArrayList<String> recentlyPlayed;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -112,8 +113,27 @@ public class PlayerFragment extends Fragment {
         setupButtons();
         likeMusic();
         downloadMusic();
+        addToRecentlyPlayed();
 
         return playerBinding.getRoot();
+    }
+
+    public void addToRecentlyPlayed() {
+        recentlyPlayed = sharedPreferenceManager.readRecentlyPlayedData();
+        musicPlayer.playingMusic.observe(requireActivity(), new Observer<Music>() {
+            @Override
+            public void onChanged(Music playingMusic) {
+                if (recentlyPlayed.size() >= 1) {
+                    if (!recentlyPlayed.get(recentlyPlayed.size() - 1).equals(playingMusic.getId() + playingMusic.getName())) {
+                        recentlyPlayed.add(playingMusic.getId() + playingMusic.getName());
+                        sharedPreferenceManager.storeRecentlyPlayedData(recentlyPlayed);
+                    }
+                } else {
+                    recentlyPlayed.add(playingMusic.getId() + playingMusic.getName());
+                    sharedPreferenceManager.storeRecentlyPlayedData(recentlyPlayed);
+                }
+            }
+        });
     }
 
     private void downloadMusic() {
@@ -154,12 +174,12 @@ public class PlayerFragment extends Fragment {
                             if (!likedMusics.contains(playingMusic.getName() + playingMusic.getArtist())) {
                                 likedMusics.add(playingMusic.getName() + playingMusic.getArtist());
                             }
-                            storeData();
+                            sharedPreferenceManager.storeData(likedMusics);
                             playerBinding.playerLikeButton.setImageResource(R.drawable.ic_heart_fill);
                             musicLiked = true;
                         } else {
                             likedMusics.remove(playingMusic.getName() + playingMusic.getArtist());
-                            storeData();
+                            sharedPreferenceManager.storeData(likedMusics);
                             playerBinding.playerLikeButton.setImageResource(R.drawable.ic_heart);
                             musicLiked = false;
                         }
@@ -170,7 +190,7 @@ public class PlayerFragment extends Fragment {
     }
 
     private void checkMusicLiked(Music playingMusic) {
-        readData();
+        likedMusics = sharedPreferenceManager.readLikedMusicsData();
         if (likedMusics.contains(playingMusic.getName() + playingMusic.getArtist())) {
             playerBinding.playerLikeButton.setImageResource(R.drawable.ic_heart_fill);
             musicLiked = true;
@@ -178,24 +198,6 @@ public class PlayerFragment extends Fragment {
             playerBinding.playerLikeButton.setImageResource(R.drawable.ic_heart);
             musicLiked = false;
         }
-    }
-
-    private void readData() {
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("liked_musics", Context.MODE_PRIVATE);
-        String json = sharedPreferences.getString("liked_musics", String.valueOf(new ArrayList<String>()));
-        Type type = new TypeToken<ArrayList<String>>() {
-        }.getType();
-        Gson gson = new Gson();
-        likedMusics = gson.fromJson(json, type);
-    }
-
-    private void storeData() {
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("liked_musics", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(likedMusics);
-        editor.putString("liked_musics", json);
-        editor.apply();
     }
 
     private void setupButtons() {

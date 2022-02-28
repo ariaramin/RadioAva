@@ -42,6 +42,7 @@ public class VideosFragment extends Fragment {
     FragmentVideosBinding videosBinding;
     MainViewModel mainViewModel;
     CompositeDisposable compositeDisposable;
+    private static final String TAG = "videos";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,7 +105,7 @@ public class VideosFragment extends Fragment {
                             videosBinding.videoSliderView.startAutoCycle();
 
                             if (videosBinding.mostViewedRecyclerView.getAdapter() == null) {
-                                VerticalVideoAdapter videoAdapter = new VerticalVideoAdapter(mostViewedVideos);
+                                VerticalVideoAdapter videoAdapter = new VerticalVideoAdapter(mostViewedVideos, TAG);
                                 videosBinding.mostViewedRecyclerView.setAdapter(videoAdapter);
                             } else {
                                 VerticalVideoAdapter adapter = (VerticalVideoAdapter) videosBinding.mostViewedRecyclerView.getAdapter();
