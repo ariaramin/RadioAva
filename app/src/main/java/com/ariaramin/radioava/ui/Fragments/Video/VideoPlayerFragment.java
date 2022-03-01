@@ -1,8 +1,10 @@
 package com.ariaramin.radioava.ui.Fragments.Video;
 
+import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,21 +15,21 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ariaramin.radioava.Adapters.Video.VerticalVideoAdapter;
 import com.ariaramin.radioava.MainActivity;
 import com.ariaramin.radioava.MainViewModel;
-import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.Players.MusicPlayer;
 import com.ariaramin.radioava.Players.VideoPlayer;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.FragmentVideoPlayerBinding;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
@@ -55,6 +57,8 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
     MusicPlayer musicPlayer;
     @Inject
     VideoPlayer videoPlayer;
+    boolean fullscreen = false;
+    Dialog fullScreenDialog;
     Video video;
     boolean videoLiked;
     ArrayList<String> likedVideos;
@@ -84,6 +88,7 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
             }
         });
 
+
         Bundle args = getArguments();
         if (args != null) {
             video = args.getParcelable("Video");
@@ -94,6 +99,7 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
 
         setupDetail();
         playVideo();
+        initFullscreenDialog();
         getMoreVideo();
         downloadVideo();
         likeVideo();
@@ -261,11 +267,11 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
                 .subscribe(new Consumer<List<Video>>() {
                     @Override
                     public void accept(List<Video> videos) throws Throwable {
-//                        for (int i = 0; i < videos.size(); i++) {
-//                            if (videos.get(i).getId() == video.getId()) {
-//                                videos.remove(videos.get(i));
-//                            }
-//                        }
+                        for (int i = 0; i < videos.size(); i++) {
+                            if (videos.get(i).getId() == video.getId()) {
+                                videos.remove(videos.get(i));
+                            }
+                        }
                         VerticalVideoAdapter adapter = (VerticalVideoAdapter) videoPlayerBinding.videoPlayerRecyclerView.getAdapter();
                         if (adapter != null) {
                             adapter.addVideos(videos.subList(0, 10));
@@ -284,6 +290,74 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
             VerticalVideoAdapter adapter = (VerticalVideoAdapter) videoPlayerBinding.videoPlayerRecyclerView.getAdapter();
             adapter.updateList(videos);
         }
+    }
+
+    private void initFullscreenDialog() {
+        fullScreenDialog = new Dialog(requireActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
+            public void onBackPressed() {
+                if (fullscreen) {
+                    closeFullscreenDialog();
+                }
+                super.onBackPressed();
+            }
+        };
+
+        PlayerView playerView = videoPlayerBinding.videoPlayerView;
+        View fullScreenButton = playerView.findViewById(R.id.exo_fullscreen_icon);
+        fullScreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!fullscreen) {
+                    openFullscreenDialog();
+                } else {
+                    closeFullscreenDialog();
+                }
+            }
+        });
+    }
+
+    private void openFullscreenDialog() {
+        // Set layout fullscreen
+        PlayerView playerView = videoPlayerBinding.videoPlayerView;
+        ViewGroup parent = (ViewGroup) playerView.getParent();
+        parent.removeView(playerView);
+        fullScreenDialog.addContentView(playerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        // Set screen orientation landscape
+        mainActivity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        if (mainActivity.getSupportActionBar() != null) {
+            mainActivity.getSupportActionBar().hide();
+        }
+        mainActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        // Change fullscreen button image
+        ImageView fullScreenImageView = playerView.findViewById(R.id.exo_fullscreen_icon);
+        fullScreenImageView.setImageResource(R.drawable.ic_fullscreen_close);
+        fullscreen = true;
+        fullScreenDialog.show();
+    }
+
+    private void closeFullscreenDialog() {
+        // Set layout fullscreen
+        PlayerView playerView = videoPlayerBinding.videoPlayerView;
+        ViewGroup parent = (ViewGroup) playerView.getParent();
+        parent.removeView(playerView);
+        videoPlayerBinding.videoPlayerFrame.addView(playerView);
+
+        // Set screen orientation portrait
+        mainActivity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        if (mainActivity.getSupportActionBar() != null) {
+            mainActivity.getSupportActionBar().show();
+        }
+        mainActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        // Change fullscreen button image
+        ImageView fullScreenImageView = playerView.findViewById(R.id.exo_fullscreen_icon);
+        fullScreenImageView.setImageResource(R.drawable.ic_fullscreen_open);
+        fullscreen = false;
+        fullScreenDialog.dismiss();
     }
 
     @Override

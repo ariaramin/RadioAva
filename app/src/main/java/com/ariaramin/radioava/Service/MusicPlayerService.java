@@ -122,7 +122,7 @@ public class MusicPlayerService extends LifecycleService {
         setNotificationViews();
         String CHANNEL_ID = getResources().getString(R.string.channel_id);
         notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.notification_icon)
+                .setSmallIcon(R.drawable.icon)
                 .setContentIntent(pendingIntent)
                 .setOnlyAlertOnce(true)
                 .setOngoing(true)

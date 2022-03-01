@@ -41,18 +41,7 @@ public interface DatabaseDao {
     Flowable<List<Music>> searchInMusics(String query);
 
     @Transaction
-    @Query("SELECT * FROM music_tbl WHERE artist=:artist " +
-            "OR artist LIKE '%& ' || :artist || '%'" +
-            "OR artist LIKE '%' || :artist || ' &%'" +
-            "OR artist LIKE '% ,' || :artist || '%'" +
-            "OR artist LIKE '%' || :artist || ',%'" +
-            "OR artist LIKE '% ,' || :artist || ',%'" +
-            "OR name LIKE '%Ft ' || :artist || '%'" +
-            "OR name LIKE '%& ' || :artist || '%'" +
-            "OR name LIKE '% ,' || :artist || '%'" +
-            "OR name LIKE '%' || :artist || ',%'" +
-            "OR name LIKE '% ,' || :artist || ',%'" +
-            "AND album IS NULL ORDER BY releaseDate DESC")
+    @Query("SELECT * FROM music_tbl WHERE artist LIKE '%' || :artist || '%' AND album IS NULL ORDER BY releaseDate DESC")
     Flowable<List<Music>> readArtistMusics(String artist);
 
     /////////////////////////////////////////////////////////// Album

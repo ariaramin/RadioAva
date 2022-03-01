@@ -75,7 +75,8 @@ public class AlbumFragment extends Fragment {
         });
 
         setupDetail();
-        setupButtons();
+        playAlbum();
+        downloadAlbum();
         return albumBinding.getRoot();
     }
 
@@ -96,15 +97,18 @@ public class AlbumFragment extends Fragment {
         albumBinding.albumMusicsRecyclerView.setAdapter(adapter);
     }
 
-    private void setupButtons() {
+    private void playAlbum() {
         albumBinding.albumPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 musicPlayer.setNewPlaylist(album.getMusics());
                 musicPlayer.play();
+                mainActivity.playBackLayout.setVisibility(View.VISIBLE);
             }
         });
+    }
 
+    private void downloadAlbum() {
         albumBinding.albumDownloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

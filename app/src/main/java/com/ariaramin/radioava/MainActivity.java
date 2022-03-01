@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
@@ -13,6 +14,7 @@ import android.net.Network;
 import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,12 +27,15 @@ import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.Players.MusicPlayer;
 import com.ariaramin.radioava.Service.MusicPlayerService;
 import com.ariaramin.radioava.databinding.ActivityMainBinding;
+import com.ariaramin.radioava.ui.Fragments.Music.PlayerFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -85,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupPlayBack(Music music) {
-//        mainBinding.playBackLayout.setVisibility(View.VISIBLE);
         mainBinding.playBackLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

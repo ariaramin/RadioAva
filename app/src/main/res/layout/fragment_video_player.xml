@@ -83,17 +83,25 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp">
 
-                        <com.google.android.exoplayer2.ui.PlayerView
-                            android:id="@+id/videoPlayerView"
+                        <FrameLayout
+                            android:id="@+id/videoPlayerFrame"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:keepScreenOn="true"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintDimensionRatio="w,1.7:1"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:resize_mode="zoom" />
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.exoplayer2.ui.PlayerView
+                                android:id="@+id/videoPlayerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:keepScreenOn="true"
+                                app:controller_layout_id="@layout/exo_playback_control_view"
+                                app:resize_mode="zoom" />
+                        </FrameLayout>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <RelativeLayout
