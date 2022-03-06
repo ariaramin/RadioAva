@@ -35,18 +35,36 @@ public class SharedPreferenceManager {
         editor.apply();
     }
 
-    public void storeData(ArrayList<String> likedMusics) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("liked_musics", Context.MODE_PRIVATE);
+    public void storeDownloadedData(ArrayList<String> downloaded) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("downloaded", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(likedMusics);
-        editor.putString("liked_musics", json);
+        String json = gson.toJson(downloaded);
+        editor.putString("downloaded", json);
         editor.apply();
     }
 
-    public ArrayList<String> readLikedMusicsData() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("liked_musics", Context.MODE_PRIVATE);
-        String json = sharedPreferences.getString("liked_musics", String.valueOf(new ArrayList<String>()));
+    public ArrayList<String> readDownloadedData() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("downloaded", Context.MODE_PRIVATE);
+        String json = sharedPreferences.getString("downloaded", String.valueOf(new ArrayList<String>()));
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        Gson gson = new Gson();
+        return gson.fromJson(json, type);
+    }
+
+    public void storeLikedData(ArrayList<String> liked) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("liked", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(liked);
+        editor.putString("liked", json);
+        editor.apply();
+    }
+
+    public ArrayList<String> readLikedData() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("liked", Context.MODE_PRIVATE);
+        String json = sharedPreferences.getString("liked", String.valueOf(new ArrayList<String>()));
         Type type = new TypeToken<ArrayList<String>>() {
         }.getType();
         Gson gson = new Gson();

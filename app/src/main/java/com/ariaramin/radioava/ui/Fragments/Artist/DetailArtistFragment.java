@@ -134,8 +134,8 @@ public class DetailArtistFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!artistFollowed) {
-                    if (!followedArtists.contains(artist.getName())) {
-                        followedArtists.add(artist.getName());
+                    if (!followedArtists.contains(artist.getId() + artist.getName())) {
+                        followedArtists.add(artist.getId() + artist.getName());
                     }
                     sharedPreferenceManager.storeFollowedArtistData(followedArtists);
                     detailArtistBinding.followButton.setBackgroundResource(R.drawable.inactive_button_bg);
@@ -143,7 +143,7 @@ public class DetailArtistFragment extends Fragment {
                     detailArtistBinding.followButton.setText(requireContext().getString(R.string.followed));
                     artistFollowed = true;
                 } else {
-                    followedArtists.remove(artist.getName());
+                    followedArtists.remove(artist.getId() + artist.getName());
                     sharedPreferenceManager.storeFollowedArtistData(followedArtists);
                     detailArtistBinding.followButton.setBackgroundResource(R.drawable.button_bg);
                     detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.primaryColor));
@@ -156,7 +156,7 @@ public class DetailArtistFragment extends Fragment {
 
     private void checkIsArtistFollowed() {
         followedArtists = sharedPreferenceManager.readFollowedArtistData();
-        if (followedArtists.contains(artist.getName())) {
+        if (followedArtists.contains(artist.getId() + artist.getName())) {
             detailArtistBinding.followButton.setBackgroundResource(R.drawable.inactive_button_bg);
             detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.secondaryDarkColor));
             detailArtistBinding.followButton.setText(requireContext().getString(R.string.followed));

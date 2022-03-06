@@ -26,8 +26,11 @@
     <string name="your_downloads">Your Downloads</string>
     <string name="recently_played_musics">Recently Played Musics</string>
     <string name="recently_played_videos">Recently Played Videos</string>
-    <string name="likes">Liked</string>
+    <string name="liked">Liked</string>
     <string name="followed_artist">Followed Artist</string>
+    <string name="downloaded_musics">Downloaded Musics</string>
+    <string name="downloaded_albums">Downloaded Albums</string>
+    <string name="downloaded_videos">Downloaded Videos</string>
     <string name="your_playlist">Your Playlist</string>
     <string name="not_played">Nothing has been played</string>
     <string name="not_found">Not Found</string>

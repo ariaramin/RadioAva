@@ -35,12 +35,34 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <ImageButton
-                        android:id="@+id/backStackButton"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/relativeLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/circular_button_bg"
-                        android:src="@drawable/ic_back_stack" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageButton
+                            android:id="@+id/backStackButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/circular_button_bg"
+                            android:src="@drawable/ic_back_stack" />
+
+                        <ImageButton
+                            android:id="@+id/albumLikeButton"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:background="@drawable/circular_button_bg"
+                            android:src="@drawable/ic_heart"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/backStackButton" />
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

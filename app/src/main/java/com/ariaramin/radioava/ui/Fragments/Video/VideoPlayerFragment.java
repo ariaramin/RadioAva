@@ -24,10 +24,12 @@ import android.widget.Toast;
 import com.ariaramin.radioava.Adapters.Video.VerticalVideoAdapter;
 import com.ariaramin.radioava.MainActivity;
 import com.ariaramin.radioava.MainViewModel;
+import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.Players.MusicPlayer;
 import com.ariaramin.radioava.Players.VideoPlayer;
 import com.ariaramin.radioava.R;
+import com.ariaramin.radioava.SharedPreference.SharedPreferenceManager;
 import com.ariaramin.radioava.databinding.FragmentVideoPlayerBinding;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.common.reflect.TypeToken;
@@ -57,12 +59,16 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
     MusicPlayer musicPlayer;
     @Inject
     VideoPlayer videoPlayer;
+    @Inject
+    SharedPreferenceManager sharedPreferenceManager;
     boolean fullscreen = false;
     Dialog fullScreenDialog;
     Video video;
     boolean videoLiked;
     ArrayList<String> likedVideos;
     ArrayList<String> recentlyPlayed;
+    ArrayList<String> downloads;
+    boolean downloaded = false;
     private static final String TAG = "video_player";
 
     @Override
@@ -125,10 +131,26 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
                                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, title + ".mp4");
                         downloadManager.enqueue(request);
+                        addToDownloads(playingVideo);
                     }
                 });
             }
         });
+    }
+
+    private void addToDownloads(Video playingVideo) {
+        downloads = sharedPreferenceManager.readDownloadedData();
+        if (!downloaded) {
+            if (!downloads.contains(playingVideo.getId() + playingVideo.getName())) {
+                downloads.add(playingVideo.getId() + playingVideo.getName());
+            }
+            sharedPreferenceManager.storeDownloadedData(downloads);
+            downloaded = true;
+        } else {
+            downloads.remove(playingVideo.getId() + playingVideo.getName());
+            sharedPreferenceManager.storeDownloadedData(downloads);
+            downloaded = false;
+        }
     }
 
     private void likeVideo() {
@@ -140,14 +162,14 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
                     @Override
                     public void onClick(View v) {
                         if (!videoLiked) {
-                            if (!likedVideos.contains(playingVideo.getName() + playingVideo.getArtist())) {
-                                likedVideos.add(playingVideo.getName() + playingVideo.getArtist());
+                            if (!likedVideos.contains(playingVideo.getId() + playingVideo.getName())) {
+                                likedVideos.add(playingVideo.getId() + playingVideo.getName());
                             }
                             storeData();
                             videoPlayerBinding.videoPlayerLikeButton.setImageResource(R.drawable.ic_heart_fill);
                             videoLiked = true;
                         } else {
-                            likedVideos.remove(playingVideo.getName() + playingVideo.getArtist());
+                            likedVideos.remove(playingVideo.getId() + playingVideo.getName());
                             storeData();
                             videoPlayerBinding.videoPlayerLikeButton.setImageResource(R.drawable.ic_heart);
                             videoLiked = false;
@@ -160,7 +182,7 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
 
     private void checkVideoLiked(Video playingVideo) {
         readData();
-        if (likedVideos.contains(playingVideo.getName() + playingVideo.getArtist())) {
+        if (likedVideos.contains(playingVideo.getId() + playingVideo.getName())) {
             videoPlayerBinding.videoPlayerLikeButton.setImageResource(R.drawable.ic_heart_fill);
             videoLiked = true;
         } else {

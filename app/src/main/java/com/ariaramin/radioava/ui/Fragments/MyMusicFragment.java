@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,6 +51,7 @@ public class MyMusicFragment extends Fragment {
     ArrayList<String> recentlyPlayed;
     ArrayList<Video> recentlyPlayedVideos = new ArrayList<>();
     ArrayList<Music> recentlyPlayedMusics = new ArrayList<>();
+    private static final String TAG = "my_musics";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +62,46 @@ public class MyMusicFragment extends Fragment {
         compositeDisposable = new CompositeDisposable();
         recentlyPlayed = sharedPreferenceManager.readRecentlyPlayedData();
         setupRecyclerViews();
+        setupButtons();
+
         return myMusicBinding.getRoot();
+    }
+
+    private void setupButtons() {
+        myMusicBinding.followedArtistLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_myMusicFragment_to_followedArtistsFragment);
+            }
+        });
+        myMusicBinding.likedLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_myMusicFragment_to_likedFragment);
+            }
+        });
+        myMusicBinding.downloadedMusicLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", 3);
+                Navigation.findNavController(v).navigate(R.id.action_myMusicFragment_to_musicsListFragment, bundle);
+            }
+        });
+        myMusicBinding.downloadedVideosLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_myMusicFragment_to_videosListFragment);
+            }
+        });
+        myMusicBinding.downloadedAlbumLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", 4);
+                Navigation.findNavController(v).navigate(R.id.action_myMusicFragment_to_musicsListFragment, bundle);
+            }
+        });
     }
 
     private void setupRecyclerViews() {
@@ -88,7 +129,7 @@ public class MyMusicFragment extends Fragment {
                         Collections.reverse(recentlyPlayedVideos);
 
                         if (myMusicBinding.recentlyPlayedVideosRecyclerView.getAdapter() == null) {
-                            VerticalVideoAdapter adapter = new VerticalVideoAdapter(recentlyPlayedVideos, "");
+                            VerticalVideoAdapter adapter = new VerticalVideoAdapter(recentlyPlayedVideos, TAG);
                             myMusicBinding.recentlyPlayedVideosRecyclerView.setAdapter(adapter);
                         } else {
                             VerticalVideoAdapter adapter = (VerticalVideoAdapter) myMusicBinding.recentlyPlayedVideosRecyclerView.getAdapter();
@@ -124,7 +165,7 @@ public class MyMusicFragment extends Fragment {
 
                         Collections.reverse(recentlyPlayedMusics);
                         if (myMusicBinding.recentlyPlayedMusicsRecyclerView.getAdapter() == null) {
-                            VerticalMusicAdapter adapter = new VerticalMusicAdapter(recentlyPlayedMusics, "");
+                            VerticalMusicAdapter adapter = new VerticalMusicAdapter(recentlyPlayedMusics, TAG);
                             myMusicBinding.recentlyPlayedMusicsRecyclerView.setAdapter(adapter);
                         } else {
                             VerticalMusicAdapter adapter = (VerticalMusicAdapter) myMusicBinding.recentlyPlayedMusicsRecyclerView.getAdapter();

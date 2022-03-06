@@ -36,6 +36,10 @@ public class Album implements Parcelable {
     @SerializedName("total_music")
     public int totalMusic;
 
+    public int getId() {
+        return id;
+    }
+
     public String getCover() {
         return cover;
     }

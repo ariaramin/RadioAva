@@ -89,6 +89,12 @@ public class VerticalAlbumAdapter extends RecyclerView.Adapter<VerticalAlbumAdap
                         case "music_list":
                             Navigation.findNavController(v).navigate(R.id.action_allMusicsFragment_to_albumFragment, bundle);
                             break;
+                        case "liked":
+                            Navigation.findNavController(v).navigate(R.id.action_likedFragment_to_albumFragment, bundle);
+                            break;
+                        case "downloaded":
+                            Navigation.findNavController(v).navigate(R.id.action_musicsListFragment_to_albumFragment, bundle);
+                            break;
                     }
                 }
             });

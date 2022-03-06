@@ -23,10 +23,13 @@ import com.ariaramin.radioava.Models.Album;
 import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.Players.MusicPlayer;
 import com.ariaramin.radioava.R;
+import com.ariaramin.radioava.SharedPreference.SharedPreferenceManager;
 import com.ariaramin.radioava.databinding.FragmentAlbumBinding;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -43,6 +46,12 @@ public class AlbumFragment extends Fragment {
     Album album;
     @Inject
     MusicPlayer musicPlayer;
+    @Inject
+    SharedPreferenceManager sharedPreferenceManager;
+    ArrayList<String> likedAlbums;
+    boolean albumLiked = false;
+    ArrayList<String> downloads;
+    boolean downloaded = false;
     private static final String TAG = "album";
 
     @Override
@@ -73,9 +82,11 @@ public class AlbumFragment extends Fragment {
                 requireActivity().onBackPressed();
             }
         });
+        downloads = sharedPreferenceManager.readDownloadedData();
 
         setupDetail();
         playAlbum();
+        likeAlbum();
         downloadAlbum();
         return albumBinding.getRoot();
     }
@@ -127,8 +138,62 @@ public class AlbumFragment extends Fragment {
                             .setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, title + ".m4a");
                     downloadManager.enqueue(request);
                 }
+                addToDownloads();
             }
         });
+    }
+
+    private void addToDownloads() {
+        downloads = sharedPreferenceManager.readDownloadedData();
+        if (!downloaded) {
+            if (!downloads.contains(album.getId() + album.getName())) {
+                downloads.add(album.getId() + album.getName());
+            }
+            sharedPreferenceManager.storeDownloadedData(downloads);
+            downloaded = true;
+        } else {
+            downloads.remove(album.getId() + album.getName());
+            sharedPreferenceManager.storeDownloadedData(downloads);
+            downloaded = false;
+        }
+    }
+
+    private void likeAlbum() {
+        checkMusicLiked();
+        albumBinding.albumLikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                albumBinding.albumLikeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!albumLiked) {
+                            if (!likedAlbums.contains(album.getId() + album.getName())) {
+                                likedAlbums.add(album.getId() + album.getName());
+                            }
+                            sharedPreferenceManager.storeLikedData(likedAlbums);
+                            albumBinding.albumLikeButton.setImageResource(R.drawable.ic_heart_fill);
+                            albumLiked = true;
+                        } else {
+                            likedAlbums.remove(album.getId() + album.getName());
+                            sharedPreferenceManager.storeLikedData(likedAlbums);
+                            albumBinding.albumLikeButton.setImageResource(R.drawable.ic_heart);
+                            albumLiked = false;
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    private void checkMusicLiked() {
+        likedAlbums = sharedPreferenceManager.readLikedData();
+        if (likedAlbums.contains(album.getId() + album.getName())) {
+            albumBinding.albumLikeButton.setImageResource(R.drawable.ic_heart_fill);
+            albumLiked = true;
+        } else {
+            albumBinding.albumLikeButton.setImageResource(R.drawable.ic_heart);
+            albumLiked = false;
+        }
     }
 
     @Override

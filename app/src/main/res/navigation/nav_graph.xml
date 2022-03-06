@@ -72,7 +72,26 @@
         android:id="@+id/myMusicFragment"
         android:name="com.ariaramin.radioava.ui.Fragments.MyMusicFragment"
         android:label="fragment_my_music"
-        tools:layout="@layout/fragment_my_music" />
+        tools:layout="@layout/fragment_my_music" >
+        <action
+            android:id="@+id/action_myMusicFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_myMusicFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
+        <action
+            android:id="@+id/action_myMusicFragment_to_followedArtistsFragment"
+            app:destination="@id/followedArtistsFragment" />
+        <action
+            android:id="@+id/action_myMusicFragment_to_musicsListFragment"
+            app:destination="@id/musicsListFragment" />
+        <action
+            android:id="@+id/action_myMusicFragment_to_videosListFragment"
+            app:destination="@id/videosListFragment" />
+        <action
+            android:id="@+id/action_myMusicFragment_to_likedFragment"
+            app:destination="@id/likedFragment" />
+    </fragment>
     <fragment
         android:id="@+id/videosFragment"
         android:name="com.ariaramin.radioava.ui.Fragments.VideosFragment"
@@ -162,4 +181,45 @@
         android:id="@+id/videoPlayerFragment"
         android:name="com.ariaramin.radioava.ui.Fragments.Video.VideoPlayerFragment"
         android:label="VideoPlayerFragment" />
+    <fragment
+        android:id="@+id/followedArtistsFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.Artist.FollowedArtistsFragment"
+        android:label="FollowedArtistsFragment" >
+        <action
+            android:id="@+id/action_followedArtistsFragment_to_detailArtistFragment"
+            app:destination="@id/detailArtistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/musicsListFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.Music.MusicsListFragment"
+        android:label="MusicsListFragment" >
+        <action
+            android:id="@+id/action_musicsListFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_musicsListFragment_to_albumFragment"
+            app:destination="@id/albumFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/videosListFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.Video.VideosListFragment"
+        android:label="VideosListFragment" >
+        <action
+            android:id="@+id/action_videosListFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/likedFragment"
+        android:name="com.ariaramin.radioava.ui.Fragments.LikedFragment"
+        android:label="LikedFragment" >
+        <action
+            android:id="@+id/action_likedFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_likedFragment_to_albumFragment"
+            app:destination="@id/albumFragment" />
+        <action
+            android:id="@+id/action_likedFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
+    </fragment>
 </navigation>

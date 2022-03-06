@@ -104,6 +104,15 @@ public class VerticalVideoAdapter extends RecyclerView.Adapter<VerticalVideoAdap
                         case "artist_works":
                             Navigation.findNavController(v).navigate(R.id.action_detailArtistFragment_to_videoPlayerFragment, bundle);
                             break;
+                        case "my_musics":
+                            Navigation.findNavController(v).navigate(R.id.action_myMusicFragment_to_videoPlayerFragment, bundle);
+                            break;
+                        case "liked":
+                            Navigation.findNavController(v).navigate(R.id.action_likedFragment_to_videoPlayerFragment, bundle);
+                            break;
+                        case "downloaded":
+                            Navigation.findNavController(v).navigate(R.id.action_videosListFragment_to_videoPlayerFragment, bundle);
+                            break;
                         case "video_player":
                             if (listener != null) {
                                 listener.OnClick(video);

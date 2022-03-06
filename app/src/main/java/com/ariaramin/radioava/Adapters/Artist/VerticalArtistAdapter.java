@@ -88,6 +88,9 @@ public class VerticalArtistAdapter extends RecyclerView.Adapter<VerticalArtistAd
                         case "search":
                             Navigation.findNavController(v).navigate(R.id.action_searchFragment_to_detailArtistFragment, bundle);
                             break;
+                        case "followed_artists":
+                            Navigation.findNavController(v).navigate(R.id.action_followedArtistsFragment_to_detailArtistFragment, bundle);
+                            break;
                     }
                 }
             });

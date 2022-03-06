@@ -92,6 +92,15 @@ public class VerticalMusicAdapter extends RecyclerView.Adapter<VerticalMusicAdap
                         case "artist_works":
                             Navigation.findNavController(v).navigate(R.id.action_detailArtistFragment_to_playerFragment, bundle);
                             break;
+                        case "my_musics":
+                            Navigation.findNavController(v).navigate(R.id.action_myMusicFragment_to_playerFragment, bundle);
+                            break;
+                        case "liked":
+                            Navigation.findNavController(v).navigate(R.id.action_likedFragment_to_playerFragment, bundle);
+                            break;
+                        case "downloaded":
+                            Navigation.findNavController(v).navigate(R.id.action_musicsListFragment_to_playerFragment, bundle);
+                            break;
                     }
                 }
             });

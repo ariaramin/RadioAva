@@ -8,17 +8,16 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/frameLayout11"
+        android:id="@+id/frameLayout5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/secondaryDarkColor"
-        tools:context=".ui.Fragments.Video.VideosListFragment">
+        tools:context=".ui.Fragments.Artist.FollowedArtistsFragment">
 
         <RelativeLayout
             android:id="@+id/headerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
@@ -41,12 +40,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/downloaded_videos"
+                android:text="@string/followed_artist"
                 android:textSize="26sp" />
+
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/videosRecyclerView"
+            android:id="@+id/artistsRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="12dp"
@@ -59,21 +59,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/headerLayout" />
 
-        <com.github.ybq.android.spinkit.SpinKitView
-            android:id="@+id/videosSpinKit"
-            style="@style/SpinKitView.ThreeBounce"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:SpinKit_Color="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25" />
-
         <TextView
-            android:id="@+id/notFoundVideoTextView"
+            android:id="@+id/notFoundArtistTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nothing_to_display"
@@ -85,5 +72,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/headerLayout"
             app:layout_constraintVertical_bias="0.25" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

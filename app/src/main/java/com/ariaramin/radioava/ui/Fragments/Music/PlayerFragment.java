@@ -61,6 +61,8 @@ public class PlayerFragment extends Fragment {
     ArrayList<String> likedMusics;
     boolean musicLiked = false;
     ArrayList<String> recentlyPlayed;
+    ArrayList<String> downloads;
+    boolean downloaded = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -155,11 +157,26 @@ public class PlayerFragment extends Fragment {
                                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, title + ".m4a");
                         downloadManager.enqueue(request);
-
+                        addToDownloads(playingMusic);
                     }
                 });
             }
         });
+    }
+
+    private void addToDownloads(Music playingMusic) {
+        downloads = sharedPreferenceManager.readDownloadedData();
+        if (!downloaded) {
+            if (!downloads.contains(playingMusic.getId() + playingMusic.getName())) {
+                downloads.add(playingMusic.getId() + playingMusic.getName());
+            }
+            sharedPreferenceManager.storeDownloadedData(downloads);
+            downloaded = true;
+        } else {
+            downloads.remove(playingMusic.getId() + playingMusic.getName());
+            sharedPreferenceManager.storeDownloadedData(downloads);
+            downloaded = false;
+        }
     }
 
     private void likeMusic() {
@@ -171,15 +188,15 @@ public class PlayerFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         if (!musicLiked) {
-                            if (!likedMusics.contains(playingMusic.getName() + playingMusic.getArtist())) {
-                                likedMusics.add(playingMusic.getName() + playingMusic.getArtist());
+                            if (!likedMusics.contains(playingMusic.getId() + playingMusic.getName())) {
+                                likedMusics.add(playingMusic.getId() + playingMusic.getName());
                             }
-                            sharedPreferenceManager.storeData(likedMusics);
+                            sharedPreferenceManager.storeLikedData(likedMusics);
                             playerBinding.playerLikeButton.setImageResource(R.drawable.ic_heart_fill);
                             musicLiked = true;
                         } else {
-                            likedMusics.remove(playingMusic.getName() + playingMusic.getArtist());
-                            sharedPreferenceManager.storeData(likedMusics);
+                            likedMusics.remove(playingMusic.getId() + playingMusic.getName());
+                            sharedPreferenceManager.storeLikedData(likedMusics);
                             playerBinding.playerLikeButton.setImageResource(R.drawable.ic_heart);
                             musicLiked = false;
                         }
@@ -190,8 +207,8 @@ public class PlayerFragment extends Fragment {
     }
 
     private void checkMusicLiked(Music playingMusic) {
-        likedMusics = sharedPreferenceManager.readLikedMusicsData();
-        if (likedMusics.contains(playingMusic.getName() + playingMusic.getArtist())) {
+        likedMusics = sharedPreferenceManager.readLikedData();
+        if (likedMusics.contains(playingMusic.getId() + playingMusic.getName())) {
             playerBinding.playerLikeButton.setImageResource(R.drawable.ic_heart_fill);
             musicLiked = true;
         } else {
