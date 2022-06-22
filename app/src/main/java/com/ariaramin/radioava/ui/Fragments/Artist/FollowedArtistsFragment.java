@@ -19,6 +19,7 @@ import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.SharedPreference.SharedPreferenceManager;
 import com.ariaramin.radioava.databinding.FragmentFollowedArtistsBinding;
+import com.ariaramin.radioava.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,12 +62,7 @@ public class FollowedArtistsFragment extends Fragment {
         compositeDisposable = new CompositeDisposable();
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
         mainActivity.homeImageView.setVisibility(View.GONE);
-        artistBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requireActivity().onBackPressed();
-            }
-        });
+        artistBinding.backStackButton.setOnClickListener(v -> requireActivity().onBackPressed());
         followedArtist = sharedPreferenceManager.readFollowedArtistData();
         getFollowedArtists();
 
@@ -74,7 +70,7 @@ public class FollowedArtistsFragment extends Fragment {
     }
 
     private void getFollowedArtists() {
-        Disposable disposable = mainViewModel.getAllArtistsFromDb()
+        Disposable disposable = mainViewModel.getAllArtists()
                 .map(artists -> {
                     followedArtistList.clear();
                     for (int i = 0; i < followedArtist.size(); i++) {
@@ -88,25 +84,24 @@ public class FollowedArtistsFragment extends Fragment {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Artist>>() {
-                    @Override
-                    public void accept(List<Artist> artists) throws Throwable {
-                        Collections.reverse(artists);
+                .subscribe((Consumer<List<Artist>>) artists -> {
+                    Collections.reverse(artists);
 
-                        if (artistBinding.artistsRecyclerView.getAdapter() == null) {
-                            VerticalArtistAdapter adapter = new VerticalArtistAdapter(artists, TAG);
-                            artistBinding.artistsRecyclerView.setAdapter(adapter);
-                        } else {
-                            VerticalArtistAdapter adapter = (VerticalArtistAdapter) artistBinding.artistsRecyclerView.getAdapter();
-                            adapter.updateList(artists);
-                        }
-
-                        if (artists.isEmpty()) {
-                            artistBinding.notFoundArtistTextView.setVisibility(View.VISIBLE);
-                        } else {
-                            artistBinding.notFoundArtistTextView.setVisibility(View.GONE);
-                        }
+                    if (artistBinding.artistsRecyclerView.getAdapter() == null) {
+                        VerticalArtistAdapter adapter = new VerticalArtistAdapter(artists, TAG);
+                        artistBinding.artistsRecyclerView.setAdapter(adapter);
+                    } else {
+                        VerticalArtistAdapter adapter = (VerticalArtistAdapter) artistBinding.artistsRecyclerView.getAdapter();
+                        adapter.updateList(artists);
                     }
+
+                    if (artists.isEmpty()) {
+                        artistBinding.notFoundArtistTextView.setVisibility(View.VISIBLE);
+                    } else {
+                        artistBinding.notFoundArtistTextView.setVisibility(View.GONE);
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }

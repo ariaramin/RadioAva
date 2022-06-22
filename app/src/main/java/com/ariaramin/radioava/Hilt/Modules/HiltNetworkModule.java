@@ -2,7 +2,6 @@ package com.ariaramin.radioava.Hilt.Modules;
 
 import com.ariaramin.radioava.MainRepository;
 import com.ariaramin.radioava.Retrofit.RequestApi;
-import com.ariaramin.radioava.Room.DatabaseDao;
 
 import java.util.concurrent.TimeUnit;
 
@@ -44,7 +43,7 @@ public class HiltNetworkModule {
 
     @Provides
     @Singleton
-    MainRepository ProvideMainRepository(RequestApi requestApi, DatabaseDao databaseDao) {
-        return new MainRepository(requestApi, databaseDao);
+    MainRepository ProvideMainRepository(RequestApi requestApi) {
+        return new MainRepository(requestApi);
     }
 }

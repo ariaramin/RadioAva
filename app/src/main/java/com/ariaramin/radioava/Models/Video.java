@@ -3,15 +3,11 @@ package com.ariaramin.radioava.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "video_tbl")
 public class Video implements Parcelable {
 
-    @PrimaryKey
     @SerializedName("id")
     public int id;
 

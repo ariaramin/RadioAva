@@ -16,7 +16,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 
 @HiltViewModel
@@ -30,10 +29,6 @@ public class MainViewModel extends AndroidViewModel {
     @Inject
     public MainViewModel(@NonNull Application application) {
         super(application);
-    }
-
-    public void clearCompositeDisposable() {
-        mainRepository.clearCompositeDisposable();
     }
 
     public MutableLiveData<Integer> getArtistTotalMusics() {
@@ -50,28 +45,20 @@ public class MainViewModel extends AndroidViewModel {
         return mainRepository.getAllMusics();
     }
 
-    public void insertMusics(List<Music> musics) {
-        mainRepository.insertMusics(musics);
+    public Observable<List<Music>> getTrendingMusics() {
+        return mainRepository.getTrendingMusics();
     }
 
-    public Flowable<List<Music>> getAllMusicsFromDb() {
-        return mainRepository.getAllMusicsFromDb();
+    public Observable<List<Music>> getPopularMusics() {
+        return mainRepository.getPopularMusics();
     }
 
-    public Flowable<List<Music>> getTrendingMusicsFromDb() {
-        return mainRepository.getTrendingMusicsFromDb();
+    public Observable<List<Music>> searchInMusics(String search, int limit) {
+        return mainRepository.searchInMusics(search, limit);
     }
 
-    public Flowable<List<Music>> getPopularMusicsFromDb() {
-        return mainRepository.getPopularMusicsFromDb();
-    }
-
-    public Flowable<List<Music>> searchInMusicsFromDb(String query) {
-        return mainRepository.searchInMusicsFromDb(query);
-    }
-
-    public Flowable<List<Music>> getArtistMusicsFromDb(String artist) {
-        return mainRepository.getArtistMusicsFromDb(artist);
+    public Observable<List<Music>> getArtistMusics(String artist) {
+        return mainRepository.getArtistMusics(artist);
     }
 
     ////////////////////////////// Album
@@ -80,20 +67,12 @@ public class MainViewModel extends AndroidViewModel {
         return mainRepository.getAllAlbums();
     }
 
-    public void insertAlbums(List<Album> albums) {
-        mainRepository.insertAlbums(albums);
+    public Observable<List<Album>> getArtistAlbums(String artist) {
+        return mainRepository.getArtistAlbums(artist);
     }
 
-    public Flowable<List<Album>> getAllAlbumsFromDb() {
-        return mainRepository.getAllAlbumsFromDb();
-    }
-
-    public Flowable<List<Album>> getArtistAlbumsFromDb(String artist) {
-        return mainRepository.getArtistAlbumsFromDb(artist);
-    }
-
-    public Flowable<List<Album>> searchInAlbumsFromDb(String query) {
-        return mainRepository.searchInAlbumsFromDb(query);
+    public Observable<List<Album>> searchInAlbums(String search, int limit) {
+        return mainRepository.searchInAlbums(search, limit);
     }
 
     //////////////////////////// Artist
@@ -102,16 +81,8 @@ public class MainViewModel extends AndroidViewModel {
         return mainRepository.getAllArtists();
     }
 
-    public void insertArtists(List<Artist> artists) {
-        mainRepository.insertArtists(artists);
-    }
-
-    public Flowable<List<Artist>> getAllArtistsFromDb() {
-        return mainRepository.getAllArtistsFromDb();
-    }
-
-    public Flowable<List<Artist>> searchInArtistsFromDb(String query) {
-        return mainRepository.searchInArtistsFromDb(query);
+    public Observable<List<Artist>> searchInArtists(String search, int limit) {
+        return mainRepository.searchInArtists(search, limit);
     }
 
     /////////////////////////// Video
@@ -120,24 +91,16 @@ public class MainViewModel extends AndroidViewModel {
         return mainRepository.getAllVideos();
     }
 
-    public void insertVideos(List<Video> videos) {
-        mainRepository.insertVideos(videos);
+    public Observable<List<Video>> getTrendingVideos() {
+        return mainRepository.getTrendingVideos();
     }
 
-    public Flowable<List<Video>> getAllVideosFromDb() {
-        return mainRepository.getAllVideosFromDb();
+    public Observable<List<Video>> getArtistVideos(String artist) {
+        return mainRepository.getArtistVideos(artist);
     }
 
-    public Flowable<List<Video>> getTrendingVideosFromDb() {
-        return mainRepository.getTrendingVideosFromDb();
-    }
-
-    public Flowable<List<Video>> getArtistVideosFromDb(String artist) {
-        return mainRepository.getArtistVideosFromDb(artist);
-    }
-
-    public Flowable<List<Video>> searchInVideosFromDb(String query) {
-        return mainRepository.searchInVideosFromDb(query);
+    public Observable<List<Video>> searchInVideos(String search, int limit) {
+        return mainRepository.searchInVideos(search, limit);
     }
 
 }

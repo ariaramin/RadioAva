@@ -14,20 +14,15 @@ import com.ariaramin.radioava.Adapters.Album.VerticalAlbumAdapter;
 import com.ariaramin.radioava.Adapters.Music.VerticalMusicAdapter;
 import com.ariaramin.radioava.Adapters.Video.VerticalVideoAdapter;
 import com.ariaramin.radioava.MainViewModel;
-import com.ariaramin.radioava.Models.Album;
 import com.ariaramin.radioava.Models.Artist;
-import com.ariaramin.radioava.Models.Music;
-import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.FragmentArtistWorksBinding;
+import com.ariaramin.radioava.utils.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ArtistWorksFragment extends Fragment {
@@ -47,7 +42,6 @@ public class ArtistWorksFragment extends Fragment {
         Bundle args = getArguments();
         int position = args.getInt("position");
         Artist artist = args.getParcelable("Artist");
-
         switch (position) {
             case 0:
                 setupMusicsRecyclerView(artist);
@@ -63,79 +57,75 @@ public class ArtistWorksFragment extends Fragment {
     }
 
     private void setupMusicsRecyclerView(Artist artist) {
-        Disposable disposable = mainViewModel.getArtistMusicsFromDb(artist.getName())
+        Disposable disposable = mainViewModel.getArtistMusics(artist.getName())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Music>>() {
-                    @Override
-                    public void accept(List<Music> musicList) throws Throwable {
+                .subscribe(musicList -> {
+                    mainViewModel.setArtistTotalMusics(musicList.size());
 
-                        mainViewModel.setArtistTotalMusics(musicList.size());
-
-                        if (artistWorksBinding.artistWorksRecyclerView.getAdapter() == null) {
-                            VerticalMusicAdapter adapter = new VerticalMusicAdapter(musicList, TAG);
-                            artistWorksBinding.artistWorksRecyclerView.setAdapter(adapter);
-                        } else {
-                            VerticalMusicAdapter adapter = (VerticalMusicAdapter) artistWorksBinding.artistWorksRecyclerView.getAdapter();
-                            adapter.updateList(musicList);
-                        }
-
-                        if (musicList.isEmpty()) {
-                            artistWorksBinding.artistWorksNotFoundTextView.setVisibility(View.VISIBLE);
-                        } else {
-                            artistWorksBinding.artistWorksNotFoundTextView.setVisibility(View.GONE);
-                        }
+                    if (artistWorksBinding.artistWorksRecyclerView.getAdapter() == null) {
+                        VerticalMusicAdapter adapter = new VerticalMusicAdapter(musicList, TAG);
+                        artistWorksBinding.artistWorksRecyclerView.setAdapter(adapter);
+                    } else {
+                        VerticalMusicAdapter adapter = (VerticalMusicAdapter) artistWorksBinding.artistWorksRecyclerView.getAdapter();
+                        adapter.updateList(musicList);
                     }
+
+                    if (musicList.isEmpty()) {
+                        artistWorksBinding.artistWorksNotFoundTextView.setVisibility(View.VISIBLE);
+                    } else {
+                        artistWorksBinding.artistWorksNotFoundTextView.setVisibility(View.GONE);
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
     private void setupAlbumsRecyclerView(Artist artist) {
-        Disposable disposable = mainViewModel.getArtistAlbumsFromDb(artist.getName())
+        Disposable disposable = mainViewModel.getArtistAlbums(artist.getName())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Album>>() {
-                    @Override
-                    public void accept(List<Album> albums) throws Throwable {
-                        if (artistWorksBinding.artistWorksRecyclerView.getAdapter() == null) {
-                            VerticalAlbumAdapter adapter = new VerticalAlbumAdapter(albums, TAG);
-                            artistWorksBinding.artistWorksRecyclerView.setAdapter(adapter);
-                        } else {
-                            VerticalAlbumAdapter adapter = (VerticalAlbumAdapter) artistWorksBinding.artistWorksRecyclerView.getAdapter();
-                            adapter.updateList(albums);
-                        }
-
-                        if (albums.isEmpty()) {
-                            artistWorksBinding.artistWorksNotFoundTextView.setVisibility(View.VISIBLE);
-                        } else {
-                            artistWorksBinding.artistWorksNotFoundTextView.setVisibility(View.GONE);
-                        }
+                .subscribe(albums -> {
+                    if (artistWorksBinding.artistWorksRecyclerView.getAdapter() == null) {
+                        VerticalAlbumAdapter adapter = new VerticalAlbumAdapter(albums, TAG);
+                        artistWorksBinding.artistWorksRecyclerView.setAdapter(adapter);
+                    } else {
+                        VerticalAlbumAdapter adapter = (VerticalAlbumAdapter) artistWorksBinding.artistWorksRecyclerView.getAdapter();
+                        adapter.updateList(albums);
                     }
+
+                    if (albums.isEmpty()) {
+                        artistWorksBinding.artistWorksNotFoundTextView.setVisibility(View.VISIBLE);
+                    } else {
+                        artistWorksBinding.artistWorksNotFoundTextView.setVisibility(View.GONE);
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
     private void setupVideosRecyclerView(Artist artist) {
-        Disposable disposable = mainViewModel.getArtistVideosFromDb(artist.getName())
+        Disposable disposable = mainViewModel.getArtistVideos(artist.getName())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Video>>() {
-                    @Override
-                    public void accept(List<Video> videos) throws Throwable {
-                        if (artistWorksBinding.artistWorksRecyclerView.getAdapter() == null) {
-                            VerticalVideoAdapter adapter = new VerticalVideoAdapter(videos, TAG);
-                            artistWorksBinding.artistWorksRecyclerView.setAdapter(adapter);
-                        } else {
-                            VerticalVideoAdapter adapter = (VerticalVideoAdapter) artistWorksBinding.artistWorksRecyclerView.getAdapter();
-                            adapter.updateList(videos);
-                        }
-
-                        if (videos.isEmpty()) {
-                            artistWorksBinding.artistWorksNotFoundTextView.setVisibility(View.VISIBLE);
-                        } else {
-                            artistWorksBinding.artistWorksNotFoundTextView.setVisibility(View.GONE);
-                        }
+                .subscribe(videos -> {
+                    if (artistWorksBinding.artistWorksRecyclerView.getAdapter() == null) {
+                        VerticalVideoAdapter adapter = new VerticalVideoAdapter(videos, TAG);
+                        artistWorksBinding.artistWorksRecyclerView.setAdapter(adapter);
+                    } else {
+                        VerticalVideoAdapter adapter = (VerticalVideoAdapter) artistWorksBinding.artistWorksRecyclerView.getAdapter();
+                        adapter.updateList(videos);
                     }
+
+                    if (videos.isEmpty()) {
+                        artistWorksBinding.artistWorksNotFoundTextView.setVisibility(View.VISIBLE);
+                    } else {
+                        artistWorksBinding.artistWorksNotFoundTextView.setVisibility(View.GONE);
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }

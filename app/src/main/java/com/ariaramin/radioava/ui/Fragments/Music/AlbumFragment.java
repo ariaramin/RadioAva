@@ -76,12 +76,7 @@ public class AlbumFragment extends Fragment {
         }
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
         mainActivity.homeImageView.setVisibility(View.GONE);
-        albumBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requireActivity().onBackPressed();
-            }
-        });
+        albumBinding.backStackButton.setOnClickListener(v -> requireActivity().onBackPressed());
         downloads = sharedPreferenceManager.readDownloadedData();
 
         setupDetail();
@@ -109,37 +104,31 @@ public class AlbumFragment extends Fragment {
     }
 
     private void playAlbum() {
-        albumBinding.albumPlayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                musicPlayer.setNewPlaylist(album.getMusics());
-                musicPlayer.play();
-                mainActivity.playBackLayout.setVisibility(View.VISIBLE);
-            }
+        albumBinding.albumPlayButton.setOnClickListener(v -> {
+            musicPlayer.setNewPlaylist(album.getMusics());
+            musicPlayer.play();
+            mainActivity.playBackLayout.setVisibility(View.VISIBLE);
         });
     }
 
     private void downloadAlbum() {
-        albumBinding.albumDownloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DownloadManager downloadManager = (DownloadManager) requireContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                for (int i = 0; i < album.getMusics().size(); i++) {
-                    Music music = album.getMusics().get(i);
-                    String title = music.getName();
-                    Uri uri = Uri.parse(music.getSource());
-                    DownloadManager.Request request = new DownloadManager.Request(uri);
-                    request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
-                            .setAllowedOverRoaming(true)
-                            .setTitle(title)
-                            .setDescription("Downloading...")
-                            .setMimeType("audio/*")
-                            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                            .setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, title + ".m4a");
-                    downloadManager.enqueue(request);
-                }
-                addToDownloads();
+        albumBinding.albumDownloadButton.setOnClickListener(v -> {
+            DownloadManager downloadManager = (DownloadManager) requireContext().getSystemService(Context.DOWNLOAD_SERVICE);
+            for (int i = 0; i < album.getMusics().size(); i++) {
+                Music music = album.getMusics().get(i);
+                String title = music.getName();
+                Uri uri = Uri.parse(music.getSource());
+                DownloadManager.Request request = new DownloadManager.Request(uri);
+                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
+                        .setAllowedOverRoaming(true)
+                        .setTitle(title)
+                        .setDescription("Downloading...")
+                        .setMimeType("audio/*")
+                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, title + ".m4a");
+                downloadManager.enqueue(request);
             }
+            addToDownloads();
         });
     }
 
@@ -160,29 +149,23 @@ public class AlbumFragment extends Fragment {
 
     private void likeAlbum() {
         checkMusicLiked();
-        albumBinding.albumLikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                albumBinding.albumLikeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!albumLiked) {
-                            if (!likedAlbums.contains(album.getId() + album.getName())) {
-                                likedAlbums.add(album.getId() + album.getName());
-                            }
-                            sharedPreferenceManager.storeLikedData(likedAlbums);
-                            albumBinding.albumLikeButton.setImageResource(R.drawable.ic_heart_fill);
-                            albumLiked = true;
-                        } else {
-                            likedAlbums.remove(album.getId() + album.getName());
-                            sharedPreferenceManager.storeLikedData(likedAlbums);
-                            albumBinding.albumLikeButton.setImageResource(R.drawable.ic_heart);
-                            albumLiked = false;
+        albumBinding.albumLikeButton.setOnClickListener(v ->
+                albumBinding.albumLikeButton.setOnClickListener(v1 -> {
+                    if (!albumLiked) {
+                        if (!likedAlbums.contains(album.getId() + album.getName())) {
+                            likedAlbums.add(album.getId() + album.getName());
                         }
+                        sharedPreferenceManager.storeLikedData(likedAlbums);
+                        albumBinding.albumLikeButton.setImageResource(R.drawable.ic_heart_fill);
+                        albumLiked = true;
+                    } else {
+                        likedAlbums.remove(album.getId() + album.getName());
+                        sharedPreferenceManager.storeLikedData(likedAlbums);
+                        albumBinding.albumLikeButton.setImageResource(R.drawable.ic_heart);
+                        albumLiked = false;
                     }
-                });
-            }
-        });
+                })
+        );
     }
 
     private void checkMusicLiked() {

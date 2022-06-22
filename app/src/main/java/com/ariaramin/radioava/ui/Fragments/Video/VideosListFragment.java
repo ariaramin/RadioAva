@@ -19,10 +19,10 @@ import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.SharedPreference.SharedPreferenceManager;
 import com.ariaramin.radioava.databinding.FragmentVideosListBinding;
+import com.ariaramin.radioava.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -78,12 +78,7 @@ public class VideosListFragment extends Fragment {
             }
         } else {
             videosListBinding.headerLayout.setVisibility(View.VISIBLE);
-            videosListBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    requireActivity().onBackPressed();
-                }
-            });
+            videosListBinding.backStackButton.setOnClickListener(v -> requireActivity().onBackPressed());
             getDownloadedVideos();
         }
 
@@ -91,7 +86,7 @@ public class VideosListFragment extends Fragment {
     }
 
     private void getDownloadedVideos() {
-        Disposable disposable = mainViewModel.getAllVideosFromDb()
+        Disposable disposable = mainViewModel.getAllVideos()
                 .map(videos -> {
                     downloadedVideoList.clear();
                     for (int i = 0; i < downloaded.size(); i++) {
@@ -105,91 +100,83 @@ public class VideosListFragment extends Fragment {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Video>>() {
-                    @Override
-                    public void accept(List<Video> videos) throws Throwable {
-                        Collections.reverse(videos);
+                .subscribe((Consumer<List<Video>>) videos -> {
+                    Collections.reverse(videos);
 
-                        if (videosListBinding.videosRecyclerView.getAdapter() == null) {
-                            VerticalVideoAdapter adapter = new VerticalVideoAdapter(videos, TAG2);
-                            videosListBinding.videosRecyclerView.setAdapter(adapter);
-                        } else {
-                            VerticalVideoAdapter adapter = (VerticalVideoAdapter) videosListBinding.videosRecyclerView.getAdapter();
-                            adapter.updateList(videos);
-                        }
-
-                        if (videos.isEmpty()) {
-                            videosListBinding.notFoundVideoTextView.setVisibility(View.VISIBLE);
-                        } else {
-                            videosListBinding.notFoundVideoTextView.setVisibility(View.GONE);
-                        }
+                    if (videosListBinding.videosRecyclerView.getAdapter() == null) {
+                        VerticalVideoAdapter adapter = new VerticalVideoAdapter(videos, TAG2);
+                        videosListBinding.videosRecyclerView.setAdapter(adapter);
+                    } else {
+                        VerticalVideoAdapter adapter = (VerticalVideoAdapter) videosListBinding.videosRecyclerView.getAdapter();
+                        adapter.updateList(videos);
                     }
+
+                    if (videos.isEmpty()) {
+                        videosListBinding.notFoundVideoTextView.setVisibility(View.VISIBLE);
+                    } else {
+                        videosListBinding.notFoundVideoTextView.setVisibility(View.GONE);
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
     private void getTrendingVideos() {
-        Disposable disposable = mainViewModel.getTrendingVideosFromDb()
+        Disposable disposable = mainViewModel.getTrendingVideos()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Video>>() {
-                    @Override
-                    public void accept(List<Video> videos) throws Throwable {
-                        List<Video> trending = videos.subList(0, 30);
+                .subscribe(videos -> {
+                    List<Video> trending = videos.subList(0, 30);
 
-                        if (videosListBinding.videosRecyclerView.getAdapter() == null) {
-                            VerticalVideoAdapter videoAdapter = new VerticalVideoAdapter(trending, TAG);
-                            videosListBinding.videosRecyclerView.setAdapter(videoAdapter);
-                        } else {
-                            VerticalVideoAdapter adapter = (VerticalVideoAdapter) videosListBinding.videosRecyclerView.getAdapter();
-                            adapter.updateList(trending);
-                        }
-
-                        if (videos.isEmpty()) {
-                            videosListBinding.videosSpinKit.setVisibility(View.VISIBLE);
-                        } else {
-                            videosListBinding.videosSpinKit.setVisibility(View.GONE);
-                        }
+                    if (videosListBinding.videosRecyclerView.getAdapter() == null) {
+                        VerticalVideoAdapter videoAdapter = new VerticalVideoAdapter(trending, TAG);
+                        videosListBinding.videosRecyclerView.setAdapter(videoAdapter);
+                    } else {
+                        VerticalVideoAdapter adapter = (VerticalVideoAdapter) videosListBinding.videosRecyclerView.getAdapter();
+                        adapter.updateList(trending);
                     }
+
+                    if (videos.isEmpty()) {
+                        videosListBinding.videosSpinKit.setVisibility(View.VISIBLE);
+                    } else {
+                        videosListBinding.videosSpinKit.setVisibility(View.GONE);
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
     private void getPopularVideos() {
-        Disposable disposable = mainViewModel.getAllVideosFromDb()
+        Disposable disposable = mainViewModel.getAllVideos()
                 .map(this::sortByLikes)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Video>>() {
-                    @Override
-                    public void accept(List<Video> videos) throws Throwable {
-                        List<Video> mostViewed = videos.subList(0, 30);
+                .subscribe(videos -> {
+                    List<Video> mostViewed = videos.subList(0, 30);
 
-                        if (videosListBinding.videosRecyclerView.getAdapter() == null) {
-                            VerticalVideoAdapter videoAdapter = new VerticalVideoAdapter(mostViewed, TAG);
-                            videosListBinding.videosRecyclerView.setAdapter(videoAdapter);
-                        } else {
-                            VerticalVideoAdapter adapter = (VerticalVideoAdapter) videosListBinding.videosRecyclerView.getAdapter();
-                            adapter.updateList(mostViewed);
-                        }
-
-                        if (videos.isEmpty()) {
-                            videosListBinding.videosSpinKit.setVisibility(View.VISIBLE);
-                        } else {
-                            videosListBinding.videosSpinKit.setVisibility(View.GONE);
-                        }
+                    if (videosListBinding.videosRecyclerView.getAdapter() == null) {
+                        VerticalVideoAdapter videoAdapter = new VerticalVideoAdapter(mostViewed, TAG);
+                        videosListBinding.videosRecyclerView.setAdapter(videoAdapter);
+                    } else {
+                        VerticalVideoAdapter adapter = (VerticalVideoAdapter) videosListBinding.videosRecyclerView.getAdapter();
+                        adapter.updateList(mostViewed);
                     }
+
+                    if (videos.isEmpty()) {
+                        videosListBinding.videosSpinKit.setVisibility(View.VISIBLE);
+                    } else {
+                        videosListBinding.videosSpinKit.setVisibility(View.GONE);
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
     private List<Video> sortByLikes(List<Video> videos) {
-        Collections.sort(videos, new Comparator<Video>() {
-            @Override
-            public int compare(Video o1, Video o2) {
-                return Integer.compare(o2.getLikes(), o1.getLikes());
-            }
-        });
+        Collections.sort(videos, (o1, o2) -> Integer.compare(o2.getLikes(), o1.getLikes()));
         return videos;
     }
 

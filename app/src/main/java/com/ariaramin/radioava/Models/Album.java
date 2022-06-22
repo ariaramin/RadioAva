@@ -3,18 +3,13 @@ package com.ariaramin.radioava.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(tableName = "album_tbl")
 public class Album implements Parcelable {
 
-    @PrimaryKey
     @SerializedName("id")
     public int id;
 

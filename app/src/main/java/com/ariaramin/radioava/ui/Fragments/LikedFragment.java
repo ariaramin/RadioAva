@@ -23,7 +23,6 @@ import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.SharedPreference.SharedPreferenceManager;
 import com.ariaramin.radioava.databinding.FragmentLikedBinding;
-import com.ariaramin.radioava.databinding.FragmentMyMusicBinding;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,12 +70,7 @@ public class LikedFragment extends Fragment {
         compositeDisposable = new CompositeDisposable();
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
         mainActivity.homeImageView.setVisibility(View.GONE);
-        likedBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requireActivity().onBackPressed();
-            }
-        });
+        likedBinding.backStackButton.setOnClickListener(v -> requireActivity().onBackPressed());
         liked = sharedPreferenceManager.readLikedData();
         getLikedMusics();
         getLikedAlbums();
@@ -86,7 +80,7 @@ public class LikedFragment extends Fragment {
     }
 
     private void getLikedMusics() {
-        Disposable disposable = mainViewModel.getAllMusicsFromDb()
+        Disposable disposable = mainViewModel.getAllMusics()
                 .map(musics -> {
                     likedMusics.clear();
                     for (int i = 0; i < liked.size(); i++) {
@@ -100,34 +94,31 @@ public class LikedFragment extends Fragment {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Music>>() {
-                    @Override
-                    public void accept(List<Music> musics) throws Throwable {
-                        Collections.reverse(musics);
+                .subscribe((Consumer<List<Music>>) musics -> {
+                    Collections.reverse(musics);
 
-                        if (likedBinding.likedMusicsRecyclerView.getAdapter() == null) {
-                            VerticalMusicAdapter adapter = new VerticalMusicAdapter(musics, TAG);
-                            likedBinding.likedMusicsRecyclerView.setAdapter(adapter);
-                        } else {
-                            VerticalMusicAdapter adapter = (VerticalMusicAdapter) likedBinding.likedMusicsRecyclerView.getAdapter();
-                            adapter.updateList(musics);
-                        }
-
-                        if (musics.isEmpty()) {
-                            likedBinding.musicsLayout.setVisibility(View.GONE);
-                            isMusicEmpty = true;
-                        } else {
-                            likedBinding.musicsLayout.setVisibility(View.VISIBLE);
-                            isMusicEmpty = false;
-                        }
-                        checkIsEmpty();
+                    if (likedBinding.likedMusicsRecyclerView.getAdapter() == null) {
+                        VerticalMusicAdapter adapter = new VerticalMusicAdapter(musics, TAG);
+                        likedBinding.likedMusicsRecyclerView.setAdapter(adapter);
+                    } else {
+                        VerticalMusicAdapter adapter = (VerticalMusicAdapter) likedBinding.likedMusicsRecyclerView.getAdapter();
+                        adapter.updateList(musics);
                     }
+
+                    if (musics.isEmpty()) {
+                        likedBinding.musicsLayout.setVisibility(View.GONE);
+                        isMusicEmpty = true;
+                    } else {
+                        likedBinding.musicsLayout.setVisibility(View.VISIBLE);
+                        isMusicEmpty = false;
+                    }
+                    checkIsEmpty();
                 });
         compositeDisposable.add(disposable);
     }
 
     private void getLikedAlbums() {
-        Disposable disposable = mainViewModel.getAllAlbumsFromDb()
+        Disposable disposable = mainViewModel.getAllAlbums()
                 .map(albums -> {
                     likedAlbums.clear();
                     for (int i = 0; i < liked.size(); i++) {
@@ -141,34 +132,31 @@ public class LikedFragment extends Fragment {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Album>>() {
-                    @Override
-                    public void accept(List<Album> albums) throws Throwable {
-                        Collections.reverse(albums);
+                .subscribe((Consumer<List<Album>>) albums -> {
+                    Collections.reverse(albums);
 
-                        if (likedBinding.likedAlbumsRecyclerView.getAdapter() == null) {
-                            VerticalAlbumAdapter adapter = new VerticalAlbumAdapter(albums, TAG);
-                            likedBinding.likedAlbumsRecyclerView.setAdapter(adapter);
-                        } else {
-                            VerticalAlbumAdapter adapter = (VerticalAlbumAdapter) likedBinding.likedAlbumsRecyclerView.getAdapter();
-                            adapter.updateList(albums);
-                        }
-
-                        if (albums.isEmpty()) {
-                            likedBinding.albumsLayout.setVisibility(View.GONE);
-                            isAlbumEmpty = true;
-                        } else {
-                            likedBinding.albumsLayout.setVisibility(View.VISIBLE);
-                            isAlbumEmpty = false;
-                        }
-                        checkIsEmpty();
+                    if (likedBinding.likedAlbumsRecyclerView.getAdapter() == null) {
+                        VerticalAlbumAdapter adapter = new VerticalAlbumAdapter(albums, TAG);
+                        likedBinding.likedAlbumsRecyclerView.setAdapter(adapter);
+                    } else {
+                        VerticalAlbumAdapter adapter = (VerticalAlbumAdapter) likedBinding.likedAlbumsRecyclerView.getAdapter();
+                        adapter.updateList(albums);
                     }
+
+                    if (albums.isEmpty()) {
+                        likedBinding.albumsLayout.setVisibility(View.GONE);
+                        isAlbumEmpty = true;
+                    } else {
+                        likedBinding.albumsLayout.setVisibility(View.VISIBLE);
+                        isAlbumEmpty = false;
+                    }
+                    checkIsEmpty();
                 });
         compositeDisposable.add(disposable);
     }
 
     private void getLikedVideos() {
-        Disposable disposable = mainViewModel.getAllVideosFromDb()
+        Disposable disposable = mainViewModel.getAllVideos()
                 .map(videos -> {
                     likedVideos.clear();
                     for (int i = 0; i < liked.size(); i++) {
@@ -182,28 +170,25 @@ public class LikedFragment extends Fragment {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Video>>() {
-                    @Override
-                    public void accept(List<Video> videos) throws Throwable {
-                        Collections.reverse(videos);
+                .subscribe((Consumer<List<Video>>) videos -> {
+                    Collections.reverse(videos);
 
-                        if (likedBinding.likedVideosRecyclerView.getAdapter() == null) {
-                            VerticalVideoAdapter adapter = new VerticalVideoAdapter(videos, TAG);
-                            likedBinding.likedVideosRecyclerView.setAdapter(adapter);
-                        } else {
-                            VerticalVideoAdapter adapter = (VerticalVideoAdapter) likedBinding.likedVideosRecyclerView.getAdapter();
-                            adapter.updateList(videos);
-                        }
-
-                        if (videos.isEmpty()) {
-                            likedBinding.videosLayout.setVisibility(View.GONE);
-                            isVideoEmpty = true;
-                        } else {
-                            likedBinding.videosLayout.setVisibility(View.VISIBLE);
-                            isVideoEmpty = false;
-                        }
-                        checkIsEmpty();
+                    if (likedBinding.likedVideosRecyclerView.getAdapter() == null) {
+                        VerticalVideoAdapter adapter = new VerticalVideoAdapter(videos, TAG);
+                        likedBinding.likedVideosRecyclerView.setAdapter(adapter);
+                    } else {
+                        VerticalVideoAdapter adapter = (VerticalVideoAdapter) likedBinding.likedVideosRecyclerView.getAdapter();
+                        adapter.updateList(videos);
                     }
+
+                    if (videos.isEmpty()) {
+                        likedBinding.videosLayout.setVisibility(View.GONE);
+                        isVideoEmpty = true;
+                    } else {
+                        likedBinding.videosLayout.setVisibility(View.VISIBLE);
+                        isVideoEmpty = false;
+                    }
+                    checkIsEmpty();
                 });
         compositeDisposable.add(disposable);
     }

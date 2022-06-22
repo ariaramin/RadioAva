@@ -18,10 +18,8 @@ import com.ariaramin.radioava.MainActivity;
 import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.FragmentAllVideosBinding;
-import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public class AllVideosFragment extends Fragment {
 
@@ -43,18 +41,10 @@ public class AllVideosFragment extends Fragment {
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
         mainActivity.homeImageView.setVisibility(View.GONE);
-        videosBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requireActivity().onBackPressed();
-            }
-        });
-        videosBinding.searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_allVideosFragment_to_searchFragment);
-            }
-        });
+        videosBinding.backStackButton.setOnClickListener(v -> requireActivity().onBackPressed());
+        videosBinding.searchButton.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_allVideosFragment_to_searchFragment)
+        );
         setupTabLayout();
         return videosBinding.getRoot();
     }
@@ -63,17 +53,14 @@ public class AllVideosFragment extends Fragment {
         AllVideosPagerAdapter adapter = new AllVideosPagerAdapter(this);
         videosBinding.allVideosViewPager.setAdapter(adapter);
 
-        new TabLayoutMediator(videosBinding.allVideosTabLayout, videosBinding.allVideosViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                String title;
-                if (position == 0) {
-                    title = requireContext().getResources().getString(R.string.trending);
-                } else {
-                    title = requireContext().getResources().getString(R.string.popular);
-                }
-                tab.setText(title);
+        new TabLayoutMediator(videosBinding.allVideosTabLayout, videosBinding.allVideosViewPager, (tab, position) -> {
+            String title;
+            if (position == 0) {
+                title = requireContext().getResources().getString(R.string.trending);
+            } else {
+                title = requireContext().getResources().getString(R.string.popular);
             }
+            tab.setText(title);
         }).attach();
     }
 

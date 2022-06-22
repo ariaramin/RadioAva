@@ -1,17 +1,14 @@
 package com.ariaramin.radioava.ui.Fragments.Artist;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager2.widget.ViewPager2;
+
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,18 +25,14 @@ import com.ariaramin.radioava.databinding.FragmentDetailArtistBinding;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 
-import java.lang.reflect.Type;
+
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 @AndroidEntryPoint
 public class DetailArtistFragment extends Fragment {
@@ -74,12 +67,8 @@ public class DetailArtistFragment extends Fragment {
         }
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
         mainActivity.homeImageView.setVisibility(View.GONE);
-        detailArtistBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requireActivity().onBackPressed();
-            }
-        });
+        detailArtistBinding.backStackButton.setOnClickListener(v -> requireActivity().onBackPressed());
+        detailArtistBinding.detailArtistMusicCountTextView.setText(0);
 
         setupDetail();
         setupTabLayout();
@@ -98,12 +87,9 @@ public class DetailArtistFragment extends Fragment {
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(detailArtistBinding.detailArtistImageView);
         detailArtistBinding.detailArtistNameTextView.setText(artist.getName());
-        mainViewModel.getArtistTotalMusics().observe(requireActivity(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                detailArtistBinding.detailArtistMusicCountTextView.setText(integer.toString());
-            }
-        });
+        mainViewModel.getArtistTotalMusics().observe(requireActivity(), integer ->
+                detailArtistBinding.detailArtistMusicCountTextView.setText(integer.toString())
+        );
         detailArtistBinding.detailArtistFollowersTextView.setText(artist.getFollowers());
         detailArtistBinding.detailArtistPlaysTextView.setText(artist.getPlaysCount());
     }
@@ -112,44 +98,38 @@ public class DetailArtistFragment extends Fragment {
         ArtistWorkPagerAdapter adapter = new ArtistWorkPagerAdapter(this, artist);
         detailArtistBinding.detailArtistViewPager.setAdapter(adapter);
 
-        new TabLayoutMediator(detailArtistBinding.detailArtistTabLayout, detailArtistBinding.detailArtistViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                String title;
-                if (position == 0) {
-                    title = requireContext().getResources().getString(R.string.musics);
-                } else if (position == 1) {
-                    title = requireContext().getResources().getString(R.string.albums);
-                } else {
-                    title = requireContext().getResources().getString(R.string.videos);
-                }
-                tab.setText(title);
+        new TabLayoutMediator(detailArtistBinding.detailArtistTabLayout, detailArtistBinding.detailArtistViewPager, (tab, position) -> {
+            String title;
+            if (position == 0) {
+                title = requireContext().getResources().getString(R.string.musics);
+            } else if (position == 1) {
+                title = requireContext().getResources().getString(R.string.albums);
+            } else {
+                title = requireContext().getResources().getString(R.string.videos);
             }
+            tab.setText(title);
         }).attach();
     }
 
     private void followArtist() {
         checkIsArtistFollowed();
-        detailArtistBinding.followButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!artistFollowed) {
-                    if (!followedArtists.contains(artist.getId() + artist.getName())) {
-                        followedArtists.add(artist.getId() + artist.getName());
-                    }
-                    sharedPreferenceManager.storeFollowedArtistData(followedArtists);
-                    detailArtistBinding.followButton.setBackgroundResource(R.drawable.inactive_button_bg);
-                    detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.secondaryDarkColor));
-                    detailArtistBinding.followButton.setText(requireContext().getString(R.string.followed));
-                    artistFollowed = true;
-                } else {
-                    followedArtists.remove(artist.getId() + artist.getName());
-                    sharedPreferenceManager.storeFollowedArtistData(followedArtists);
-                    detailArtistBinding.followButton.setBackgroundResource(R.drawable.button_bg);
-                    detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.primaryColor));
-                    detailArtistBinding.followButton.setText(requireContext().getString(R.string.follow));
-                    artistFollowed = false;
+        detailArtistBinding.followButton.setOnClickListener(v -> {
+            if (!artistFollowed) {
+                if (!followedArtists.contains(artist.getId() + artist.getName())) {
+                    followedArtists.add(artist.getId() + artist.getName());
                 }
+                sharedPreferenceManager.storeFollowedArtistData(followedArtists);
+                detailArtistBinding.followButton.setBackgroundResource(R.drawable.inactive_button_bg);
+                detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.secondaryDarkColor));
+                detailArtistBinding.followButton.setText(requireContext().getString(R.string.followed));
+                artistFollowed = true;
+            } else {
+                followedArtists.remove(artist.getId() + artist.getName());
+                sharedPreferenceManager.storeFollowedArtistData(followedArtists);
+                detailArtistBinding.followButton.setBackgroundResource(R.drawable.button_bg);
+                detailArtistBinding.followButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.primaryColor));
+                detailArtistBinding.followButton.setText(requireContext().getString(R.string.follow));
+                artistFollowed = false;
             }
         });
     }

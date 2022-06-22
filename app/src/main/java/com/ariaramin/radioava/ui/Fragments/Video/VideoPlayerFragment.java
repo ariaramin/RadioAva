@@ -11,7 +11,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Environment;
@@ -24,7 +23,6 @@ import android.widget.Toast;
 import com.ariaramin.radioava.Adapters.Video.VerticalVideoAdapter;
 import com.ariaramin.radioava.MainActivity;
 import com.ariaramin.radioava.MainViewModel;
-import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.Players.MusicPlayer;
 import com.ariaramin.radioava.Players.VideoPlayer;
@@ -45,7 +43,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 @AndroidEntryPoint
@@ -87,12 +84,7 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
         mainActivity.homeImageView.setVisibility(View.GONE);
         mainActivity.playBackLayout.setVisibility(View.GONE);
-        videoPlayerBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requireActivity().onBackPressed();
-            }
-        });
+        videoPlayerBinding.backStackButton.setOnClickListener(v -> requireActivity().onBackPressed());
 
 
         Bundle args = getArguments();
@@ -114,28 +106,22 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
     }
 
     private void downloadVideo() {
-        videoPlayer.playingVideo.observe(requireActivity(), new Observer<Video>() {
-            @Override
-            public void onChanged(Video playingVideo) {
-                videoPlayerBinding.videoPlayerDownloadButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        DownloadManager downloadManager = (DownloadManager) requireContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                        String title = playingVideo.getName();
-                        Uri uri = Uri.parse(playingVideo.getSource());
-                        DownloadManager.Request request = new DownloadManager.Request(uri);
-                        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
-                                .setAllowedOverRoaming(true)
-                                .setTitle(title)
-                                .setDescription("Downloading...")
-                                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                                .setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, title + ".mp4");
-                        downloadManager.enqueue(request);
-                        addToDownloads(playingVideo);
-                    }
-                });
-            }
-        });
+        videoPlayer.playingVideo.observe(requireActivity(), playingVideo ->
+                videoPlayerBinding.videoPlayerDownloadButton.setOnClickListener(v -> {
+                    DownloadManager downloadManager = (DownloadManager) requireContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                    String title = playingVideo.getName();
+                    Uri uri = Uri.parse(playingVideo.getSource());
+                    DownloadManager.Request request = new DownloadManager.Request(uri);
+                    request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
+                            .setAllowedOverRoaming(true)
+                            .setTitle(title)
+                            .setDescription("Downloading...")
+                            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                            .setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, title + ".mp4");
+                    downloadManager.enqueue(request);
+                    addToDownloads(playingVideo);
+                })
+        );
     }
 
     private void addToDownloads(Video playingVideo) {
@@ -154,29 +140,23 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
     }
 
     private void likeVideo() {
-        videoPlayer.playingVideo.observe(requireActivity(), new Observer<Video>() {
-            @Override
-            public void onChanged(Video playingVideo) {
-                checkVideoLiked(playingVideo);
-                videoPlayerBinding.videoPlayerLikeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!videoLiked) {
-                            if (!likedVideos.contains(playingVideo.getId() + playingVideo.getName())) {
-                                likedVideos.add(playingVideo.getId() + playingVideo.getName());
-                            }
-                            storeData();
-                            videoPlayerBinding.videoPlayerLikeButton.setImageResource(R.drawable.ic_heart_fill);
-                            videoLiked = true;
-                        } else {
-                            likedVideos.remove(playingVideo.getId() + playingVideo.getName());
-                            storeData();
-                            videoPlayerBinding.videoPlayerLikeButton.setImageResource(R.drawable.ic_heart);
-                            videoLiked = false;
-                        }
+        videoPlayer.playingVideo.observe(requireActivity(), playingVideo -> {
+            checkVideoLiked(playingVideo);
+            videoPlayerBinding.videoPlayerLikeButton.setOnClickListener(v -> {
+                if (!videoLiked) {
+                    if (!likedVideos.contains(playingVideo.getId() + playingVideo.getName())) {
+                        likedVideos.add(playingVideo.getId() + playingVideo.getName());
                     }
-                });
-            }
+                    storeData();
+                    videoPlayerBinding.videoPlayerLikeButton.setImageResource(R.drawable.ic_heart_fill);
+                    videoLiked = true;
+                } else {
+                    likedVideos.remove(playingVideo.getId() + playingVideo.getName());
+                    storeData();
+                    videoPlayerBinding.videoPlayerLikeButton.setImageResource(R.drawable.ic_heart);
+                    videoLiked = false;
+                }
+            });
         });
     }
 
@@ -193,18 +173,15 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
 
     public void addToRecentlyPlayed() {
         readRecentlyPlayedData();
-        videoPlayer.playingVideo.observe(requireActivity(), new Observer<Video>() {
-            @Override
-            public void onChanged(Video playingVideo) {
-                if (recentlyPlayed.size() >= 1) {
-                    if (!recentlyPlayed.get(recentlyPlayed.size() - 1).equals(playingVideo.getId() + playingVideo.getName())) {
-                        recentlyPlayed.add(playingVideo.getId() + playingVideo.getName());
-                        storeRecentlyPlayedData();
-                    }
-                } else {
+        videoPlayer.playingVideo.observe(requireActivity(), playingVideo -> {
+            if (recentlyPlayed.size() >= 1) {
+                if (!recentlyPlayed.get(recentlyPlayed.size() - 1).equals(playingVideo.getId() + playingVideo.getName())) {
                     recentlyPlayed.add(playingVideo.getId() + playingVideo.getName());
                     storeRecentlyPlayedData();
                 }
+            } else {
+                recentlyPlayed.add(playingVideo.getId() + playingVideo.getName());
+                storeRecentlyPlayedData();
             }
         });
     }
@@ -246,12 +223,9 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
     }
 
     private void setupDetail() {
-        videoPlayer.playingVideo.observe(requireActivity(), new Observer<Video>() {
-            @Override
-            public void onChanged(Video playingVideo) {
-                videoPlayerBinding.videoPlayerNameTextView.setText(playingVideo.getName());
-                videoPlayerBinding.videoPlayerArtistTextView.setText(playingVideo.getArtist());
-            }
+        videoPlayer.playingVideo.observe(requireActivity(), playingVideo -> {
+            videoPlayerBinding.videoPlayerNameTextView.setText(playingVideo.getName());
+            videoPlayerBinding.videoPlayerArtistTextView.setText(playingVideo.getArtist());
         });
     }
 
@@ -262,42 +236,36 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
         videoPlayerBinding.videoPlayerView.setPlayer(videoPlayer.getPlayer());
         videoPlayerBinding.videoPlayerView.setShowNextButton(false);
         videoPlayerBinding.videoPlayerView.setShowPreviousButton(false);
-        Disposable disposable = mainViewModel.getArtistVideosFromDb(video.getArtist())
+        Disposable disposable = mainViewModel.getArtistVideos(video.getArtist())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Video>>() {
-                    @Override
-                    public void accept(List<Video> videos) throws Throwable {
-                        for (int i = 0; i < videos.size(); i++) {
-                            if (videos.get(i).getId() == video.getId()) {
-                                videos.remove(videos.get(i));
-                            }
+                .subscribe(videos -> {
+                    for (int i = 0; i < videos.size(); i++) {
+                        if (videos.get(i).getId() == video.getId()) {
+                            videos.remove(videos.get(i));
                         }
-                        setupRelatedVideos(videos);
-                        if (!videoPlayer.isPlaying()) {
-                            videoPlayer.play(video);
-                        }
+                    }
+                    setupRelatedVideos(videos);
+                    if (!videoPlayer.isPlaying()) {
+                        videoPlayer.play(video);
                     }
                 });
         compositeDisposable.add(disposable);
     }
 
     private void getMoreVideo() {
-        Disposable disposable = mainViewModel.getTrendingVideosFromDb()
+        Disposable disposable = mainViewModel.getTrendingVideos()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Video>>() {
-                    @Override
-                    public void accept(List<Video> videos) throws Throwable {
-                        for (int i = 0; i < videos.size(); i++) {
-                            if (videos.get(i).getId() == video.getId()) {
-                                videos.remove(videos.get(i));
-                            }
+                .subscribe(videos -> {
+                    for (int i = 0; i < videos.size(); i++) {
+                        if (videos.get(i).getId() == video.getId()) {
+                            videos.remove(videos.get(i));
                         }
-                        VerticalVideoAdapter adapter = (VerticalVideoAdapter) videoPlayerBinding.videoPlayerRecyclerView.getAdapter();
-                        if (adapter != null) {
-                            adapter.addVideos(videos.subList(0, 10));
-                        }
+                    }
+                    VerticalVideoAdapter adapter = (VerticalVideoAdapter) videoPlayerBinding.videoPlayerRecyclerView.getAdapter();
+                    if (adapter != null) {
+                        adapter.addVideos(videos.subList(0, 10));
                     }
                 });
         compositeDisposable.add(disposable);
@@ -326,14 +294,11 @@ public class VideoPlayerFragment extends Fragment implements OnClickVideoListene
 
         PlayerView playerView = videoPlayerBinding.videoPlayerView;
         View fullScreenButton = playerView.findViewById(R.id.exo_fullscreen_icon);
-        fullScreenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!fullscreen) {
-                    openFullscreenDialog();
-                } else {
-                    closeFullscreenDialog();
-                }
+        fullScreenButton.setOnClickListener(v -> {
+            if (!fullscreen) {
+                openFullscreenDialog();
+            } else {
+                closeFullscreenDialog();
             }
         });
     }

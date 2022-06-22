@@ -139,21 +139,21 @@ public class MusicPlayerService extends LifecycleService {
         // play and pause intent
         Intent playAndPauseIntent = new Intent(this, MusicPlayerBroadcastReceiver.class);
         playAndPauseIntent.setAction("PLAY/PAUSE");
-        PendingIntent playAndPausePendingIntent = PendingIntent.getBroadcast(this, 1, playAndPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent playAndPausePendingIntent = PendingIntent.getBroadcast(this, 1, playAndPauseIntent, PendingIntent.FLAG_MUTABLE);
 
         // next intent
         Intent nextIntent = new Intent(this, MusicPlayerBroadcastReceiver.class);
         nextIntent.setAction("NEXT");
-        PendingIntent nextPendingIntent = PendingIntent.getBroadcast(this, 2, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent nextPendingIntent = PendingIntent.getBroadcast(this, 2, nextIntent, PendingIntent.FLAG_MUTABLE);
 
         // prev intent
         Intent prevIntent = new Intent(this, MusicPlayerBroadcastReceiver.class);
         prevIntent.setAction("PREV");
-        PendingIntent prevPendingIntent = PendingIntent.getBroadcast(this, 3, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent prevPendingIntent = PendingIntent.getBroadcast(this, 3, prevIntent, PendingIntent.FLAG_MUTABLE);
 
         Intent deleteIntent = new Intent(this, MusicPlayerService.class);
         deleteIntent.setAction("STOP_SERVICE");
-        PendingIntent deletePendingIntent = PendingIntent.getService(this, 4, deleteIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent deletePendingIntent = PendingIntent.getService(this, 4, deleteIntent, PendingIntent.FLAG_MUTABLE);
 
         // small notification view
         notificationView = new RemoteViews(getPackageName(), R.layout.playback_notification_layout);

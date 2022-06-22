@@ -2,14 +2,12 @@ package com.ariaramin.radioava.ui.Fragments.Music;
 
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Environment;
@@ -21,20 +19,17 @@ import android.widget.Toast;
 import com.ariaramin.radioava.MainActivity;
 import com.ariaramin.radioava.MainViewModel;
 import com.ariaramin.radioava.Models.Music;
-import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.Players.MusicPlayer;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.SharedPreference.SharedPreferenceManager;
 import com.ariaramin.radioava.databinding.FragmentPlayerBinding;
+import com.ariaramin.radioava.utils.Constants;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 
-import java.lang.reflect.Type;
+
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -42,7 +37,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import me.tankery.lib.circularseekbar.CircularSeekBar;
 
@@ -80,12 +74,7 @@ public class PlayerFragment extends Fragment {
         mainActivity.homeImageView.setVisibility(View.GONE);
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
         mainActivity.playBackLayout.setVisibility(View.GONE);
-        playerBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requireActivity().onBackPressed();
-            }
-        });
+        playerBinding.backStackButton.setOnClickListener(v -> requireActivity().onBackPressed());
         Bundle args = getArguments();
         if (args != null) {
             music = args.getParcelable("Music");
@@ -122,46 +111,37 @@ public class PlayerFragment extends Fragment {
 
     public void addToRecentlyPlayed() {
         recentlyPlayed = sharedPreferenceManager.readRecentlyPlayedData();
-        musicPlayer.playingMusic.observe(requireActivity(), new Observer<Music>() {
-            @Override
-            public void onChanged(Music playingMusic) {
-                if (recentlyPlayed.size() >= 1) {
-                    if (!recentlyPlayed.get(recentlyPlayed.size() - 1).equals(playingMusic.getId() + playingMusic.getName())) {
-                        recentlyPlayed.add(playingMusic.getId() + playingMusic.getName());
-                        sharedPreferenceManager.storeRecentlyPlayedData(recentlyPlayed);
-                    }
-                } else {
+        musicPlayer.playingMusic.observe(requireActivity(), playingMusic -> {
+            if (recentlyPlayed.size() >= 1) {
+                if (!recentlyPlayed.get(recentlyPlayed.size() - 1).equals(playingMusic.getId() + playingMusic.getName())) {
                     recentlyPlayed.add(playingMusic.getId() + playingMusic.getName());
                     sharedPreferenceManager.storeRecentlyPlayedData(recentlyPlayed);
                 }
+            } else {
+                recentlyPlayed.add(playingMusic.getId() + playingMusic.getName());
+                sharedPreferenceManager.storeRecentlyPlayedData(recentlyPlayed);
             }
         });
     }
 
     private void downloadMusic() {
-        musicPlayer.playingMusic.observe(requireActivity(), new Observer<Music>() {
-            @Override
-            public void onChanged(Music playingMusic) {
-                playerBinding.playerDownloadButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        DownloadManager downloadManager = (DownloadManager) requireContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                        String title = playingMusic.getName();
-                        Uri uri = Uri.parse(playingMusic.getSource());
-                        DownloadManager.Request request = new DownloadManager.Request(uri);
-                        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
-                                .setAllowedOverRoaming(true)
-                                .setTitle(title)
-                                .setDescription("Downloading...")
-                                .setMimeType("audio/*")
-                                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                                .setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, title + ".m4a");
-                        downloadManager.enqueue(request);
-                        addToDownloads(playingMusic);
-                    }
-                });
-            }
-        });
+        musicPlayer.playingMusic.observe(requireActivity(), playingMusic ->
+                playerBinding.playerDownloadButton.setOnClickListener(v -> {
+                    DownloadManager downloadManager = (DownloadManager) requireContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                    String title = playingMusic.getName();
+                    Uri uri = Uri.parse(playingMusic.getSource());
+                    DownloadManager.Request request = new DownloadManager.Request(uri);
+                    request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
+                            .setAllowedOverRoaming(true)
+                            .setTitle(title)
+                            .setDescription("Downloading...")
+                            .setMimeType("audio/*")
+                            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                            .setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, title + ".m4a");
+                    downloadManager.enqueue(request);
+                    addToDownloads(playingMusic);
+                })
+        );
     }
 
     private void addToDownloads(Music playingMusic) {
@@ -180,29 +160,23 @@ public class PlayerFragment extends Fragment {
     }
 
     private void likeMusic() {
-        musicPlayer.playingMusic.observe(requireActivity(), new Observer<Music>() {
-            @Override
-            public void onChanged(Music playingMusic) {
-                checkMusicLiked(playingMusic);
-                playerBinding.playerLikeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!musicLiked) {
-                            if (!likedMusics.contains(playingMusic.getId() + playingMusic.getName())) {
-                                likedMusics.add(playingMusic.getId() + playingMusic.getName());
-                            }
-                            sharedPreferenceManager.storeLikedData(likedMusics);
-                            playerBinding.playerLikeButton.setImageResource(R.drawable.ic_heart_fill);
-                            musicLiked = true;
-                        } else {
-                            likedMusics.remove(playingMusic.getId() + playingMusic.getName());
-                            sharedPreferenceManager.storeLikedData(likedMusics);
-                            playerBinding.playerLikeButton.setImageResource(R.drawable.ic_heart);
-                            musicLiked = false;
-                        }
+        musicPlayer.playingMusic.observe(requireActivity(), playingMusic -> {
+            checkMusicLiked(playingMusic);
+            playerBinding.playerLikeButton.setOnClickListener(v -> {
+                if (!musicLiked) {
+                    if (!likedMusics.contains(playingMusic.getId() + playingMusic.getName())) {
+                        likedMusics.add(playingMusic.getId() + playingMusic.getName());
                     }
-                });
-            }
+                    sharedPreferenceManager.storeLikedData(likedMusics);
+                    playerBinding.playerLikeButton.setImageResource(R.drawable.ic_heart_fill);
+                    musicLiked = true;
+                } else {
+                    likedMusics.remove(playingMusic.getId() + playingMusic.getName());
+                    sharedPreferenceManager.storeLikedData(likedMusics);
+                    playerBinding.playerLikeButton.setImageResource(R.drawable.ic_heart);
+                    musicLiked = false;
+                }
+            });
         });
     }
 
@@ -219,104 +193,65 @@ public class PlayerFragment extends Fragment {
 
     private void setupButtons() {
         // Play Button
-        musicPlayer.isPlaying.observe(requireActivity(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                playerBinding.playButton.setImageResource(aBoolean ? R.drawable.ic_pause : R.drawable.ic_play);
-            }
-        });
-        playerBinding.playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                musicPlayer.togglePlayBack();
-            }
-        });
+        musicPlayer.isPlaying.observe(requireActivity(), aBoolean ->
+                playerBinding.playButton.setImageResource(aBoolean ? R.drawable.ic_pause : R.drawable.ic_play));
+                playerBinding.playButton.setOnClickListener(v -> musicPlayer.togglePlayBack()
+        );
 
         // Next Button
-        playerBinding.nextImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                musicPlayer.next();
-            }
-        });
+        playerBinding.nextImageButton.setOnClickListener(v -> musicPlayer.next());
 
         // Previous Button
-        playerBinding.previousImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                musicPlayer.previous();
-            }
-        });
+        playerBinding.previousImageButton.setOnClickListener(v -> musicPlayer.previous());
 
         // Shuffle Button
-        musicPlayer.isShuffleModeEnabled.observe(requireActivity(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                int primaryColor = requireContext().getResources().getColor(R.color.primaryColor);
-                int white = requireContext().getResources().getColor(R.color.white);
-                playerBinding.shuffleImageButton.setColorFilter(aBoolean ? primaryColor : white);
-            }
+        musicPlayer.isShuffleModeEnabled.observe(requireActivity(), aBoolean -> {
+            int primaryColor = requireContext().getResources().getColor(R.color.primaryColor);
+            int white = requireContext().getResources().getColor(R.color.white);
+            playerBinding.shuffleImageButton.setColorFilter(aBoolean ? primaryColor : white);
         });
-        playerBinding.shuffleImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                musicPlayer.toggleShuffleMode();
-            }
-        });
+        playerBinding.shuffleImageButton.setOnClickListener(v -> musicPlayer.toggleShuffleMode());
 
         // Repeat Button
-        musicPlayer.isRepeatModeEnabled.observe(requireActivity(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                int primaryColor = requireContext().getResources().getColor(R.color.primaryColor);
-                int white = requireContext().getResources().getColor(R.color.white);
-                playerBinding.repeatModeImageButton.setColorFilter(aBoolean ? primaryColor : white);
-            }
+        musicPlayer.isRepeatModeEnabled.observe(requireActivity(), aBoolean -> {
+            int primaryColor = requireContext().getResources().getColor(R.color.primaryColor);
+            int white = requireContext().getResources().getColor(R.color.white);
+            playerBinding.repeatModeImageButton.setColorFilter(aBoolean ? primaryColor : white);
         });
-        playerBinding.repeatModeImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                musicPlayer.toggleRepeatMode();
-            }
-        });
+
+        playerBinding.repeatModeImageButton.setOnClickListener(v -> musicPlayer.toggleRepeatMode());
     }
 
     private void setupMusicDetail() {
-        musicPlayer.playingMusic.observe(requireActivity(), new Observer<Music>() {
-            @Override
-            public void onChanged(Music playingMusic) {
-                Glide.with(playerBinding.getRoot().getContext())
-                        .load(playingMusic.getCover())
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                        .into(playerBinding.backgroundImageView);
-                Glide.with(playerBinding.getRoot().getContext())
-                        .load(playingMusic.getCover())
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                        .into(playerBinding.playerImageView);
-                playerBinding.playerNameTextView.setText(playingMusic.getName());
-                playerBinding.playerArtistTextView.setText(playingMusic.getArtist());
-                if (playingMusic.getLyric() != null && !playingMusic.getLyric().equals("")) {
-                    playerBinding.playerLyricButton.setVisibility(View.VISIBLE);
-                    setupLyric(playingMusic.getLyric());
-                } else {
-                    playerBinding.playerLyricButton.setVisibility(View.GONE);
-                }
+        musicPlayer.playingMusic.observe(requireActivity(), playingMusic -> {
+            Glide.with(playerBinding.getRoot().getContext())
+                    .load(playingMusic.getCover())
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .into(playerBinding.backgroundImageView);
+            Glide.with(playerBinding.getRoot().getContext())
+                    .load(playingMusic.getCover())
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .into(playerBinding.playerImageView);
+            playerBinding.playerNameTextView.setText(playingMusic.getName());
+            playerBinding.playerArtistTextView.setText(playingMusic.getArtist());
+            if (playingMusic.getLyric() != null && !playingMusic.getLyric().equals("")) {
+                playerBinding.playerLyricButton.setVisibility(View.VISIBLE);
+                setupLyric(playingMusic.getLyric());
+            } else {
+                playerBinding.playerLyricButton.setVisibility(View.GONE);
             }
         });
     }
 
     private void setupLyric(String lyric) {
-        playerBinding.playerLyricButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LyricBottomSheet lyricBottomSheet = new LyricBottomSheet();
-                Bundle bundle = new Bundle();
-                bundle.putString("Lyric", lyric);
-                lyricBottomSheet.setArguments(bundle);
-                lyricBottomSheet.show(requireActivity().getSupportFragmentManager(), lyricBottomSheet.getTag());
-            }
+        playerBinding.playerLyricButton.setOnClickListener(v -> {
+            LyricBottomSheet lyricBottomSheet = new LyricBottomSheet();
+            Bundle bundle = new Bundle();
+            bundle.putString("Lyric", lyric);
+            lyricBottomSheet.setArguments(bundle);
+            lyricBottomSheet.show(requireActivity().getSupportFragmentManager(), lyricBottomSheet.getTag());
         });
     }
 
@@ -331,45 +266,38 @@ public class PlayerFragment extends Fragment {
         musicPlayer.addMusicToPlaylist(music);
 
         // add related musics and play
-        Disposable disposable = mainViewModel.getArtistMusicsFromDb(music.getArtist())
+        Disposable disposable = mainViewModel.getArtistMusics(music.getArtist())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Music>>() {
-                    @Override
-                    public void accept(List<Music> musics) throws Throwable {
-                        for (int i = 0; i < musics.size(); i++) {
-                            if (musics.get(i).getId() == music.getId()) {
-                                musics.remove(musics.get(i));
-                            }
-                        }
-                        musicPlayer.addPlaylist(musics);
-                        if (!musicPlayer.isPlaying()) {
-                            musicPlayer.play();
+                .subscribe(musics -> {
+                    for (int i = 0; i < musics.size(); i++) {
+                        if (musics.get(i).getId() == music.getId()) {
+                            musics.remove(musics.get(i));
                         }
                     }
+                    musicPlayer.addPlaylist(musics);
+                    if (!musicPlayer.isPlaying()) {
+                        musicPlayer.play();
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
     private void setDuration() {
-        musicPlayer.duration.observe(requireActivity(), new Observer<Long>() {
-            @Override
-            public void onChanged(Long aLong) {
-                long duration = (aLong / 1000);
-                playerBinding.playerSeekBar.setMax(duration);
-                playerBinding.playerDurationTextView.setText(timeToString(aLong));
-            }
+        musicPlayer.duration.observe(requireActivity(), aLong -> {
+            long duration = (aLong / 1000);
+            playerBinding.playerSeekBar.setMax(duration);
+            playerBinding.playerDurationTextView.setText(timeToString(aLong));
         });
     }
 
     private void seekBarProgress() {
-        musicPlayer.currentPosition.observe(requireActivity(), new Observer<Long>() {
-            @Override
-            public void onChanged(Long aLong) {
-                long currentPos = (aLong / 1000);
-                playerBinding.playerSeekBar.setProgress(currentPos);
-                playerBinding.playerCurrentDurationTextView.setText(timeToString(aLong));
-            }
+        musicPlayer.currentPosition.observe(requireActivity(), aLong -> {
+            long currentPos = (aLong / 1000);
+            playerBinding.playerSeekBar.setProgress(currentPos);
+            playerBinding.playerCurrentDurationTextView.setText(timeToString(aLong));
         });
     }
 

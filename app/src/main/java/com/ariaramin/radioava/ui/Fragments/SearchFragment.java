@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,20 +20,15 @@ import com.ariaramin.radioava.Adapters.Music.VerticalMusicAdapter;
 import com.ariaramin.radioava.Adapters.Video.VerticalVideoAdapter;
 import com.ariaramin.radioava.MainActivity;
 import com.ariaramin.radioava.MainViewModel;
-import com.ariaramin.radioava.Models.Album;
-import com.ariaramin.radioava.Models.Artist;
-import com.ariaramin.radioava.Models.Music;
-import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.databinding.FragmentSearchBinding;
+import com.ariaramin.radioava.utils.Constants;
 
-import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SearchFragment extends Fragment {
@@ -64,13 +58,9 @@ public class SearchFragment extends Fragment {
         compositeDisposable = new CompositeDisposable();
         mainActivity.bottomNavigationView.setVisibility(View.GONE);
         mainActivity.homeImageView.setVisibility(View.GONE);
-        searchBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requireActivity().onBackPressed();
-            }
-        });
+        searchBinding.backStackButton.setOnClickListener(v -> requireActivity().onBackPressed());
         search();
+
         return searchBinding.getRoot();
     }
 
@@ -101,110 +91,105 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void searchMusics(String query) {
-        Disposable disposable = mainViewModel.searchInMusicsFromDb(query)
+    private void searchMusics(String search) {
+        Disposable disposable = mainViewModel.searchInMusics(search, 20)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Music>>() {
-                    @Override
-                    public void accept(List<Music> musics) throws Throwable {
-                        if (searchBinding.searchedMusicsRecyclerView.getAdapter() == null) {
-                            VerticalMusicAdapter musicAdapter = new VerticalMusicAdapter(musics, TAG);
-                            searchBinding.searchedMusicsRecyclerView.setAdapter(musicAdapter);
-                        } else {
-                            VerticalMusicAdapter musicAdapter = (VerticalMusicAdapter) searchBinding.searchedMusicsRecyclerView.getAdapter();
-                            musicAdapter.updateList(musics);
-                        }
-
-                        if (musics.isEmpty()) {
-                            searchBinding.musicsLayout.setVisibility(View.GONE);
-                            isMusicsEmpty = true;
-                        } else {
-                            searchBinding.musicsLayout.setVisibility(View.VISIBLE);
-                            isMusicsEmpty = false;
-                        }
+                .subscribe(musics -> {
+                    if (searchBinding.searchedMusicsRecyclerView.getAdapter() == null) {
+                        VerticalMusicAdapter musicAdapter = new VerticalMusicAdapter(musics, TAG);
+                        searchBinding.searchedMusicsRecyclerView.setAdapter(musicAdapter);
+                    } else {
+                        VerticalMusicAdapter musicAdapter = (VerticalMusicAdapter) searchBinding.searchedMusicsRecyclerView.getAdapter();
+                        musicAdapter.updateList(musics);
                     }
+                    if (musics.isEmpty()) {
+                        searchBinding.musicsLayout.setVisibility(View.GONE);
+                        isMusicsEmpty = true;
+                    } else {
+                        searchBinding.musicsLayout.setVisibility(View.VISIBLE);
+                        isMusicsEmpty = false;
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
-    private void searchAlbums(String query) {
-        Disposable disposable = mainViewModel.searchInAlbumsFromDb(query)
+    private void searchAlbums(String search) {
+        Disposable disposable = mainViewModel.searchInAlbums(search, 20)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Album>>() {
-                    @Override
-                    public void accept(List<Album> albums) throws Throwable {
-                        if (searchBinding.searchedAlbumsRecyclerView.getAdapter() == null) {
-                            VerticalAlbumAdapter albumAdapter = new VerticalAlbumAdapter(albums, TAG);
-                            searchBinding.searchedAlbumsRecyclerView.setAdapter(albumAdapter);
-                        } else {
-                            VerticalAlbumAdapter albumAdapter = (VerticalAlbumAdapter) searchBinding.searchedAlbumsRecyclerView.getAdapter();
-                            albumAdapter.updateList(albums);
-                        }
-
-                        if (albums.isEmpty()) {
-                            searchBinding.albumsLayout.setVisibility(View.GONE);
-                            isAlbumsEmpty = true;
-                        } else {
-                            searchBinding.albumsLayout.setVisibility(View.VISIBLE);
-                            isAlbumsEmpty = false;
-                        }
+                .subscribe(albums -> {
+                    if (searchBinding.searchedAlbumsRecyclerView.getAdapter() == null) {
+                        VerticalAlbumAdapter albumAdapter = new VerticalAlbumAdapter(albums, TAG);
+                        searchBinding.searchedAlbumsRecyclerView.setAdapter(albumAdapter);
+                    } else {
+                        VerticalAlbumAdapter albumAdapter = (VerticalAlbumAdapter) searchBinding.searchedAlbumsRecyclerView.getAdapter();
+                        albumAdapter.updateList(albums);
                     }
+
+                    if (albums.isEmpty()) {
+                        searchBinding.albumsLayout.setVisibility(View.GONE);
+                        isAlbumsEmpty = true;
+                    } else {
+                        searchBinding.albumsLayout.setVisibility(View.VISIBLE);
+                        isAlbumsEmpty = false;
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
-    private void searchArtists(String query) {
-        Disposable disposable = mainViewModel.searchInArtistsFromDb(query)
+    private void searchArtists(String search) {
+        Disposable disposable = mainViewModel.searchInArtists(search, 20)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Artist>>() {
-                    @Override
-                    public void accept(List<Artist> artists) throws Throwable {
-                        if (searchBinding.searchedArtistsRecyclerView.getAdapter() == null) {
-                            VerticalArtistAdapter artistAdapter = new VerticalArtistAdapter(artists, TAG);
-                            searchBinding.searchedArtistsRecyclerView.setAdapter(artistAdapter);
-                        } else {
-                            VerticalArtistAdapter artistAdapter = (VerticalArtistAdapter) searchBinding.searchedArtistsRecyclerView.getAdapter();
-                            artistAdapter.updateList(artists);
-                        }
-
-                        if (artists.isEmpty()) {
-                            searchBinding.artistsLayout.setVisibility(View.GONE);
-                            isArtistsEmpty = true;
-                        } else {
-                            searchBinding.artistsLayout.setVisibility(View.VISIBLE);
-                            isArtistsEmpty = false;
-                        }
+                .subscribe(artists -> {
+                    if (searchBinding.searchedArtistsRecyclerView.getAdapter() == null) {
+                        VerticalArtistAdapter artistAdapter = new VerticalArtistAdapter(artists, TAG);
+                        searchBinding.searchedArtistsRecyclerView.setAdapter(artistAdapter);
+                    } else {
+                        VerticalArtistAdapter artistAdapter = (VerticalArtistAdapter) searchBinding.searchedArtistsRecyclerView.getAdapter();
+                        artistAdapter.updateList(artists);
                     }
+
+                    if (artists.isEmpty()) {
+                        searchBinding.artistsLayout.setVisibility(View.GONE);
+                        isArtistsEmpty = true;
+                    } else {
+                        searchBinding.artistsLayout.setVisibility(View.VISIBLE);
+                        isArtistsEmpty = false;
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
-    private void searchVideos(String query) {
-        Disposable disposable = mainViewModel.searchInVideosFromDb(query)
+    private void searchVideos(String search) {
+        Disposable disposable = mainViewModel.searchInVideos(search, 20)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Video>>() {
-                    @Override
-                    public void accept(List<Video> videos) throws Throwable {
-                        if (searchBinding.searchedVideosRecyclerView.getAdapter() == null) {
-                            VerticalVideoAdapter musicAdapter = new VerticalVideoAdapter(videos, TAG);
-                            searchBinding.searchedVideosRecyclerView.setAdapter(musicAdapter);
-                        } else {
-                            VerticalVideoAdapter musicAdapter = (VerticalVideoAdapter) searchBinding.searchedVideosRecyclerView.getAdapter();
-                            musicAdapter.updateList(videos);
-                        }
-
-                        if (videos.isEmpty()) {
-                            searchBinding.videosLayout.setVisibility(View.GONE);
-                            isVideosEmpty = true;
-                        } else {
-                            searchBinding.videosLayout.setVisibility(View.VISIBLE);
-                            isVideosEmpty = false;
-                        }
+                .subscribe(videos -> {
+                    if (searchBinding.searchedVideosRecyclerView.getAdapter() == null) {
+                        VerticalVideoAdapter musicAdapter = new VerticalVideoAdapter(videos, TAG);
+                        searchBinding.searchedVideosRecyclerView.setAdapter(musicAdapter);
+                    } else {
+                        VerticalVideoAdapter musicAdapter = (VerticalVideoAdapter) searchBinding.searchedVideosRecyclerView.getAdapter();
+                        musicAdapter.updateList(videos);
                     }
+
+                    if (videos.isEmpty()) {
+                        searchBinding.videosLayout.setVisibility(View.GONE);
+                        isVideosEmpty = true;
+                    } else {
+                        searchBinding.videosLayout.setVisibility(View.VISIBLE);
+                        isVideosEmpty = false;
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }

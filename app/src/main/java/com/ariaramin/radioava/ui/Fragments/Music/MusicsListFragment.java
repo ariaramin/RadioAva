@@ -21,6 +21,7 @@ import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.R;
 import com.ariaramin.radioava.SharedPreference.SharedPreferenceManager;
 import com.ariaramin.radioava.databinding.FragmentMusicsListBinding;
+import com.ariaramin.radioava.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,23 +83,13 @@ public class MusicsListFragment extends Fragment {
                     break;
                 case 3:
                     musicsBinding.headerLayout.setVisibility(View.VISIBLE);
-                    musicsBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            requireActivity().onBackPressed();
-                        }
-                    });
+                    musicsBinding.backStackButton.setOnClickListener(v -> requireActivity().onBackPressed());
                     getDownloadedMusics();
                     break;
                 case 4:
                     musicsBinding.pageTitleTextView.setText(requireActivity().getResources().getString(R.string.downloaded_albums));
                     musicsBinding.headerLayout.setVisibility(View.VISIBLE);
-                    musicsBinding.backStackButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            requireActivity().onBackPressed();
-                        }
-                    });
+                    musicsBinding.backStackButton.setOnClickListener(v -> requireActivity().onBackPressed());
                     getDownloadedAlbums();
                     break;
             }
@@ -108,7 +99,7 @@ public class MusicsListFragment extends Fragment {
     }
 
     private void getDownloadedMusics() {
-        Disposable disposable = mainViewModel.getAllMusicsFromDb()
+        Disposable disposable = mainViewModel.getAllMusics()
                 .map(musics -> {
                     downloadedMusicList.clear();
                     for (int i = 0; i < downloaded.size(); i++) {
@@ -122,31 +113,30 @@ public class MusicsListFragment extends Fragment {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Music>>() {
-                    @Override
-                    public void accept(List<Music> musics) throws Throwable {
-                        Collections.reverse(musics);
+                .subscribe((Consumer<List<Music>>) musics -> {
+                    Collections.reverse(musics);
 
-                        if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
-                            VerticalMusicAdapter adapter = new VerticalMusicAdapter(musics, TAG2);
-                            musicsBinding.musicsRecyclerView.setAdapter(adapter);
-                        } else {
-                            VerticalMusicAdapter adapter = (VerticalMusicAdapter) musicsBinding.musicsRecyclerView.getAdapter();
-                            adapter.updateList(musics);
-                        }
-
-                        if (musics.isEmpty()) {
-                            musicsBinding.notFoundMusicTextView.setVisibility(View.VISIBLE);
-                        } else {
-                            musicsBinding.notFoundMusicTextView.setVisibility(View.GONE);
-                        }
+                    if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
+                        VerticalMusicAdapter adapter = new VerticalMusicAdapter(musics, TAG2);
+                        musicsBinding.musicsRecyclerView.setAdapter(adapter);
+                    } else {
+                        VerticalMusicAdapter adapter = (VerticalMusicAdapter) musicsBinding.musicsRecyclerView.getAdapter();
+                        adapter.updateList(musics);
                     }
+
+                    if (musics.isEmpty()) {
+                        musicsBinding.notFoundMusicTextView.setVisibility(View.VISIBLE);
+                    } else {
+                        musicsBinding.notFoundMusicTextView.setVisibility(View.GONE);
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
     private void getDownloadedAlbums() {
-        Disposable disposable = mainViewModel.getAllAlbumsFromDb()
+        Disposable disposable = mainViewModel.getAllAlbums()
                 .map(albums -> {
                     downloadedAlbumList.clear();
                     for (int i = 0; i < downloaded.size(); i++) {
@@ -160,104 +150,98 @@ public class MusicsListFragment extends Fragment {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Album>>() {
-                    @Override
-                    public void accept(List<Album> albums) throws Throwable {
-                        Collections.reverse(albums);
+                .subscribe((Consumer<List<Album>>) albums -> {
+                    Collections.reverse(albums);
 
-                        if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
-                            VerticalAlbumAdapter adapter = new VerticalAlbumAdapter(albums, TAG2);
-                            musicsBinding.musicsRecyclerView.setAdapter(adapter);
-                        } else {
-                            VerticalAlbumAdapter adapter = (VerticalAlbumAdapter) musicsBinding.musicsRecyclerView.getAdapter();
-                            adapter.updateList(albums);
-                        }
-
-                        if (albums.isEmpty()) {
-                            musicsBinding.notFoundMusicTextView.setVisibility(View.VISIBLE);
-                        } else {
-                            musicsBinding.notFoundMusicTextView.setVisibility(View.GONE);
-                        }
+                    if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
+                        VerticalAlbumAdapter adapter = new VerticalAlbumAdapter(albums, TAG2);
+                        musicsBinding.musicsRecyclerView.setAdapter(adapter);
+                    } else {
+                        VerticalAlbumAdapter adapter = (VerticalAlbumAdapter) musicsBinding.musicsRecyclerView.getAdapter();
+                        adapter.updateList(albums);
                     }
+
+                    if (albums.isEmpty()) {
+                        musicsBinding.notFoundMusicTextView.setVisibility(View.VISIBLE);
+                    } else {
+                        musicsBinding.notFoundMusicTextView.setVisibility(View.GONE);
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
     private void getTrendingMusics() {
-        Disposable disposable = mainViewModel.getTrendingMusicsFromDb()
+        Disposable disposable = mainViewModel.getTrendingMusics()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Music>>() {
-                    @Override
-                    public void accept(List<Music> musics) throws Throwable {
-
-                        if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
-                            VerticalMusicAdapter musicAdapter = new VerticalMusicAdapter(musics, TAG);
-                            musicsBinding.musicsRecyclerView.setAdapter(musicAdapter);
-                        } else {
-                            VerticalMusicAdapter adapter = (VerticalMusicAdapter) musicsBinding.musicsRecyclerView.getAdapter();
-                            adapter.updateList(musics);
-                        }
-
-                        if (musics.isEmpty()) {
-                            musicsBinding.musicsSpinKit.setVisibility(View.VISIBLE);
-                        } else {
-                            musicsBinding.musicsSpinKit.setVisibility(View.GONE);
-                        }
+                .subscribe(musics -> {
+                    if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
+                        VerticalMusicAdapter musicAdapter = new VerticalMusicAdapter(musics, TAG);
+                        musicsBinding.musicsRecyclerView.setAdapter(musicAdapter);
+                    } else {
+                        VerticalMusicAdapter adapter = (VerticalMusicAdapter) musicsBinding.musicsRecyclerView.getAdapter();
+                        adapter.updateList(musics);
                     }
+
+                    if (musics.isEmpty()) {
+                        musicsBinding.musicsSpinKit.setVisibility(View.VISIBLE);
+                    } else {
+                        musicsBinding.musicsSpinKit.setVisibility(View.GONE);
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
     private void getPopularMusics() {
-        Disposable disposable = mainViewModel.getPopularMusicsFromDb()
+        Disposable disposable = mainViewModel.getPopularMusics()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Music>>() {
-                    @Override
-                    public void accept(List<Music> musics) throws Throwable {
-
-                        if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
-                            VerticalMusicAdapter musicAdapter = new VerticalMusicAdapter(musics, TAG);
-                            musicsBinding.musicsRecyclerView.setAdapter(musicAdapter);
-                        } else {
-                            VerticalMusicAdapter adapter = (VerticalMusicAdapter) musicsBinding.musicsRecyclerView.getAdapter();
-                            adapter.updateList(musics);
-                        }
-
-                        if (musics.isEmpty()) {
-                            musicsBinding.musicsSpinKit.setVisibility(View.VISIBLE);
-                        } else {
-                            musicsBinding.musicsSpinKit.setVisibility(View.GONE);
-                        }
+                .subscribe(musics -> {
+                    if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
+                        VerticalMusicAdapter musicAdapter = new VerticalMusicAdapter(musics, TAG);
+                        musicsBinding.musicsRecyclerView.setAdapter(musicAdapter);
+                    } else {
+                        VerticalMusicAdapter adapter = (VerticalMusicAdapter) musicsBinding.musicsRecyclerView.getAdapter();
+                        adapter.updateList(musics);
                     }
+
+                    if (musics.isEmpty()) {
+                        musicsBinding.musicsSpinKit.setVisibility(View.VISIBLE);
+                    } else {
+                        musicsBinding.musicsSpinKit.setVisibility(View.GONE);
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }
 
     private void getLatestAlbums() {
-        Disposable disposable = mainViewModel.getAllAlbumsFromDb()
+        Disposable disposable = mainViewModel.getAllAlbums()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Album>>() {
-                    @Override
-                    public void accept(List<Album> albums) throws Throwable {
-                        List<Album> albumList = albums.subList(0, 30);
+                .subscribe(albums -> {
+                    List<Album> albumList = albums.subList(0, 30);
 
-                        if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
-                            VerticalAlbumAdapter albumAdapter = new VerticalAlbumAdapter(albumList, TAG);
-                            musicsBinding.musicsRecyclerView.setAdapter(albumAdapter);
-                        } else {
-                            VerticalAlbumAdapter adapter = (VerticalAlbumAdapter) musicsBinding.musicsRecyclerView.getAdapter();
-                            adapter.updateList(albumList);
-                        }
-
-                        if (albums.isEmpty()) {
-                            musicsBinding.musicsSpinKit.setVisibility(View.VISIBLE);
-                        } else {
-                            musicsBinding.musicsSpinKit.setVisibility(View.GONE);
-                        }
+                    if (musicsBinding.musicsRecyclerView.getAdapter() == null) {
+                        VerticalAlbumAdapter albumAdapter = new VerticalAlbumAdapter(albumList, TAG);
+                        musicsBinding.musicsRecyclerView.setAdapter(albumAdapter);
+                    } else {
+                        VerticalAlbumAdapter adapter = (VerticalAlbumAdapter) musicsBinding.musicsRecyclerView.getAdapter();
+                        adapter.updateList(albumList);
                     }
+
+                    if (albums.isEmpty()) {
+                        musicsBinding.musicsSpinKit.setVisibility(View.VISIBLE);
+                    } else {
+                        musicsBinding.musicsSpinKit.setVisibility(View.GONE);
+                    }
+                }, throwable -> {
+                    Constants.raiseError(getActivity(), getString(R.string.something_went_wrong));
                 });
         compositeDisposable.add(disposable);
     }

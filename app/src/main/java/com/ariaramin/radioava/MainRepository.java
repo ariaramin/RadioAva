@@ -1,40 +1,21 @@
 package com.ariaramin.radioava;
 
-import android.util.Log;
-
 import com.ariaramin.radioava.Models.Album;
 import com.ariaramin.radioava.Models.Artist;
 import com.ariaramin.radioava.Models.Music;
 import com.ariaramin.radioava.Models.Video;
 import com.ariaramin.radioava.Retrofit.RequestApi;
-import com.ariaramin.radioava.Room.DatabaseDao;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.CompletableObserver;
-import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainRepository {
 
     RequestApi requestApi;
-    DatabaseDao databaseDao;
-    CompositeDisposable compositeDisposable;
 
-    public MainRepository(RequestApi requestApi, DatabaseDao databaseDao) {
+    public MainRepository(RequestApi requestApi) {
         this.requestApi = requestApi;
-        this.databaseDao = databaseDao;
-        compositeDisposable = new CompositeDisposable();
-    }
-
-    public void clearCompositeDisposable() {
-        compositeDisposable.clear();
     }
 
     ///////////////////////////////////// Music
@@ -43,46 +24,20 @@ public class MainRepository {
         return requestApi.getAllMusics();
     }
 
-    public void insertMusics(List<Music> musics) {
-        Completable.fromAction(() -> databaseDao.insertMusics(musics))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i("insertMusic", "Completed");
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
-                    }
-                });
+    public Observable<List<Music>> getTrendingMusics() {
+        return requestApi.getTrendingMusics();
     }
 
-    public Flowable<List<Music>> getAllMusicsFromDb() {
-        return databaseDao.readAllMusics();
+    public Observable<List<Music>> getPopularMusics() {
+        return requestApi.getPopularMusics();
     }
 
-    public Flowable<List<Music>> getTrendingMusicsFromDb() {
-        return databaseDao.readTrendingMusics();
+    public Observable<List<Music>> getArtistMusics(String artist) {
+        return requestApi.getArtistMusics(artist);
     }
 
-    public Flowable<List<Music>> getPopularMusicsFromDb() {
-        return databaseDao.readPopularMusics();
-    }
-
-    public Flowable<List<Music>> getArtistMusicsFromDb(String artist) {
-        return databaseDao.readArtistMusics(artist);
-    }
-
-    public Flowable<List<Music>> searchInMusicsFromDb(String query) {
-        return databaseDao.searchInMusics(query);
+    public Observable<List<Music>> searchInMusics(String search, int limit) {
+        return requestApi.searchInMusics(search, limit);
     }
 
     ///////////////////////////////////// Album
@@ -91,38 +46,12 @@ public class MainRepository {
         return requestApi.getAllAlbums();
     }
 
-    public void insertAlbums(List<Album> albums) {
-        Completable.fromAction(() -> databaseDao.insertAlbums(albums))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i("insertAlbum", "Completed");
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
-                    }
-                });
+    public Observable<List<Album>> getArtistAlbums(String artist) {
+        return requestApi.getArtistAlbums(artist);
     }
 
-    public Flowable<List<Album>> getAllAlbumsFromDb() {
-        return databaseDao.readAllAlbums();
-    }
-
-    public Flowable<List<Album>> getArtistAlbumsFromDb(String artist) {
-        return databaseDao.readArtistAlbums(artist);
-    }
-
-    public Flowable<List<Album>> searchInAlbumsFromDb(String query) {
-        return databaseDao.searchInAlbums(query);
+    public Observable<List<Album>> searchInAlbums(String search, int limit) {
+        return requestApi.searchInAlbums(search, limit);
     }
 
 
@@ -132,34 +61,8 @@ public class MainRepository {
         return requestApi.getAllArtists();
     }
 
-    public void insertArtists(List<Artist> artists) {
-        Completable.fromAction(() -> databaseDao.insertArtists(artists))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i("insertArtist", "Completed");
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-    public Flowable<List<Artist>> getAllArtistsFromDb() {
-        return databaseDao.readAllArtists();
-    }
-
-    public Flowable<List<Artist>> searchInArtistsFromDb(String query) {
-        return databaseDao.searchInArtists(query);
+    public Observable<List<Artist>> searchInArtists(String search, int limit) {
+        return requestApi.searchInArtists(search, limit);
     }
 
 
@@ -168,42 +71,16 @@ public class MainRepository {
         return requestApi.getAllVideos();
     }
 
-    public void insertVideos(List<Video> videos) {
-        Completable.fromAction(() -> databaseDao.insertVideos(videos))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i("insertVideo", "Completed");
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
-                    }
-                });
+    public Observable<List<Video>> getTrendingVideos() {
+        return requestApi.getTrendingVideos();
     }
 
-    public Flowable<List<Video>> getAllVideosFromDb() {
-        return databaseDao.readAllVideos();
+    public Observable<List<Video>> getArtistVideos(String artist) {
+        return requestApi.getArtistVideos(artist);
     }
 
-    public Flowable<List<Video>> getTrendingVideosFromDb() {
-        return databaseDao.readTrendingVideos();
-    }
-
-    public Flowable<List<Video>> getArtistVideosFromDb(String artist) {
-        return databaseDao.readArtistVideos(artist);
-    }
-
-    public Flowable<List<Video>> searchInVideosFromDb(String query) {
-        return databaseDao.searchInVideos(query);
+    public Observable<List<Video>> searchInVideos(String search, int limit) {
+        return requestApi.searchInVideos(search, limit);
     }
 
 }
