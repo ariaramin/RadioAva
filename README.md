@@ -9,7 +9,7 @@
   <p align="center">
     RadioAva provides you the best collection of Persian musics.
     <br/>
-    Whit this application you can either listen music and watch music video.
+    With this application you can either listen music and watch music video.
   </p>
 </div>
 
